@@ -1,7 +1,8 @@
 module.exports.levelUpEmbed = function(bot, message, Discord, level) {
+    let member = message.author;
     var embed = new Discord.RichEmbed()
-        .setTitle(message.author.username)
-        .setDescription(`**CONGRATS**\nYou are now level **${level}**!!!`)
+        .setTitle(`${member.id}`)
+        .setDescription(`**CONGRATS**\nThe Reaper announces that you have made it to level: **${level}**!!!\nWe wish to thank you for being a part of the Reaper Clan`)
         .setColor(0x00AE86)
         .setThumbnail(message.author.displayAvatarURL);
 
