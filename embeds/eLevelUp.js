@@ -5,6 +5,7 @@ module.exports.levelUpEmbed = function(bot, message, Discord, level) {
         .setColor(0x00AE86)
         .setThumbnail(message.author.displayAvatarURL);
 
-    message.guild.channel.find("name", "the-reaper").send({embed: embed});
+    let channel = message.guild.channels.find("name", "the-reaper");
+    channel.send({embed: embed});
 
 }
