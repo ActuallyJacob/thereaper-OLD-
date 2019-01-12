@@ -20,7 +20,7 @@ module.exports.run = async (client, message, args) => {
                     m.overwritePermissions(role, {
                         VIEW_CHANNEL: true
                     })
-                    m.setParent('528575698567430154', { 
+                    m.setParent('529781951029182464', { 
                         lockPermissions: false 
                     })
                 })
