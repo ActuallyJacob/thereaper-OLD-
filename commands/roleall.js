@@ -5,8 +5,6 @@ module.exports.run = async (client, message, args) => {
     return message.reply("The Reaper denies your request.")
   }
   else{
-    let role = args.join(" ").slice(22);
-    if(!role) return message.reply("The Reaper wishes for a role to be established. `Attempt again.`");
     let gRole = message.mentions.roles.first();
     if(!gRole) return message.reply("The Reaper could not locate the requested role. `Attempt again.`");
 
