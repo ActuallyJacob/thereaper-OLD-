@@ -1,3 +1,4 @@
+const Discord = require('discord.js');
 module.exports.helpEmbed = function(bot, message, Discord) {
         var embed = new Discord.RichEmbed()
         .setTitle("The Reaper")

@@ -1,3 +1,4 @@
+const Discord = require('discord.js');
 module.exports.spHEmbed = function(message, Discord, spCmd) {
     var embed = new Discord.RichEmbed()
       .setTitle(spCmd.command)
