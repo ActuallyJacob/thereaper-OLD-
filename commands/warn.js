@@ -4,10 +4,14 @@ const ms = require("ms");
 let warns = JSON.parse(fs.readFileSync("./warnings.json", "utf8"));
 
 module.exports.run = async (bot, message, args) => {
-  if(!message.member.hasPermission("MANAGE_MEMBERS")) return message.reply("The Reaper ignores you.");
+  if(!message.member.roles.some(r=>["Admin", "Lead Admin", "Co-Founder", "Founder"].includes(r.name)) ){
+    return message.reply("The Reaper ignores you.")
+  }
   let wUser = message.guild.member(message.mentions.users.first()) || message.guild.members.get(args[0])
   if(!wUser) return message.reply("Couldn't find them yo");
-  if(wUser.hasPermission("MANAGE_MESSAGES")) return message.reply("The Reaper cannot warn this person.");
+  if(wUser.roles.some(r=>["Admin", "Lead Admin", "Co-Founder", "Founder"].includes(r.name)) ){
+    return message.reply("The Reaper cannot warn this person.")
+  }
   let reason = args.join(" ").slice(22);
 
   if(!warns[wUser.id]) warns[wUser.id] = {
