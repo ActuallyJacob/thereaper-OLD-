@@ -6,11 +6,13 @@ module.exports.helpEmbed = function(bot, message, Discord) {
         .setColor(0x00AE86)
         .setThumbnail(bot.user.displayAvatarURL)
         .addField("Commands", `**REAPER COMMANDS**
-*-accept** \`\`Only usable in #welcome\`\`
-*-leaderboard**
-*-rank**
-*-rank** \`\`@UserName\`\`
-*-levels**
+*-accept* \`\`Only usable in #welcome\`\`
+*-leaderboard*
+*-rank*
+*-rank* \`\`@UserName\`\`
+*-levels*
+*-event* \`\`Create an event\`\`
+*-delete* \`\`delete an event\`\`
 **ADMIN COMMANDS**
 *-role*
 *-role* \`\`@UserName + @role\`\`
