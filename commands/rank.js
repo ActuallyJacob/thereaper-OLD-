@@ -1,5 +1,5 @@
 const pEmbed = require('./../embeds/eProfile.js');
-exports.run = (client, message, args, sql, Discord) =>{
+exports.run = (client, message, sql, Discord) =>{
     if(message.channel.name === 'the-reaper'){
         const member = message.guild.member(message.mentions.users.first());
 

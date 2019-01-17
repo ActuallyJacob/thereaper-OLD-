@@ -1,6 +1,6 @@
 const Discord = require('discord.js')
 
-module.exports.run = async (client, message, args) => {
+module.exports.run = async (message, args) => {
   if(!message.member.hasPermission("KICK_MEMBERS")) return message.reply("`The Reaper denies your futile attempt to alter history.`");
   let member = message.mentions.members.first() || message.guild.members.get(args[0]);
   if(!member)

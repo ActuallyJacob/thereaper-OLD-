@@ -1,5 +1,5 @@
 const eCEmbed = require('./../embeds/eCHelp.js');
-module.exports.run = (client, message, args, sql, Discord) =>{
+module.exports.run = (client, message, args, Discord) =>{
   if(message.channel.name === 'the-reaper'){
     var cAccept = {command:"accept", description:"Welcome channel only: Accepts the displayed rules."};
     var cHelp = {command:"help", description:"In this command you can see all the of the commands and you can see specific information about a command by doing ``-help rank``"};

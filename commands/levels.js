@@ -1,4 +1,4 @@
-exports.run = (client, message, args, sql, Discord) => {
+exports.run = (message, sql, Discord) => {
   if(message.channel.name === 'the-reaper'){
     sql.all(`SELECT roleName, level FROM levelRoles WHERE guildID = '${message.guild.id}' ORDER BY level ASC`).then(rRow =>{
       if(!rRow[0]){

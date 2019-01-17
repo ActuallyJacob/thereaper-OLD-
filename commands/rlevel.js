@@ -1,4 +1,4 @@
-exports.run = (client, message, args, sql) =>{
+exports.run = (message, args, sql) =>{
   if(!message.member.roles.some(r=>["Admin", "Lead Admin", "Co-Founder", "Founder"].includes(r.name)) ){
     return message.reply("The Reaper requests somebody of proper position, Guardian.")
   }else{

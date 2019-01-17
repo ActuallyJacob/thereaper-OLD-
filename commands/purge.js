@@ -1,6 +1,6 @@
 const Discord = require('discord.js')
 
-module.exports.run = async (client, message, args) => {
+module.exports.run = async (message, args) => {
     if(!message.member.hasPermission("MANAGE_MESSAGES")) return message.reply("`The Reaper denies your futile attempt to alter history.`");
     let messagecount = parseInt(args);
     message.channel.fetchMessages({limit: messagecount}).then(messages => message.channel.bulkDelete(messages));

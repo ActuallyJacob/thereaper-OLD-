@@ -1,6 +1,6 @@
 const Discord = require('discord.js')
 
-module.exports.run = async (client, message, args) => {
+module.exports.run = async (message) => {
     message.delete().catch(O_o=>{});
     let rMember = message.member.user.id
     if (message.channel.name === 'code-of-conduct') {

@@ -1,6 +1,6 @@
 const Discord = require('discord.js')
 
-module.exports.run = async (client, message, args) => {
+module.exports.run = async (message) => {
   if(!message.member.roles.some(r=>["Admin", "Lead Admin", "Co-Founder", "Founder"].includes(r.name)) ){
     return message.reply("The Reaper denies your request.")
   }

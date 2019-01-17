@@ -3,7 +3,7 @@ const fs = require("fs");
 const ms = require("ms");
 let warns = JSON.parse(fs.readFileSync("./warnings.json", "utf8"));
 
-module.exports.run = async (bot, message, args) => {
+module.exports.run = async (message, args) => {
   if(!message.member.roles.some(r=>["Admin", "Lead Admin", "Co-Founder", "Founder"].includes(r.name)) ){
     return message.reply("The Reaper ignores you.")
   }
@@ -33,7 +33,7 @@ module.exports.run = async (bot, message, args) => {
   .addField("Number of Warnings", warns[wUser.id].warns)
   .addField("Reason", reason);
 
-  let warnchannel = message.guild.channels.find(`name`, "warnings");
+  let warnchannel = message.guild.channels.find(`name`, "bot-admins");
   if(!warnchannel) return message.reply("Couldn't find channel");
 
   warnchannel.send(warnEmbed);
