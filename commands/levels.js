@@ -16,7 +16,7 @@ exports.run = (client, message, args, sql, Discord) => {
         .setDescription(`**Roles for ${message.guild.name}**`)
         .setColor(0x00AE86)
         .setThumbnail(message.guild.iconURL)
-        .addField(`${rlOut}`)
+        .addField("" `${rlOut}`, false)
       message.channel.send({embed: embed});
     });
   }
