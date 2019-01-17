@@ -87,7 +87,7 @@ client.on("message", message => {
       let command = message.content.split(' ')[0];
       command = command.slice(config.prefix.length);
   
-      let args = message.content.split(' ').slice(1).shift().toLowerCase();
+      let args = message.content.split(' ').slice(1);
   
       try {
         let commandFile = require(`./commands/${command}.js`);
@@ -120,7 +120,7 @@ client.on("message", message => {
       let command = message.content.split(' ')[0];
       command = command.slice(config.prefix.length);
   
-      let args = message.content.split(' ').slice(1).shift().toLowerCase();
+      let args = message.content.split(' ').slice(1);
   
       try {
         let commandFile = require(`./commands/${command}.js`);
