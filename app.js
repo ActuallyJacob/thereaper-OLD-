@@ -25,7 +25,8 @@ client.on("ready", () => {
   const activities_list = [
     "Created by ActuallyJacob", 
     "Discord.js",
-    "Use -help for help", 
+    "Use -help (command) for help", 
+    "Use - commandlist for commands",
     "Go Reapers!"
     ];
     setInterval(() => {
