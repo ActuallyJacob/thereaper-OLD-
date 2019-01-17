@@ -7,7 +7,7 @@ exports.run = (client, message, args, sql, Discord) => {
         var rlName = rRow.map(z=>z.roleName);
         var rlLevel = rRow.map(x=>x.level);
         var rlOutp = rlLevel.map(function(a,b){
-          return['L: ' + `**${a}**` + '  N: ' + `**${rlName[b]}**`];
+          return['Level: ' + `**${a}**` + '  Name: ' + `**${rlName[b]}**`];
         })
         var rlOut = rlOutp.join("\n");
       }
