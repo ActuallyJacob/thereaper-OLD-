@@ -17,17 +17,17 @@ const talkedRecently = new Set();
 const config = require('./config.json');
 const levelerCore = require('./functions/levelSystem');
 
+//open the databases
+sql.open(`./db/mainDB.sqlite.example`);
+var dbFile = './db/events.db';
+var db = new sqlite3.Database(dbFile);
+
 // initialize client variables
 const color = 0x6ad6ff;
 client.color = color;
 client.config = config;
 client.db = db;
 client.discord = Discord;
-
-//open the databases
-sql.open(`./db/mainDB.sqlite.example`);
-var dbFile = './db/events.db';
-var db = new sqlite3.Database(dbFile);
 
 //load events
 fs.readdir('./events/', (err, files) => {
