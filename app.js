@@ -27,7 +27,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static('public'));
 
 // initialize database
-var dbFile = './data/events.db';
+var dbFile = './db/events.db';
 var db = new sqlite3.Database(dbFile);
 
 // initialize client variables
