@@ -1,6 +1,6 @@
 module.exports.run = (client, msg, args) =>{
     if(!message.member.roles.some(r=>["Admin", "Lead Admin", "Co-Founder", "Founder"].includes(r.name)) ){
-        return message.reply("The Reaper don't like it.")
+        return msg.reply("The Reaper don't like it.")
       }
       else{
     if (args.length === 0) { // if no argument was given
