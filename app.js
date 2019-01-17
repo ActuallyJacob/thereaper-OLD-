@@ -5,8 +5,6 @@ const sql = require('sqlite');
 const express = require('express');
 const bodyParser = require('body-parser');
 const sqlite3 = require('sqlite3').verbose();
-const Enmap = require('enmap');
-const EnmapLevel = require('enmap-level');
 
 // time constants
 const WEEK = 604800000;
@@ -23,8 +21,6 @@ const levelerCore = require('./functions/levelSystem');
 
 //initilizations
 var app = new express();
-var prefixSrc = new EnmapLevel({name: "prefixes"});
-var prefixes = new Enmap({source: prefixSrc});
 
 //initialize app
 app.use(bodyParser.urlencoded({extended: true}));
@@ -32,7 +28,6 @@ app.use(express.static('public'));
 
 // initialize database
 var dbFile = './data/events.db';
-var exists = fs.existsSync(dbFile);
 var db = new sqlite3.Database(dbFile);
 
 // initialize client variables
@@ -52,8 +47,6 @@ sql.open(`./db/mainDB.sqlite.example`);
 fs.readdir('./events/', (err, files) => {
   if (err) return console.error(err);
   files.forEach(file => {
-    if (!file.endsWith(".js")) return;
-    const event = require(`./events/${file}`);
     let eventFunction = require(`./events/${file}`);
     let eventName = file.split('.')[0];
 

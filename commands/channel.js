@@ -1,5 +1,5 @@
 module.exports.run = (client, msg, args) =>{
-    if(!message.member.roles.some(r=>["Admin", "Lead Admin", "Co-Founder", "Founder"].includes(r.name)) ){
+    if(!msg.member.roles.some(r=>["Admin", "Lead Admin", "Co-Founder", "Founder"].includes(r.name)) ){
         return msg.reply("The Reaper don't like it.")
       }
       else{
@@ -7,7 +7,7 @@ module.exports.run = (client, msg, args) =>{
       var chName;
       client.db.get(`SELECT channel FROM calendar WHERE guild = ${msg.guild.id}`, (err, row) => {
         if (err) {
-          console.error("Error in channel.js selection: ", err.message);
+          console.error("Error in channel.js selection: ", err.msg);
         }
         if (!row) {
           var obj = {
@@ -16,7 +16,7 @@ module.exports.run = (client, msg, args) =>{
           var str = JSON.stringify(obj);
           client.db.run("INSERT INTO calendar (guild, events, notifs, channel) VALUES (?, ?, ?, ?)", [msg.guild.id, str, 1, "010010001110"], (err) => {
             if (err) {
-              console.error("Error in channel.js insertion: ", err.message);
+              console.error("Error in channel.js insertion: ", err.msg);
             }
           });
           chName = "any channel";
@@ -38,19 +38,19 @@ module.exports.run = (client, msg, args) =>{
       if (args[0].toLowerCase() === "reset") { // if the channel should reset
         client.db.get(`SELECT channel FROM calendar WHERE guild = ${msg.guild.id}`, (err, row) => {
           if (err) {
-            console.error(err.message);
+            console.error(err.msg);
           }
           else if (!row) {
             client.db.run("INSERT INTO calendar (guild, events, notifs, channel) VALUES (?, ?, ?, ?)", [msg.guild.id, str, 1, "010010001110"], (err) => {
               if (err) {
-                console.error("Error in channel.js insertion: ", err.message);
+                console.error("Error in channel.js insertion: ", err.msg);
               }
             });
           }
           else {
             client.db.run(`UPDATE calendar SET channel = ? WHERE guild = ?`, ["010010001110", msg.guild.id], (err) => {
               if (err) {
-                console.error("channel.js update error: ", err.message);
+                console.error("channel.js update error: ", err.msg);
               }
             });
           }
@@ -70,7 +70,7 @@ module.exports.run = (client, msg, args) =>{
           var id = channel.id;
           client.db.get(`SELECT channel FROM calendar WHERE guild = ${msg.guild.id}`, (err, row) => {
             if (err) {
-              command.error("channel.js selection error: ", err.message);
+              command.error("channel.js selection error: ", err.msg);
             }
             else if (!row) {
               var obj = {
@@ -79,7 +79,7 @@ module.exports.run = (client, msg, args) =>{
               var str = JSON.stringify(obj);
               client.db.run("INSERT INTO calendar (guild, events, notifs, channel) VALUES (?, ?, ?, ?)", [msg.guild.id, str, 1, id], (err) => {
                 if (err) {
-                  console.error("Error in channel.js insertion: ", err.message);
+                  console.error("Error in channel.js insertion: ", err.msg);
                 }
                 msg.channel.send(new client.discord.RichEmbed().setColor(client.color).setDescription(`✅ Notification channel has been set to \`${msg.guild.channels.get(id).name}\`!`));
               });
@@ -87,7 +87,7 @@ module.exports.run = (client, msg, args) =>{
             else {
               client.db.run(`UPDATE calendar SET channel = ? WHERE guild = ?`, [id, msg.guild.id], (err) => {
                 if (err) {
-                  console.error("channel.js update error: ", err.message);
+                  console.error("channel.js update error: ", err.msg);
                 }
                 msg.channel.send(new client.discord.RichEmbed().setColor(client.color).setDescription(`✅ Notification channel has been set to \`${msg.guild.channels.get(id).name}\`!`));
               });
