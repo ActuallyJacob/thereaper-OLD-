@@ -13,10 +13,9 @@ exports.run = (client, message, args, sql, Discord) => {
       }
       var embed = new Discord.RichEmbed()
         .setTitle("The Reaper Settings")
-        .setDescription(`**Roles for ${message.guild.name}**`)
         .setColor(0x00AE86)
         .setThumbnail(message.guild.iconURL)
-        .addField("", `${rlOut}`, false)
+        .addField(`**Roles for ${message.guild.name}**`, `${rlOut}`, false)
       message.channel.send({embed: embed});
     });
   }
