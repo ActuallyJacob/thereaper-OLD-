@@ -1,4 +1,4 @@
-exports.run = (message, sql) =>{
+exports.run = (client, message, args, sql) =>{
   if(!message.member.roles.some(r=>["Admin", "Lead Admin", "Co-Founder", "Founder"].includes(r.name)) ){
       return message.reply("The Reaper denies. He simply denies.");
     }else{

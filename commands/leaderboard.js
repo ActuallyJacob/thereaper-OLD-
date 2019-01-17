@@ -1,5 +1,5 @@
 const lEmbed = require('./../embeds/eLeaderboard.js');
-exports.run = (client, message, sql, Discord) => {
+exports.run = (client, message, args, sql, Discord) => {
     if(message.channel.name === 'the-reaper'){
         lEmbed.leaderboardEmbed(client, message, sql, Discord);
     }

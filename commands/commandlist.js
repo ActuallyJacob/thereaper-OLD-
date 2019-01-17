@@ -1,6 +1,6 @@
 const hEmbed = require('./../embeds/eHelp.js');
 
-module.exports.run = (client, message, Discord) =>{
+module.exports.run = (client, message, args, sql, Discord) =>{
   if(message.channel.name === 'the-reaper'){
     hEmbed.helpEmbed(client, message, Discord);
     }

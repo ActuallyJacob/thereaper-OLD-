@@ -3,7 +3,7 @@ const fs = require("fs");
 
 let warns = JSON.parse(fs.readFileSync("./warnings.json", "utf8"));
 
-module.exports.run = async (message, args) => {
+module.exports.run = async (bot, message, args) => {
 
   if(!message.member.hasPermission("MANAGE_MESSAGES")) return message.reply("The Reaper ignores you.");
   let wUser = message.guild.member(message.mentions.users.first()) || message.guild.members.get(args[0])
