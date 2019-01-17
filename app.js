@@ -22,8 +22,18 @@ fs.readdir('./events/', (err, files) => {
 //activity and console
 client.on("ready", () => {
   console.log(client.user.username + " is online.")
-  client.user.setActivity("Created by ActuallyJacob")
-});
+  const activities_list = [
+    "Created by ActuallyJacob", 
+    "Discord.js",
+    "Use -help for help", 
+    "Go Reapers!"
+    ];
+    setInterval(() => {
+      const index = Math.floor(Math.random() * (activities_list.length - 1) + 1); // generates a random number between 1 and the length of the activities array list (in this case 5).
+      client.user.setActivity(activities_list[index]); // sets bot's activities to one of the phrases in the arraylist.
+    }, 10000); // Runs this every 10 seconds.
+  });
+
 
 client.on("message", message => {
   if (message.author.bot) return;
