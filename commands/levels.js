@@ -7,7 +7,7 @@ exports.run = (client, message, args, sql, Discord) => {
         var rlName = rRow.map(z=>z.roleName);
         var rlLevel = rRow.map(x=>x.level);
         var rlOutp = rlLevel.map(function(a,b){
-          return['Level: ' + `**${a}**` + '  Name: ' + `**${rlName[b]}**`];
+          return['Level: ' + `**${a}**` + '  Role: ' + `**${rlName[b]}**`];
         })
         var rlOut = rlOutp.join("\n");
       }
@@ -16,7 +16,7 @@ exports.run = (client, message, args, sql, Discord) => {
         .setDescription(`**Roles for ${message.guild.name}**`)
         .setColor(0x00AE86)
         .setThumbnail(message.guild.iconURL)
-        .addField("Roles", `${rlOut}`, false)
+        .addField(`${rlOut}`, false)
       message.channel.send({embed: embed});
     });
   }
