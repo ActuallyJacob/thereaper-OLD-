@@ -51,6 +51,9 @@ module.exports.run = (client, message, args, sql, Discord) =>{
     }else if(mHelp == "roleall"){
       eCEmbed.spHEmbed(client, message, Discord, cRoleall)  
     }
+    else{
+        message.reply("The Reaper requests a command that you need help with.")
+    }
   }
   else{
     var channel = message.guild.channels.find("name", "the-reaper")
