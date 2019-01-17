@@ -37,8 +37,6 @@ client.color = color;
 client.config = config;
 client.db = db;
 client.discord = Discord;
-client.prefix = config.prefix;
-client.prefixes = prefixes;
 
 //open the leveling db
 sql.open(`./db/mainDB.sqlite.example`);
