@@ -3,6 +3,11 @@ const Discord = require('discord.js');
 const fs = require('fs');
 const sql = require('sqlite');
 const sqlite3 = require('sqlite3').verbose();
+//other constants
+const client = new Discord.Client();
+const talkedRecently = new Set();
+const config = require('./config.json');
+const levelerCore = require('./functions/levelSystem');
 
 // time constants
 const WEEK = 604800000;
@@ -10,12 +15,6 @@ const DAY = 86400000;
 const HOUR = 3600000;
 const MIN = 60000;
 const TIMEOUT = 15000;
-
-//other constants
-const client = new Discord.Client();
-const talkedRecently = new Set();
-const config = require('./config.json');
-const levelerCore = require('./functions/levelSystem');
 
 //open the databases
 sql.open(`./db/mainDB.sqlite.example`);

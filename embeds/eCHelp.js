@@ -1,4 +1,4 @@
-module.exports.spHEmbed = function(bot, message, Discord, spCmd) {
+module.exports.spHEmbed = function(message, Discord, spCmd) {
     var embed = new Discord.RichEmbed()
       .setTitle(spCmd.command)
       .setDescription(spCmd.description)
