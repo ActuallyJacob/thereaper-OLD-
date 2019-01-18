@@ -194,6 +194,7 @@ module.exports.run = (client, msg, args) =>{
           MAYBE: "❓",
           NO: "❌"
         };
+        const grim = client.emojis.find(emoji => emoji.name === "grim");
         const reactCollector = new client.discord.ReactionCollector(m,  (r, user) => Object.values(emojis).includes(r.emoji.name), {maxUsers: msg.guild.memberCount});
         reactCollector.on("collect", (r, coll) => {
             switch(r.emoji.name) {
@@ -254,7 +255,7 @@ module.exports.run = (client, msg, args) =>{
                       if (cantStr === "") {
                         cantStr = "None";
                       }
-                      m.edit(new client.discord.RichEmbed().setColor(client.color).setTitle("__**REAPER CLAN EVENT**__").addField("__Event__", `${event.name}`).addField("__Date__", `${d.toDateString()}`).addField("__Time__", `${time}`).addField("__Description__", `${event.desc}`).addField(`${emojis.GOING} Attending`, `${attStr}`).addField(`${emojis.MAYBE} Might go`, `${mayStr}`).addField(`${emojis.NO} Can't go`, `${cantStr}`).setDescription(':8663: | Welcome to the madhouse, Guardian! | :8663:')).then(msg => {
+                      m.edit(new client.discord.RichEmbed().setColor(client.color).setTitle("__**REAPER CLAN EVENT**__").addField("__Event__", `${event.name}`).addField("__Date__", `${d.toDateString()}`).addField("__Time__", `${time}`).addField("__Description__", `${event.desc}`).addField(`${emojis.GOING} Attending`, `${attStr}`).addField(`${emojis.MAYBE} Might go`, `${mayStr}`).addField(`${emojis.NO} Can't go`, `${cantStr}`).setDescription(`${grim} | Welcome to the madhouse, Guardian! | ${grim}`)).then(msg => {
                       }).catch(console.error);
                     });
                   }
@@ -316,7 +317,7 @@ module.exports.run = (client, msg, args) =>{
                       if (cantStr === "") {
                         cantStr = "None";
                       }
-                      m.edit(new client.discord.RichEmbed().setColor(client.color).setTitle("__**REAPER CLAN EVENT**__").addField("__Event__", `${event.name}`).addField("__Date__", `${d.toDateString()}`).addField("__Time__", `${time}`).addField("__Description__", `${event.desc}`).addField(`${emojis.GOING} Attending`, `${attStr}`).addField(`${emojis.MAYBE} Might go`, `${mayStr}`).addField(`${emojis.NO} Can't go`, `${cantStr}`).setDescription(':8663: | Welcome to the madhouse, Guardian! | :8663:')).then(msg => {
+                      m.edit(new client.discord.RichEmbed().setColor(client.color).setTitle("__**REAPER CLAN EVENT**__").addField("__Event__", `${event.name}`).addField("__Date__", `${d.toDateString()}`).addField("__Time__", `${time}`).addField("__Description__", `${event.desc}`).addField(`${emojis.GOING} Attending`, `${attStr}`).addField(`${emojis.MAYBE} Might go`, `${mayStr}`).addField(`${emojis.NO} Can't go`, `${cantStr}`).setDescription(`${grim} | Welcome to the madhouse, Guardian! | ${grim}`)).then(msg => {
                       }).catch(console.error);
                     });
                   }
@@ -375,7 +376,7 @@ module.exports.run = (client, msg, args) =>{
                         var usr = client.users.get(cant[i]);
                         cantStr += `${msg.guild.member(usr).displayName}, `;
                       }
-                      m.edit(new client.discord.RichEmbed().setColor(client.color).setTitle("__**REAPER CLAN EVENT**__").addField("__Event__", `${event.name}`).addField("__Date__", `${d.toDateString()}`).addField("__Time__", `${time}`).addField("__Description__", `${event.desc}`).addField(`${emojis.GOING} Attending`, `${attStr}`).addField(`${emojis.MAYBE} Might go`, `${mayStr}`).addField(`${emojis.NO} Can't go`, `${cantStr}`).setDescription(':8663: | Welcome to the madhouse, Guardian! | :8663:')).then(msg => {
+                      m.edit(new client.discord.RichEmbed().setColor(client.color).setTitle("__**REAPER CLAN EVENT**__").addField("__Event__", `${event.name}`).addField("__Date__", `${d.toDateString()}`).addField("__Time__", `${time}`).addField("__Description__", `${event.desc}`).addField(`${emojis.GOING} Attending`, `${attStr}`).addField(`${emojis.MAYBE} Might go`, `${mayStr}`).addField(`${emojis.NO} Can't go`, `${cantStr}`).setDescription(`${grim} | Welcome to the madhouse, Guardian! | ${grim}`)).then(msg => {
                       }).catch(console.error);
                     });
                   }
