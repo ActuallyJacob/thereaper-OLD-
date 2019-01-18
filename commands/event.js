@@ -274,7 +274,7 @@ module.exports.run = (client, msg, args) =>{
                       msg.reply("Event deleted")
                       .then(msg => {
                         msg.delete(10000)
-                      });
+                      })
                     }
                 });
   
