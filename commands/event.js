@@ -139,7 +139,7 @@ module.exports.run = (client, msg, args) =>{
         msg.channel.send(new client.discord.RichEmbed().setColor(client.color).setTitle("📅 Event Creation Wizard").setDescription("Event creation has timed out"));
       }
       else { // if all the parameters have been given
-        msg.guild.channels.find("name", "events-test").send(new client.discord.RichEmbed().setColor(client.color).setTitle("**REAPER CLAN EVENT**").addField("__**Event:**__", `${event.name}`).addField("__**Date:**__", `${d.toDateString()}`).addField("__**Time:**__", `${time}`).addField("__**Description:**__", `${event.desc}`).setDescription(`:8663:\`Welcome to the madhouse, Guardian!\`:8663:`)).then(m => {
+        msg.guild.channels.find("name", "events-test").send(new client.discord.RichEmbed().setColor(client.color).setTitle("__**REAPER CLAN EVENT**__").addField("__Event:__", `${event.name}`).addField("__Date:__", `${d.toDateString()}`).addField("__Time:__", `${time}`).addField("__Description:__", `${event.desc}`).setDescription(':8663: | Welcome to the madhouse, Guardian! | :8663:')).then(m => {
           event.id = m.id;
           event.fullDate = d; // the full date object
           event.fullEndDate = endDate;
