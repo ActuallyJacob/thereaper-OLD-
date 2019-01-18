@@ -2,7 +2,7 @@ const eCEmbed = require('./../embeds/eCHelp.js');
 module.exports.run = (client, message, args, sql, Discord) =>{
   if(message.channel.name === 'the-reaper'){
     var cAccept = {command:"accept", description:"Welcome channel only: Accepts the displayed rules."};
-    var cHelp = {command:"help", description:"In this command you can see all the of the commands and you can see specific information about a command by doing ``-help rank``"};
+    var cHelp = {command:"help", description:"In this command you can see specific information about a command by doing ``-help rank``"};
     var cRank = {command:"rank", description:"With rank you can see what your rank in the leaderboards are. You can also see other peoples rank with ``-rank @UserName``"};
     var cLevels = {command: "levels", description: "Displays levels."}
     var cLeaderboard = {command: "leaderboard", description:"View the leaderboards for your current server and see who is top!"}
@@ -17,6 +17,7 @@ module.exports.run = (client, message, args, sql, Discord) =>{
     var cWarn = {command: "warn", description:"Admin only: warns a user."}
     var cWarnlevel = {command: "warnlevel", description:"Admin only: displays warning level of a user."}
     var cList = {command: "list", description:"Admin only: lists all users in a role."}
+    var cEvent = {command: "event", description:"Guides a member through creating an event."}
     let mHelp = args[0];
     if (mHelp == "leaderboard"){
       eCEmbed.spHEmbed(client, message, Discord, cLeaderboard)
@@ -50,6 +51,8 @@ module.exports.run = (client, message, args, sql, Discord) =>{
       eCEmbed.spHEmbed(client, message, Discord, cList)
     }else if(mHelp == "roleall"){
       eCEmbed.spHEmbed(client, message, Discord, cRoleall)  
+    }else if(mHelp == "event"){
+      eCEmbed.spHEmbed(client, message, Discord, cEvent)
     }
     else{
         message.reply("The Reaper requests a command that you need help with.")
