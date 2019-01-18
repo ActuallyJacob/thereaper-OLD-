@@ -139,6 +139,7 @@ module.exports.run = (client, msg, args) =>{
         msg.channel.send(new client.discord.RichEmbed().setColor(client.color).setTitle("📅 Event Creation Wizard").setDescription("Event creation has timed out"));
       }
       else { // if all the parameters have been given
+        const grim = client.emojis.find(emoji => emoji.name === "grim");
         msg.guild.channels.find("name", "events-test").send(new client.discord.RichEmbed().setColor(client.color).setTitle("__**REAPER CLAN EVENT**__").addField("__Event:__", `${event.name}`).addField("__Date:__", `${d.toDateString()}`).addField("__Time:__", `${time}`).addField("__Description:__", `${event.desc}`).setDescription(`${grim} | Welcome to the madhouse, Guardian! | ${grim}`)).then(m => {
           event.id = m.id;
           event.fullDate = d; // the full date object
@@ -194,7 +195,6 @@ module.exports.run = (client, msg, args) =>{
           MAYBE: "❓",
           NO: "❌"
         };
-        const grim = client.emojis.find(emoji => emoji.name === "grim");
         const reactCollector = new client.discord.ReactionCollector(m,  (r, user) => Object.values(emojis).includes(r.emoji.name), {maxUsers: msg.guild.memberCount});
         reactCollector.on("collect", (r, coll) => {
             switch(r.emoji.name) {
