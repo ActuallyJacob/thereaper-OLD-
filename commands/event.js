@@ -38,10 +38,10 @@ module.exports.run = (client, msg, args) =>{
             d.setYear(split[2]);
             event.date = split;
             console.log("Date: ", d.getMonth(), d.getDay(), d.getFullYear());
-            msg.channel.send(new client.discord.RichEmbed().setColor(client.color).setTitle("📅 Event Creation Wizard").addField("Event", `${event.name}`).addField("Date", `${d.toDateString()}`).setDescription(`\`What time is the event taking place? (Use HH:MM AM/PM format)\``).setFooter("Type \"exit\" to leave the creation wizard at any time"));
           }
         }
         else if (event.time === undefined && event.date !== undefined && event.name !== undefined) { // if the time hasn't been defined yet
+        msg.channel.send(new client.discord.RichEmbed().setColor(client.color).setTitle("📅 Event Creation Wizard").addField("Event", `${event.name}`).addField("Date", `${d.toDateString()}`).setDescription(`\`What time is the event taking place? (Use HH:MM AM/PM format)\``).setFooter("Type \"exit\" to leave the creation wizard at any time"));
           time = m.content;
           var split = m.content.split(':');
           split[0] = parseInt(split[0]);
