@@ -1,4 +1,6 @@
 module.exports.run = (client, msg, args) =>{
+  if(!msg.channel.name === "The-Reaper") return msg.reply(`The Reaper denies acces to this command in this place.`);
+  else{
     client.db.get(`SELECT events FROM calendar WHERE guild = ${msg.guild.id}`, (err, row) => {
       if (err) { // if an error occured
         console.error(err);
@@ -58,4 +60,5 @@ module.exports.run = (client, msg, args) =>{
   }
   module.exports.help = {
     name: "eventlist"
+  }
 }

@@ -1,4 +1,6 @@
 module.exports.run = (client, msg, args) =>{
+  if(!msg.channel.name === "The-Reaper") return msg.reply(`The Reaper directs you to his channel: ${533737764605263872}`);
+  else{
     var event = new Object(); // name, date, time, desc
     var forceEnd = false; // determines if the collector was forced to forceEnd
     var d = new Date();
@@ -389,3 +391,4 @@ module.exports.run = (client, msg, args) =>{
       }
     });
   }
+}
