@@ -268,11 +268,14 @@ module.exports.run = (client, msg, args) =>{
               case emojis.SKULL: //if the skull is reacted
                 client.db.get(`SELECT events FROM calendar WHERE guild = ${msg.guild.id}`, (err, row) => {
                   var events = JSON.parse(row.events);
-                  var toDel = events.list.filter(e => { //get the event to update
+                  let toDel = events.list.filter(e);
                     if(e.id === event.id) {
                       toDel.delete();
+                      msg.reply("Event deleted")
+                      .then(msg => {
+                        msg.delete(10000)
+                      });
                     }
-                  })
                 });
   
               case emojis.MAYBE: // if the question mark is clicked
