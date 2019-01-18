@@ -292,10 +292,10 @@ module.exports.run = (client, msg, args) =>{
                       else {
                         msg.channel.fetchMessage(toDel).then(m => {
                           m.delete();
-                        });
-                        msg.channel.send(new client.discord.RichEmbed().setColor(client.color).setDescription(`🗑 Event \`${toDel}: ${toDelFull.name}\` has been deleted!`))
-                        .then(msg => {
-                          msg.delete(10000)
+                          return msg.reply("Event deleted")
+                          .then(msg =>{
+                            msg.delete(10000)
+                          })
                         });
                       }
                     });
