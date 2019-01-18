@@ -138,7 +138,7 @@ module.exports.run = (client, msg, args) =>{
         msg.channel.send(new client.discord.RichEmbed().setColor(client.color).setTitle("📅 Event Creation Wizard").setDescription("Event creation has timed out"));
       }
       else { // if all the parameters have been given
-        let channel = msg.guild.channel.find("name", "events");
+        let channel = msg.guild.channels.find("name", "events");
         channel.send(new client.discord.RichEmbed().setColor(client.color).setTitle("📅 Event Creation Wizard").addField("Event", `${event.name}`).addField("Date", `${d.toDateString()}`).addField("Time", `${time}`).addField("Description", `${event.desc}`).setDescription(`✅ \`Event has been created!\``)).then(m => {
           event.id = m.id;
           event.fullDate = d; // the full date object
@@ -255,7 +255,6 @@ module.exports.run = (client, msg, args) =>{
                         cantStr = "None";
                       }
                       m.edit(new client.discord.RichEmbed().setColor(client.color).setTitle("📅 Event Creation Wizard").addField("Event", `${event.name}`).addField("Date", `${d.toDateString()}`).addField("Time", `${time}`).addField("Description", `${event.desc}`).addField(`${emojis.GOING} Attending`, `${attStr}`).addField(`${emojis.MAYBE} Might go`, `${mayStr}`).addField(`${emojis.NO} Can't go`, `${cantStr}`).setDescription(`✅ \`Event has been created!\``)).then(msg => {
-                        msg.channel.send(new client.discord.RichEmbed().setColor(client.color).setTitle(`📅 Event: ${event.name}`).setDescription(`${emojis.GOING} \`${name}\` is going to \`${get[0].name}\`!`));
                       }).catch(console.error);
                     });
                   }
@@ -318,7 +317,6 @@ module.exports.run = (client, msg, args) =>{
                         cantStr = "None";
                       }
                       m.edit(new client.discord.RichEmbed().setColor(client.color).setTitle("📅 Event Creation Wizard").addField("Event", `${event.name}`).addField("Date", `${d.toDateString()}`).addField("Time", `${time}`).addField("Description", `${event.desc}`).addField(`${emojis.GOING} Attending`, `${attStr}`).addField(`${emojis.MAYBE} Might go`, `${mayStr}`).addField(`${emojis.NO} Can't go`, `${cantStr}`).setDescription(`✅ \`Event has been created!\``)).then(m => {
-                        msg.channel.send(new client.discord.RichEmbed().setColor(client.color).setTitle(`📅 Event: ${event.name}`).setDescription(`${emojis.MAYBE} \`${name}\` might go to \`${get[0].name}\`!`));
                       }).catch(console.error);
                     });
                   }
@@ -378,7 +376,6 @@ module.exports.run = (client, msg, args) =>{
                         cantStr += `${msg.guild.member(usr).displayName}, `;
                       }
                       m.edit(new client.discord.RichEmbed().setColor(client.color).setTitle("📅 Event Creation Wizard").addField("Event", `${event.name}`).addField("Date", `${d.toDateString()}`).addField("Time", `${time}`).addField("Description", `${event.desc}`).addField(`${emojis.GOING} Attending`, `${attStr}`).addField(`${emojis.MAYBE} Might go`, `${mayStr}`).addField(`${emojis.NO} Can't go`, `${cantStr}`).setDescription(`✅ \`Event has been created!\``)).then(m => {
-                        msg.channel.send(new client.discord.RichEmbed().setColor(client.color).setTitle(`📅 Event: ${event.name}`).setDescription(`${emojis.NO} \`${name}\` cannot go to \`${get[0].name}\`!`));
                       }).catch(console.error);
                     });
                   }
