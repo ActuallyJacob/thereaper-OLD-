@@ -377,8 +377,9 @@ module.exports.run = (client, msg, args) =>{
                         var usr = client.users.get(cant[i]);
                         cantStr += `${msg.guild.member(usr).displayName}, `;
                       }
+                      let channel = msg.guild.channels.find("name", "events");
                       m.edit(new client.discord.RichEmbed().setColor(client.color).setTitle("📅 Event Creation Wizard").addField("Event", `${event.name}`).addField("Date", `${d.toDateString()}`).addField("Time", `${time}`).addField("Description", `${event.desc}`).addField(`${emojis.GOING} Attending`, `${attStr}`).addField(`${emojis.MAYBE} Might go`, `${mayStr}`).addField(`${emojis.NO} Can't go`, `${cantStr}`).setDescription(`✅ \`Event has been created!\``)).then(m => {
-                        msg.channel.send(new client.discord.RichEmbed().setColor(client.color).setTitle(`📅 Event: ${event.name}`).setDescription(`${emojis.NO} \`${name}\` cannot go to \`${get[0].name}\`!`));
+                        channel.send(new client.discord.RichEmbed().setColor(client.color).setTitle(`📅 Event: ${event.name}`).setDescription(`${emojis.NO} \`${name}\` cannot go to \`${get[0].name}\`!`));
                       }).catch(console.error);
                     });
                   }

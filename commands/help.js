@@ -25,7 +25,7 @@ module.exports.run = (client, message, args, sql, Discord) =>{
     }else if(mHelp == "rank"){
       eCEmbed.spHEmbed(client, message, Discord, cRank)
     }else if(mHelp == "accept"){
-      eCEmbed.spHEmbed(clientent, message, Discord, cAccept)
+      eCEmbed.spHEmbed(client, message, Discord, cAccept)
     }else if(mHelp == "kick"){
       eCEmbed.spHEmbed(client, message, Discord, cKick)
     }else if(mHelp == "ban"){
