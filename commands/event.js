@@ -142,7 +142,7 @@ module.exports.run = (client, msg, args) =>{
       }
       else { // if all the parameters have been given
         const grim = client.emojis.find(emoji => emoji.name === "grim");
-        msg.guild.channels.find("name", "events-test").send(new client.discord.RichEmbed().setColor(client.color).setTitle("__**REAPER CLAN EVENT**__").addField("__Event:__", `${event.name}`).addField("__Date:__", `${d.toDateString()}`).addField("__Time:__", `${time}`).addField("__Description:__", `${event.desc}`).setDescription(`${grim} | Welcome to the madhouse, Guardian! | ${grim}`)).then(m => {
+        msg.guild.channels.find("name", "events-test").send(new client.discord.RichEmbed().setColor(client.color).setTitle("__**REAPER CLAN EVENT**__").addField("__Event:__", `${event.name}`).addField("__Date:__", `${d.toDateString()}`).addField("__Time:__", `${time}`).addField("__Description:__", `${event.desc}`).setDescription(`${grim} | Welcome to the madhouse, Guardian! | to delete, react with 💀`)).then(m => {
           event.id = m.id;
           event.fullDate = d; // the full date object
           event.fullEndDate = endDate;
@@ -195,7 +195,8 @@ module.exports.run = (client, msg, args) =>{
         const emojis = { // stores emojis
           GOING: "✅",
           MAYBE: "❓",
-          NO: "❌"
+          NO: "❌",
+          SKULL: "💀"
         };
         const reactCollector = new client.discord.ReactionCollector(m,  (r, user) => Object.values(emojis).includes(r.emoji.name), {maxUsers: msg.guild.memberCount});
         reactCollector.on("collect", (r, coll) => {
@@ -257,12 +258,22 @@ module.exports.run = (client, msg, args) =>{
                       if (cantStr === "") {
                         cantStr = "None";
                       }
-                      m.edit(new client.discord.RichEmbed().setColor(client.color).setTitle("__**REAPER CLAN EVENT**__").addField("__Event__", `${event.name}`).addField("__Date__", `${d.toDateString()}`).addField("__Time__", `${time}`).addField("__Description__", `${event.desc}`).addField(`${emojis.GOING} Attending`, `${attStr}`).addField(`${emojis.MAYBE} Might go`, `${mayStr}`).addField(`${emojis.NO} Can't go`, `${cantStr}`).setDescription(`${grim} | Welcome to the madhouse, Guardian! | ${grim}`)).then(msg => {
+                      m.edit(new client.discord.RichEmbed().setColor(client.color).setTitle("__**REAPER CLAN EVENT**__").addField("__Event__", `${event.name}`).addField("__Date__", `${d.toDateString()}`).addField("__Time__", `${time}`).addField("__Description__", `${event.desc}`).addField(`${emojis.GOING} Attending`, `${attStr}`).addField(`${emojis.MAYBE} Might go`, `${mayStr}`).addField(`${emojis.NO} Can't go`, `${cantStr}`).setDescription(`${grim} | Welcome to the madhouse, Guardian! | to delete, react with 💀`)).then(msg => {
                       }).catch(console.error);
                     });
                   }
                 });
               break;
+
+              case emojis.SKULL: //if the skull is reacted
+                client.db.get(`SELECT events FROM calendar WHERE guild = ${msg.guild.id}`, (err, row) => {
+                  var events = JSON.parse(row.events);
+                  var toDel = events.list.filter(e => { //get the event to update
+                    if(e.id === event.id) {
+                      toDel.delete();
+                    }
+                  })
+                });
   
               case emojis.MAYBE: // if the question mark is clicked
                 client.db.get(`SELECT events FROM calendar WHERE guild = ${msg.guild.id}`, (err, row) => {
@@ -319,7 +330,7 @@ module.exports.run = (client, msg, args) =>{
                       if (cantStr === "") {
                         cantStr = "None";
                       }
-                      m.edit(new client.discord.RichEmbed().setColor(client.color).setTitle("__**REAPER CLAN EVENT**__").addField("__Event__", `${event.name}`).addField("__Date__", `${d.toDateString()}`).addField("__Time__", `${time}`).addField("__Description__", `${event.desc}`).addField(`${emojis.GOING} Attending`, `${attStr}`).addField(`${emojis.MAYBE} Might go`, `${mayStr}`).addField(`${emojis.NO} Can't go`, `${cantStr}`).setDescription(`${grim} | Welcome to the madhouse, Guardian! | ${grim}`)).then(msg => {
+                      m.edit(new client.discord.RichEmbed().setColor(client.color).setTitle("__**REAPER CLAN EVENT**__").addField("__Event__", `${event.name}`).addField("__Date__", `${d.toDateString()}`).addField("__Time__", `${time}`).addField("__Description__", `${event.desc}`).addField(`${emojis.GOING} Attending`, `${attStr}`).addField(`${emojis.MAYBE} Might go`, `${mayStr}`).addField(`${emojis.NO} Can't go`, `${cantStr}`).setDescription(`${grim} | Welcome to the madhouse, Guardian! | to delete, react with 💀`)).then(msg => {
                       }).catch(console.error);
                     });
                   }
@@ -378,7 +389,7 @@ module.exports.run = (client, msg, args) =>{
                         var usr = client.users.get(cant[i]);
                         cantStr += `${msg.guild.member(usr).displayName}, `;
                       }
-                      m.edit(new client.discord.RichEmbed().setColor(client.color).setTitle("__**REAPER CLAN EVENT**__").addField("__Event__", `${event.name}`).addField("__Date__", `${d.toDateString()}`).addField("__Time__", `${time}`).addField("__Description__", `${event.desc}`).addField(`${emojis.GOING} Attending`, `${attStr}`).addField(`${emojis.MAYBE} Might go`, `${mayStr}`).addField(`${emojis.NO} Can't go`, `${cantStr}`).setDescription(`${grim} | Welcome to the madhouse, Guardian! | ${grim}`)).then(msg => {
+                      m.edit(new client.discord.RichEmbed().setColor(client.color).setTitle("__**REAPER CLAN EVENT**__").addField("__Event__", `${event.name}`).addField("__Date__", `${d.toDateString()}`).addField("__Time__", `${time}`).addField("__Description__", `${event.desc}`).addField(`${emojis.GOING} Attending`, `${attStr}`).addField(`${emojis.MAYBE} Might go`, `${mayStr}`).addField(`${emojis.NO} Can't go`, `${cantStr}`).setDescription(`${grim} | Welcome to the madhouse, Guardian! | to delete, react with 💀`)).then(msg => {
                       }).catch(console.error);
                     });
                   }
