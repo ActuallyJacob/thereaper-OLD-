@@ -88,7 +88,7 @@ module.exports.run = (client, msg, args) =>{
           }
         }
         else if (event.endTime === undefined && event.endDate !== undefined && event.time !== undefined && event.date !== undefined && event.name !== undefined) { // the time the event will end
-          time = m.content;
+          endTime = m.content;
           var split = m.content.split(':');
           split[0] = parseInt(split[0]);
           var moreSplit = split[1].split(' ');
@@ -113,7 +113,7 @@ module.exports.run = (client, msg, args) =>{
             event.endTime = split;
             endTime = m.content;
             console.log("Time: ", event.time);
-            msg.channel.send(new client.discord.RichEmbed().setColor(client.color).setTitle("📅 Event Creation Wizard").addField("Event", `${event.name}`).addField("Date", `${d.toDateString()}`).addField("Time", `${time}`).setDescription(`\`What is the description of this event?\``).addField("End Time", `${endDate.toDateString()}, ${time}`).setFooter("Type \"exit\" to leave the creation wizard at any time"));
+            msg.channel.send(new client.discord.RichEmbed().setColor(client.color).setTitle("📅 Event Creation Wizard").addField("Event", `${event.name}`).addField("Date", `${d.toDateString()}`).addField("Time", `${time}`).setDescription(`\`What is the description of this event?\``).addField("End Time", `${endDate.toDateString()}, ${endTime}`).setFooter("Type \"exit\" to leave the creation wizard at any time"));
           }
         }
         else if (event.desc === undefined && event.endTime !== undefined && event.endDate !== undefined && event.time !== undefined && event.date !== undefined && event.name !== undefined) { // if the description hasn't been defined yet
@@ -122,7 +122,7 @@ module.exports.run = (client, msg, args) =>{
           event.desc = desc;
           console.log("event description: ", event.desc);
           // FIXME: get rid of unexpected token error
-          msg.channel.send(new client.discord.RichEmbed().setColor(client.color).setTitle("📅 Event Creation Wizard").addField("Event", `${event.name}`).addField("Date", `${d.toDateString()}`).addField("Time", `${time}`).addField("End Time", `${endDate.toDateString()}, ${time}`).addField("Description", `${desc}`).setDescription(`\`Is this correct? Type YES to confirm.\``).setFooter("Type \"exit\" to leave the creation wizard at any time"));
+          msg.channel.send(new client.discord.RichEmbed().setColor(client.color).setTitle("📅 Event Creation Wizard").addField("Event", `${event.name}`).addField("Date", `${d.toDateString()}`).addField("Time", `${time}`).addField("End Time", `${endDate.toDateString()}, ${endTime}`).addField("Description", `${desc}`).setDescription(`\`Is this correct? Type YES to confirm.\``).setFooter("Type \"exit\" to leave the creation wizard at any time"));
         }
         else if (event.desc !== undefined && m.content.toLowerCase() === "yes") {
           collector.stop();
@@ -139,7 +139,7 @@ module.exports.run = (client, msg, args) =>{
         msg.channel.send(new client.discord.RichEmbed().setColor(client.color).setTitle("📅 Event Creation Wizard").setDescription("Event creation has timed out"));
       }
       else { // if all the parameters have been given
-        msg.guild.channels.find("name", "events-test").send(new client.discord.RichEmbed().setColor(client.color).setTitle("__**REAPER CLAN EVENT**__").addField("__Event:__", `${event.name}`).addField("__Date:__", `${d.toDateString()}`).addField("__Time:__", `${time}`).addField("__Description:__", `${event.desc}`).setDescription(':8663: | Welcome to the madhouse, Guardian! | :8663:')).then(m => {
+        msg.guild.channels.find("name", "events-test").send(new client.discord.RichEmbed().setColor(client.color).setTitle("__**REAPER CLAN EVENT**__").addField("__Event:__", `${event.name}`).addField("__Date:__", `${d.toDateString()}`).addField("__Time:__", `${time}`).addField("__Description:__", `${event.desc}`).setDescription(`${grim} | Welcome to the madhouse, Guardian! | ${grim}`)).then(m => {
           event.id = m.id;
           event.fullDate = d; // the full date object
           event.fullEndDate = endDate;
