@@ -25,8 +25,8 @@ module.exports.run = (client, msg, args) =>{
         else if (event.date === undefined && event.name !== undefined) {
           //if the event has not been given a date
           var split = m.content.split('/');
-          split[0] = parseInt(split[0]); //month
-          split[1] = parseInt(split[1]); //day
+          split[0] = parseInt(split[0]); //day
+          split[1] = parseInt(split[1]); //month
           split[2] = parseInt(split[2]); //year
           var currDate = new Date();
           // check if date has already passed
@@ -34,7 +34,7 @@ module.exports.run = (client, msg, args) =>{
             msg.channel.send(new client.discord.RichEmbed().setColor(client.color).setTitle("📅 Event Creation Wizard").setDescription("❗️ That date has already passed! Please enter a different date.").setFooter("Type \"exit\" to leave the creation wizard at any time"));
           }
           else {
-            d.setDay(split[0] - 1, split[1]);
+            d.setMonth(split[1] - 2, split[2]);
             d.setYear(split[2]);
             event.date = split;
             console.log("Date: ", d.getDay(), d.getMonth(), d.getFullYear());
@@ -68,8 +68,8 @@ module.exports.run = (client, msg, args) =>{
         }
         else if (event.endDate === undefined && event.time !== undefined && event.date !== undefined && event.name !== undefined) { // duration of the event
           var split = m.content.split('/');
-          split[0] = parseInt(split[0]); //month
-          split[1] = parseInt(split[1]); //day
+          split[0] = parseInt(split[0]); //day
+          split[1] = parseInt(split[1]); //month
           split[2] = parseInt(split[2]); //year
           var currDate = new Date();
           // check if date has already passed
@@ -80,7 +80,7 @@ module.exports.run = (client, msg, args) =>{
             msg.channel.send(new client.discord.RichEmbed().setColor(client.color).setTitle("📅 Event Creation Wizard").setDescription("❗️ That date is earlier than the event's start date! Please enter a different date.").setFooter("Type \"exit\" to leave the creation wizard at any time"));
           }
           else {
-            endDate.setDay(split[0] - 1, split[1]);
+            endDate.setMonth(split[1] - 2, split[2]);
             endDate.setYear(split[2]);
             event.endDate = split;
             console.log("Date: ", d.getDay(), d.getMonth(), d.getFullYear());
