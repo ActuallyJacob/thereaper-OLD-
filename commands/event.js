@@ -335,13 +335,13 @@ module.exports.run = (client, msg, args) =>{
               break;
 
               case emojis.SKULL: // if the skull is clicked
+              var toDel = msg.id;
+              toDel.delete();
+              msg.channel.send("Event deleted...")
+              .then(msg =>{
+                msg.delete(10000)
+              })
                 client.db.get(`SELECT events FROM calendar WHERE guild = ${msg.guild.id}`, (err, row) => {
-                  const toDel = msg.id;
-                  toDel.delete();
-                  msg.channel.send("Event deleted...")
-                  .then(msg =>{
-                    msg.delete(10000)
-                  })
                   var json = JSON.parse(row.events);
                   json.list = json.list.filter((event) => { // filter out the current array of events to exclude the array that will be deleted
                     if (event.id !== toDel) {
