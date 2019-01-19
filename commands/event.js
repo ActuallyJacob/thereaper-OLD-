@@ -148,6 +148,7 @@ module.exports.run = (client, msg, args) =>{
         const reactCollector = new client.discord.ReactionCollector(m,  (r, user) => Object.values(emojis).includes(r.emoji.name), {maxUsers: msg.guild.memberCount});
         reactCollector.on("collect", (r, coll) => {
             switch(r.emoji.name) {
+
               case emojis.GOING: // if the checkmark is clicked
                 client.db.get(`SELECT events FROM calendar WHERE guild = ${msg.guild.id}`, (err, row) => {
                   var events = JSON.parse(row.events);
@@ -273,35 +274,6 @@ module.exports.run = (client, msg, args) =>{
                   }
                 });
               break;
-
-              case emojis.SKULL: // if the skull is clicked
-                var toDel = msg.id;
-                client.db.get(`SELECT events FROM calendar WHERE guild = ${msg.guild.id}`, (err, row) => {
-                  if (err) { // if an error occurs
-                    console.log("no the error is here");
-                    console.error("Delete.js selection error: ", err.message);
-                  }
-                  var json = JSON.parse(row.events);
-                  json.list = json.list.filter((event) => { // filter out the current array of events to exclude the array that will be deleted
-                    if (event.id !== toDel) {
-                      return event;
-                    }
-                  });
-                  var insert = JSON.stringify(json); // updated array
-                  console.log(typeof insert);
-                  client.db.run(`UPDATE calendar SET events = ? WHERE guild = ?`, [insert, msg.guild.id], (err) => {
-                    if (err) {
-                      console.error("Delete.js update error: ", err.message);
-                    }
-                    else {
-                        toDel.delete();
-                        msg.channel.send("Event deleted...")
-                        .then(msg =>{
-                          msg.delete(10000)
-                        })
-                      }
-                  });
-                });
   
               case emojis.NO: // if the x is clicked
                 client.db.get(`SELECT events FROM calendar WHERE guild = ${msg.guild.id}`, (err, row) => {
@@ -359,6 +331,27 @@ module.exports.run = (client, msg, args) =>{
                       }).catch(console.error);
                     });
                   }
+                });
+              break;
+
+              case emojis.SKULL: // if the skull is clicked
+                client.db.get(`SELECT events FROM calendar WHERE guild = ${msg.guild.id}`, (err, row) => {
+                  const toDel = msg.id;
+                  toDel.delete();
+                  msg.channel.send("Event deleted...")
+                  .then(msg =>{
+                    msg.delete(10000)
+                  })
+                  var json = JSON.parse(row.events);
+                  json.list = json.list.filter((event) => { // filter out the current array of events to exclude the array that will be deleted
+                    if (event.id !== toDel) {
+                      return event;
+                    }
+                  });
+                  var insert = JSON.stringify(json); // updated array
+                  console.log(typeof insert);
+                  client.db.run(`UPDATE calendar SET events = ? WHERE guild = ?`, [insert, msg.guild.id], (err) => {
+                  });
                 });
               break;
             }
