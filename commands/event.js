@@ -276,7 +276,6 @@ module.exports.run = (client, msg, args) =>{
 
               case emojis.SKULL: // if the skull is clicked
                 var toDel = msg.id;
-                var toDelFull;
                 client.db.get(`SELECT events FROM calendar WHERE guild = ${msg.guild.id}`, (err, row) => {
                   if (err) { // if an error occurs
                     console.log("no the error is here");
@@ -286,9 +285,6 @@ module.exports.run = (client, msg, args) =>{
                   json.list = json.list.filter((event) => { // filter out the current array of events to exclude the array that will be deleted
                     if (event.id !== toDel) {
                       return event;
-                    }
-                    else {
-                      toDelFull = event;
                     }
                   });
                   var insert = JSON.stringify(json); // updated array
@@ -301,7 +297,6 @@ module.exports.run = (client, msg, args) =>{
                       msg.channel.fetchMessage(toDel).then(m => {
                         m.delete();
                       });
-                      msg.channel.send(new client.discord.RichEmbed().setColor(client.color).setDescription(`🗑 Event \`${toDel}: ${toDelFull.name}\` has been deleted!`));
                     }
                   });
                 });
