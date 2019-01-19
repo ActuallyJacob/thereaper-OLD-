@@ -13,7 +13,6 @@ module.exports.helpEmbed = function(bot, message, Discord) {
 *-levels*
 *-event* \`\`Create an event\`\`
 *-eventlist*
-*-delete* \`\`delete an event\`\`
 **ADMIN COMMANDS**
 *-role*
 *-role* \`\`@UserName + @role\`\`
