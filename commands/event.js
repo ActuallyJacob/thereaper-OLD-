@@ -37,10 +37,10 @@ module.exports.run = async (client, msg, args) =>{
           var currDate = new Date();
           // check if date has already passed
           if (split[2] < currDate.getFullYear() || (split[2] <= currDate.getFullYear() && (split[0] - 1) < currDate.getMonth()) || (split[2] <= currDate.getFullYear() && (split[0] - 1) <= currDate.getMonth() && split[1] < currDate.getDay())) {
-            msg.channel.send(new client.discord.RichEmbed().setColor(client.color).setTitle("📅 Event Creation Wizard").setDescription("❗ That date has already passed! Please enter a different date.").setFooter("Type \"exit\" to leave the creation wizard at any time"));
+            msg.channel.send(new client.discord.RichEmbed().setColor(client.color).setTitle("📅 Event Creation Wizard").setDescription("That date has already passed! Please enter a different date.").setFooter("Type \"exit\" to leave the creation wizard at any time"));
           }
           if (!m.content.includes('/')){
-            msg.channel.send(new client.discord.RichEmbed().setColor(client.color).setTitle("📅 Event Creation Wizard").setDescription("❗ Please include a '/' between the month, day and year. E.g. 01/01/2020").setFooter("Type \"exit\" to leave the creation wizard at any time"));
+            msg.channel.send(new client.discord.RichEmbed().setColor(client.color).setTitle("📅 Event Creation Wizard").setDescription("Please include a '/' between the month, day and year. E.g. 01/01/2020").setFooter("Type \"exit\" to leave the creation wizard at any time"));
           }
           else {
             d.setMonth(split[0] - 1, split[1]);
@@ -57,11 +57,14 @@ module.exports.run = async (client, msg, args) =>{
           msg.channel.send(new client.discord.RichEmbed().setColor(client.color).setTitle("📅 Event Creation Wizard").addField("Event", `${event.name}`).addField("Description", `${event.desc}`).addField("Date", `${d.toDateString()}`).addField("Time", `${time}`).setDescription(`\`How long do you think this will take?\``).setFooter("Type \"exit\" to leave the creation wizard at any time"));
         }
         else if (event.este === undefined && event.name !== undefined && event.desc !== undefined && event.date !== undefined && event.time !== undefined ) { // if estimate time doesnt exist
-          event.este = m.content;
-          msg.channel.send(new client.discord.RichEmbed().setColor(client.color).setTitle("📅 Event Creation Wizard").addField("Event", `${event.name}`).addField("Description", `${event.desc}`).addField("Date", `${d.toDateString()}`).addField("Time", `${time}`).addField("Estimated Time:", `${event.est}`).setDescription(`\`Is this correct? Type YES to confirm.\``).setFooter("Type \"exit\" to leave the creation wizard at any time"));
+          est = m.content;
+          event.este = est;
+          console.log("Estimated time: ", event.este);
+          msg.channel.send(new client.discord.RichEmbed().setColor(client.color).setTitle("📅 Event Creation Wizard").addField("Event", `${event.name}`).addField("Description", `${event.desc}`).addField("Date", `${d.toDateString()}`).addField("Time", `${time}`).addField("Estimated Time:", `${event.este}`).setDescription(`\`Is this correct? Type YES to confirm.\``).setFooter("Type \"exit\" to leave the creation wizard at any time"));
+          
         }
         else if (event.este !== undefined && m.content.toLowerCase() === "yes") {
-          msg.channel.send(new client.discord.RichEmbed().setColor(client.color).setTitle("📅 Event Creation Wizard").setDescription("✔️ Event Created!"))
+          msg.channel.send(new client.discord.RichEmbed().setColor(client.color).setTitle("📅 Event Creation Wizard").setDescription("Event Created!"))
           collector.stop();
         }
       }
@@ -77,7 +80,7 @@ module.exports.run = async (client, msg, args) =>{
       }
       else { // if all the parameters have been given
         const grim = client.emojis.find(emoji => emoji.name === "grim");
-        msg.guild.channels.find("name", "events-test").send(new client.discord.RichEmbed().setColor(client.color).setTitle("__**REAPER CLAN EVENT**__").addField("__Event:__", `${event.name}`).addField(`${event.desc}`).addField("__Date:__", `${d.toDateString()}`).addField("__Time:__", `${time}`).addField("Estimated Time:", `${event.est}`).setDescription(`${grim} | Welcome to the madhouse, Guardian! | react with 💀 to delete this event`)).then(m => {
+        msg.guild.channels.find("name", "events-test").send(new client.discord.RichEmbed().setColor(client.color).setTitle("__**REAPER CLAN EVENT**__").addField("__Event:__", `${event.name}`).addField(`${event.desc}`).addField("__Date:__", `${d.toDateString()}`).addField("__Time:__", `${time}`).addField("Estimated Time:", `${event.este}`).setDescription(`${grim} | Welcome to the madhouse, Guardian! | react with 💀 to delete this event`)).then(m => {
           event.id = m.id;
           event.fullDate = d; // the full date object
           event.attending = [];
@@ -204,7 +207,7 @@ module.exports.run = async (client, msg, args) =>{
                           attStr -= `${msg.guild.member(usr).displayName}, `;
                         }
                       }
-                      m.edit(new client.discord.RichEmbed().setColor(client.color).setTitle("__**REAPER CLAN EVENT**__").addField("__Event:__", `${event.name}`).addField(`${event.desc}`).addField("__Date:__", `${d.toDateString()}`).addField("__Time:__", `${time}`).addField("Estimated Time:", `${event.est}`).addField(`${emojis.GOING} Attending`, `${attStr}`).addField(`${emojis.MAYBE} Might go`, `${mayStr}`).addField(`${emojis.NO} Can't go`, `${cantStr}`).setDescription(`${grim} | Welcome to the madhouse, Guardian! | react with 💀 to delete this event`)).then(msg => {
+                      m.edit(new client.discord.RichEmbed().setColor(client.color).setTitle("__**REAPER CLAN EVENT**__").addField("__Event:__", `${event.name}`).addField(`${event.desc}`).addField("__Date:__", `${d.toDateString()}`).addField("__Time:__", `${time}`).addField("Estimated Time:", `${event.este}`).addField(`${emojis.GOING} Attending`, `${attStr}`).addField(`${emojis.MAYBE} Might go`, `${mayStr}`).addField(`${emojis.NO} Can't go`, `${cantStr}`).setDescription(`${grim} | Welcome to the madhouse, Guardian! | react with 💀 to delete this event`)).then(msg => {
                       }).catch(console.error);
                     });
                   }
@@ -266,7 +269,7 @@ module.exports.run = async (client, msg, args) =>{
                       if (cantStr === "") {
                         cantStr = "None";
                       }
-                      m.edit(new client.discord.RichEmbed().setColor(client.color).setTitle("__**REAPER CLAN EVENT**__").addField("__Event:__", `${event.name}`).addField(`${event.desc}`).addField("__Date:__", `${d.toDateString()}`).addField("__Time:__", `${time}`).addField("Estimated Time:", `${event.est}`).addField(`${emojis.GOING} Attending`, `${attStr}`).addField(`${emojis.MAYBE} Might go`, `${mayStr}`).addField(`${emojis.NO} Can't go`, `${cantStr}`).setDescription(`${grim} | Welcome to the madhouse, Guardian! | react with 💀 to delete this event`)).then(msg => {
+                      m.edit(new client.discord.RichEmbed().setColor(client.color).setTitle("__**REAPER CLAN EVENT**__").addField("__Event:__", `${event.name}`).addField(`${event.desc}`).addField("__Date:__", `${d.toDateString()}`).addField("__Time:__", `${time}`).addField("Estimated Time:", `${event.este}`).addField(`${emojis.GOING} Attending`, `${attStr}`).addField(`${emojis.MAYBE} Might go`, `${mayStr}`).addField(`${emojis.NO} Can't go`, `${cantStr}`).setDescription(`${grim} | Welcome to the madhouse, Guardian! | react with 💀 to delete this event`)).then(msg => {
                       }).catch(console.error);
                     });
                   }
@@ -325,7 +328,7 @@ module.exports.run = async (client, msg, args) =>{
                         var usr = client.users.get(cant[i]);
                         cantStr += `${msg.guild.member(usr).displayName}, `;
                       }
-                      m.edit(new client.discord.RichEmbed().setColor(client.color).setTitle("__**REAPER CLAN EVENT**__").addField("__Event:__", `${event.name}`).addField(`${event.desc}`).addField("__Date:__", `${d.toDateString()}`).addField("__Time:__", `${time}`).addField("Estimated Time:", `${event.est}`).addField(`${emojis.GOING} Attending`, `${attStr}`).addField(`${emojis.MAYBE} Might go`, `${mayStr}`).addField(`${emojis.NO} Can't go`, `${cantStr}`).setDescription(`${grim} | Welcome to the madhouse, Guardian! | react with 💀 to delete this event`)).then(msg => {
+                      m.edit(new client.discord.RichEmbed().setColor(client.color).setTitle("__**REAPER CLAN EVENT**__").addField("__Event:__", `${event.name}`).addField(`${event.desc}`).addField("__Date:__", `${d.toDateString()}`).addField("__Time:__", `${time}`).addField("Estimated Time:", `${event.este}`).addField(`${emojis.GOING} Attending`, `${attStr}`).addField(`${emojis.MAYBE} Might go`, `${mayStr}`).addField(`${emojis.NO} Can't go`, `${cantStr}`).setDescription(`${grim} | Welcome to the madhouse, Guardian! | react with 💀 to delete this event`)).then(msg => {
                       }).catch(console.error);
                     });
                   }
