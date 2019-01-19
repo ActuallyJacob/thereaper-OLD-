@@ -358,7 +358,7 @@ module.exports.run = async (client, msg, args) =>{
                     console.error("Delete.js update error: ", err.message);
                   }
                   else {
-                    toDel.delete();
+                    m.delete();
                     }
                   });
               });
