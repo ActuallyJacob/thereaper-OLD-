@@ -162,10 +162,10 @@ client.on('guildMemberAdd', member => {
 });
 
 //event channel delete
-client.on("messageReactionAdd", (messageReaction, user, message) => {
+client.on("message", message => {
   if(message.channel.name === "events-test"){
-    if (messageReaction.name === "💀"){
-      messageReaction.message.delete();
+    if(message.reactions.has("name", "💀")){
+      message.delete();
       message.channel.send("Event deleted...").then(message =>{message.delete(10000)
       })
     }
