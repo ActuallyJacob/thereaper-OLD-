@@ -294,7 +294,7 @@ module.exports.run = (client, msg, args) =>{
                       console.error("Delete.js update error: ", err.message);
                     }
                     else {
-                        msg.delete();
+                        toDel.delete();
                         msg.channel.send("Event deleted...")
                         .then(msg =>{
                           msg.delete(10000)
