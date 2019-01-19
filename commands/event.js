@@ -20,9 +20,9 @@ module.exports.run = (client, msg, args) =>{
       else {
         if (event.name === undefined) { // if the event has not been given a name
           event.name = m.content;
-          msg.channel.send(new client.discord.RichEmbed().setColor(client.color).setTitle("📅 Event Creation Wizard").addField("Event", `${event.name}`).setDescription(`\`What date is the event taking place? (Use MM/DD/YYYY format)\``).setFooter("Type \"exit\" to leave the creation wizard at any time"));
         }
-        else if (event.date === undefined && event.name !== undefined) {
+        if (event.date === undefined && event.name !== undefined) {
+          msg.channel.send(new client.discord.RichEmbed().setColor(client.color).setTitle("📅 Event Creation Wizard").addField("Event", `${event.name}`).setDescription(`\`What date is the event taking place? (Use MM/DD/YYYY format)\``).setFooter("Type \"exit\" to leave the creation wizard at any time"));
           //if the event has not been given a date
           var split = m.content.split('/');
           split[0] = parseInt(split[0]); //month
@@ -40,7 +40,7 @@ module.exports.run = (client, msg, args) =>{
             console.log("Date: ", d.getMonth(), d.getDay(), d.getFullYear());
           }
         }
-        else if (event.time === undefined && event.date !== undefined && event.name !== undefined) { // if the time hasn't been defined yet
+        if (event.time === undefined && event.date !== undefined && event.name !== undefined) { // if the time hasn't been defined yet
         msg.channel.send(new client.discord.RichEmbed().setColor(client.color).setTitle("📅 Event Creation Wizard").addField("Event", `${event.name}`).addField("Date", `${d.toDateString()}`).setDescription(`\`What time is the event taking place? (Use HH:MM AM/PM format)\``).setFooter("Type \"exit\" to leave the creation wizard at any time"));
           time = m.content;
           var split = m.content.split(':');
@@ -70,7 +70,7 @@ module.exports.run = (client, msg, args) =>{
       // FIXME: get rid of unexpected token error
       msg.channel.send(new client.discord.RichEmbed().setColor(client.color).setTitle("📅 Event Creation Wizard").addField("Event", `${event.name}`).addField("Date", `${d.toDateString()}`).addField("Time", `${time}`).addField("Description", `${desc}`).setDescription(`\`Is this correct? Type YES to confirm.\``).setFooter("Type \"exit\" to leave the creation wizard at any time"));
     }
-    else if (event.desc !== undefined && m.content.toLowerCase() === "yes") {
+    if (event.desc !== undefined && m.content.toLowerCase() === "yes") {
       collector.stop();
     }
   },
