@@ -164,13 +164,16 @@ client.on('guildMemberAdd', member => {
 //event channel delete
 client.on("message", message => {
   if(message.channel.name === "events-test"){
-    if(message.reactions.has("name", "💀")){
-      message.delete();
-      message.channel.send("Event deleted...").then(message =>{message.delete(10000)
+    const filter = (reaction, user) => reaction.emoji.name === '👌' && user.id === 'someID'
+    message.awaitReactions(filter, {})
+      .then(message.delete())
+      .catch(console.error);
+      message.channel.send("Event deleted...")
+      .then(message =>{message.delete(10000)
+      .catch(console.error);
       })
     }
-  }
-});
+  });
 
 // database configuration
 client.db.run("CREATE TABLE IF NOT EXISTS calendar (guild TEXT, events TEXT, notifs INTEGER, channel TEXT)");
