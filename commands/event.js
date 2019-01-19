@@ -13,7 +13,7 @@ module.exports.run = async (client, msg, args) =>{
     const collector = new client.discord.MessageCollector(msg.channel, m => m.author.id === msg.author.id, {time: 1000000});
     // start collector
     collector.on("collect", m => {
-      if (m.content === "exit") {
+      if (m.content.toLowerCase() === "exit") {
         forceEnd = true;
         collector.stop();
       }
