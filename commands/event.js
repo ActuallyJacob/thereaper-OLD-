@@ -4,9 +4,7 @@ module.exports.run = (client, msg, args) =>{
     var event = new Object(); // name, date, time, desc
     var forceEnd = false; // determines if the collector was forced to forceEnd
     var d = new Date();
-    var endDate = new Date();
     var time;
-    var endTime;
     var desc;
   
     msg.channel.send(new client.discord.RichEmbed().setColor(client.color).setTitle("📅 Event Creation Wizard").setDescription("Welcome to the Event Creation Wizard!\n`What would you like to name your event?`").setFooter("Type \"exit\" to leave the creation wizard at any time."));
@@ -65,6 +63,7 @@ module.exports.run = (client, msg, args) =>{
             d.setHours(split[0], split[1], 0);
             event.time = split;
             console.log("Time: ", event.time);
+            msg.channel.send(new client.discord.RichEmbed().setColor(client.color).setTitle("📅 Event Creation Wizard").addField("Event", `${event.name}`).addField("Date", `${d.toDateString()}`).addField("Time", `${time}`).setDescription(`\`What is the description of this event?\``).setFooter("Type \"exit\" to leave the creation wizard at any time"));
           }
         }
         else if (event.desc === undefined && event.time !== undefined && event.date !== undefined && event.name !== undefined) { // if the description hasn't been defined yet
@@ -91,10 +90,9 @@ module.exports.run = (client, msg, args) =>{
       }
       else { // if all the parameters have been given
         const grim = client.emojis.find(emoji => emoji.name === "grim");
-        msg.guild.channels.find("name", "events-test").send(new client.discord.RichEmbed().setColor(client.color).setTitle("__**REAPER CLAN EVENT**__").addField("__Event:__", `${event.name}`).addField("__Date:__", `${d.toDateString()}`).addField("__Time:__", `${time}`).addField("__Description:__", `${event.desc}`).setDescription(`${grim} | Welcome to the madhouse, Guardian! | ${grim}`)).then(m => {
+        msg.guild.channels.find("name", "events-test").send(new client.discord.RichEmbed().setColor(client.color).setTitle("__**REAPER CLAN EVENT**__").addField("__Event:__", `${event.name}`).addField("__Date:__", `${d.toDateString()}`).addField("__Time:__", `${time}`).addField("__Description:__", `${event.desc}`).setDescription(`${grim} | Welcome to the madhouse, Guardian! | react with 💀 to delete this event`)).then(m => {
           event.id = m.id;
           event.fullDate = d; // the full date object
-          event.fullEndDate = endDate;
           event.attending = [];
           event.cantGo = [];
           event.maybe = [];
@@ -144,7 +142,8 @@ module.exports.run = (client, msg, args) =>{
         const emojis = { // stores emojis
           GOING: "✅",
           MAYBE: "❓",
-          NO: "❌"
+          NO: "❌",
+          SKULL: "💀"
         };
         const reactCollector = new client.discord.ReactionCollector(m,  (r, user) => Object.values(emojis).includes(r.emoji.name), {maxUsers: msg.guild.memberCount});
         reactCollector.on("collect", (r, coll) => {
@@ -206,7 +205,7 @@ module.exports.run = (client, msg, args) =>{
                       if (cantStr === "") {
                         cantStr = "None";
                       }
-                      m.edit(new client.discord.RichEmbed().setColor(client.color).setTitle("__**REAPER CLAN EVENT**__").addField("__Event__", `${event.name}`).addField("__Date__", `${d.toDateString()}`).addField("__Time__", `${time}`).addField("__Description__", `${event.desc}`).addField(`${emojis.GOING} Attending`, `${attStr}`).addField(`${emojis.MAYBE} Might go`, `${mayStr}`).addField(`${emojis.NO} Can't go`, `${cantStr}`).setDescription(`${grim} | Welcome to the madhouse, Guardian! | ${grim}`)).then(msg => {
+                      m.edit(new client.discord.RichEmbed().setColor(client.color).setTitle("__**REAPER CLAN EVENT**__").addField("__Event__", `${event.name}`).addField("__Date__", `${d.toDateString()}`).addField("__Time__", `${time}`).addField("__Description__", `${event.desc}`).addField(`${emojis.GOING} Attending`, `${attStr}`).addField(`${emojis.MAYBE} Might go`, `${mayStr}`).addField(`${emojis.NO} Can't go`, `${cantStr}`).setDescription(`${grim} | Welcome to the madhouse, Guardian! | react with 💀 to delete this event`)).then(msg => {
                       }).catch(console.error);
                     });
                   }
@@ -268,12 +267,44 @@ module.exports.run = (client, msg, args) =>{
                       if (cantStr === "") {
                         cantStr = "None";
                       }
-                      m.edit(new client.discord.RichEmbed().setColor(client.color).setTitle("__**REAPER CLAN EVENT**__").addField("__Event__", `${event.name}`).addField("__Date__", `${d.toDateString()}`).addField("__Time__", `${time}`).addField("__Description__", `${event.desc}`).addField(`${emojis.GOING} Attending`, `${attStr}`).addField(`${emojis.MAYBE} Might go`, `${mayStr}`).addField(`${emojis.NO} Can't go`, `${cantStr}`).setDescription(`${grim} | Welcome to the madhouse, Guardian! | ${grim}`)).then(msg => {
+                      m.edit(new client.discord.RichEmbed().setColor(client.color).setTitle("__**REAPER CLAN EVENT**__").addField("__Event__", `${event.name}`).addField("__Date__", `${d.toDateString()}`).addField("__Time__", `${time}`).addField("__Description__", `${event.desc}`).addField(`${emojis.GOING} Attending`, `${attStr}`).addField(`${emojis.MAYBE} Might go`, `${mayStr}`).addField(`${emojis.NO} Can't go`, `${cantStr}`).setDescription(`${grim} | Welcome to the madhouse, Guardian! | react with 💀 to delete this event`)).then(msg => {
                       }).catch(console.error);
                     });
                   }
                 });
               break;
+
+              case emojis.SKULL: // if the skull is clicked
+                var toDel = msg.id;
+                var toDelFull;
+                client.db.get(`SELECT events FROM calendar WHERE guild = ${msg.guild.id}`, (err, row) => {
+                  if (err) { // if an error occurs
+                    console.log("no the error is here");
+                    console.error("Delete.js selection error: ", err.message);
+                  }
+                  var json = JSON.parse(row.events);
+                  json.list = json.list.filter((event) => { // filter out the current array of events to exclude the array that will be deleted
+                    if (event.id !== toDel) {
+                      return event;
+                    }
+                    else {
+                      toDelFull = event;
+                    }
+                  });
+                  var insert = JSON.stringify(json); // updated array
+                  console.log(typeof insert);
+                  client.db.run(`UPDATE calendar SET events = ? WHERE guild = ?`, [insert, msg.guild.id], (err) => {
+                    if (err) {
+                      console.error("Delete.js update error: ", err.message);
+                    }
+                    else {
+                      msg.channel.fetchMessage(toDel).then(m => {
+                        m.delete();
+                      });
+                      msg.channel.send(new client.discord.RichEmbed().setColor(client.color).setDescription(`🗑 Event \`${toDel}: ${toDelFull.name}\` has been deleted!`));
+                    }
+                  });
+                });
   
               case emojis.NO: // if the x is clicked
                 client.db.get(`SELECT events FROM calendar WHERE guild = ${msg.guild.id}`, (err, row) => {
@@ -327,7 +358,7 @@ module.exports.run = (client, msg, args) =>{
                         var usr = client.users.get(cant[i]);
                         cantStr += `${msg.guild.member(usr).displayName}, `;
                       }
-                      m.edit(new client.discord.RichEmbed().setColor(client.color).setTitle("__**REAPER CLAN EVENT**__").addField("__Event__", `${event.name}`).addField("__Date__", `${d.toDateString()}`).addField("__Time__", `${time}`).addField("__Description__", `${event.desc}`).addField(`${emojis.GOING} Attending`, `${attStr}`).addField(`${emojis.MAYBE} Might go`, `${mayStr}`).addField(`${emojis.NO} Can't go`, `${cantStr}`).setDescription(`${grim} | Welcome to the madhouse, Guardian! | ${grim}`)).then(msg => {
+                      m.edit(new client.discord.RichEmbed().setColor(client.color).setTitle("__**REAPER CLAN EVENT**__").addField("__Event__", `${event.name}`).addField("__Date__", `${d.toDateString()}`).addField("__Time__", `${time}`).addField("__Description__", `${event.desc}`).addField(`${emojis.GOING} Attending`, `${attStr}`).addField(`${emojis.MAYBE} Might go`, `${mayStr}`).addField(`${emojis.NO} Can't go`, `${cantStr}`).setDescription(`${grim} | Welcome to the madhouse, Guardian! | react with 💀 to delete this event`)).then(msg => {
                       }).catch(console.error);
                     });
                   }
