@@ -336,7 +336,6 @@ module.exports.run = (client, msg, args) =>{
 
               case emojis.SKULL: // if the skull is clicked
               var toDel = msg.id;
-              var toDelFull;
               client.db.get(`SELECT events FROM calendar WHERE guild = ${msg.guild.id}`, (err, row) => {
                 if (err) { // if an error occurs
                   console.log("no the error is here");
@@ -365,7 +364,7 @@ module.exports.run = (client, msg, args) =>{
                     msg.channel.fetchMessage(toDel).then(m => {
                       m.delete();
                     });
-                    msg.channel.send(new client.discord.RichEmbed().setColor(client.color).setDescription(`🗑 Event \`${toDel}: ${toDelFull.name}\` has been deleted!`)).delete(10000);
+                    msg.channel.send(new client.discord.RichEmbed().setColor(client.color).setDescription(`🗑 The event has been deleted...`)).delete(10000);
                   }
                 });
               });
