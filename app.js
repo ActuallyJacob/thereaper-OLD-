@@ -161,6 +161,18 @@ client.on('guildMemberAdd', member => {
       rChannel.send(embed);
 });
 
+//event channel delete
+client.on("messageReactionAdd", (messageReaction, user) => {
+  let channel = messageReaction.guild.channels.find("name", "events-test")
+  if (messageReaction.channel.name === channel){
+    if (messageReaction.name === "💀"){
+      messageReaction.message.delete();
+      channel.send("Event deleted...").then(message =>{message.delete(10000)
+      })
+    }
+  }
+});
+
 // database configuration
 client.db.run("CREATE TABLE IF NOT EXISTS calendar (guild TEXT, events TEXT, notifs INTEGER, channel TEXT)");
 setInterval(function() { // goes through each server and its events to check if reminders should be sent
