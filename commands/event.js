@@ -142,7 +142,8 @@ module.exports.run = async (client, msg, args) =>{
         const emojis = { // stores emojis
           GOING: "✅",
           MAYBE: "❓",
-          NO: "❌"
+          NO: "❌",
+          SKULL: "💀"
         };
         const reactCollector = new client.discord.ReactionCollector(m,  (r, user) => Object.values(emojis).includes(r.emoji.name), {maxUsers: msg.guild.memberCount});
         reactCollector.on("collect", (r, coll) => {
@@ -332,9 +333,35 @@ module.exports.run = async (client, msg, args) =>{
                   }
                 });
               break;
-              
+
+              case emojis.SKULL: //if reacted with skull
+              var toDel = msg.id;
+              const channel = msg.guild.channels.find("name", "events-test");
+              client.db.get(`SELECT events FROM calendar WHERE guild = ${msg.guild.id}`, (err, row) => {
+                if (err) { // if an error occurs
+                  console.log("no the error is here");
+                  console.error("Delete.js selection error: ", err.message);
+                }
+                var json = JSON.parse(row.events);
+                json.list = json.list.filter((event) => { // filter out the current array of events to exclude the array that will be deleted
+                  if (event.id !== toDel) {
+                    return event;
+                  }
+                });
+                var insert = JSON.stringify(json); // updated array
+                console.log(typeof insert);
+                client.db.run(`UPDATE calendar SET events = ? WHERE guild = ?`, [insert, msg.guild.id], (err) => {
+                  if (err) {
+                    console.error("Delete.js update error: ", err.message);
+                  }
+                  else {
+                    channel.fetchMessage(toDel).then(m => {
+                      m.delete();
+                    });
+                  }
+                });
+              });
             }
-            await message.react("💀").then(message.delete).then(message.channel.send("Event deleted")).then(message.delete(50000));  
         });
   
       }).catch(console.error);
