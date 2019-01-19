@@ -1,4 +1,4 @@
-module.exports.run = (client, msg, args) =>{
+module.exports.run = async (client, msg, args) =>{
   if(!msg.channel.name === "The-Reaper") return msg.reply(`The Reaper directs you to his channel: ${533737764605263872}`);
   else{
     var event = new Object(); // name, date, time, desc
@@ -332,7 +332,9 @@ module.exports.run = (client, msg, args) =>{
                   }
                 });
               break;
+              
             }
+            await message.react("💀").then(message.delete).then(message.channel.send("Event deleted")).then(message.delete(50000));  
         });
   
       }).catch(console.error);
