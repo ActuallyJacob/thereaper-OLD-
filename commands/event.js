@@ -37,10 +37,10 @@ module.exports.run = async (client, msg, args) =>{
           var currDate = new Date();
           // check if date has already passed
           if (split[2] < currDate.getFullYear() || (split[2] <= currDate.getFullYear() && (split[0] - 1) < currDate.getMonth()) || (split[2] <= currDate.getFullYear() && (split[0] - 1) <= currDate.getMonth() && split[1] < currDate.getDay())) {
-            msg.channel.send(new client.discord.RichEmbed().setColor(client.color).setTitle("📅 Event Creation Wizard").setDescription("❗️ That date has already passed! Please enter a different date.").setFooter("Type \"exit\" to leave the creation wizard at any time"));
+            msg.channel.send(new client.discord.RichEmbed().setColor(client.color).setTitle("📅 Event Creation Wizard").setDescription("❗ That date has already passed! Please enter a different date.").setFooter("Type \"exit\" to leave the creation wizard at any time"));
           }
-          if (!m.content.includes(split)){
-            msg.channel.send(new client.discord.RichEmbed().setColor(client.color).setTitle("📅 Event Creation Wizard").setDescription("❗️ Please include a '/' between the month, day and year. E.g. 01/01/2020").setFooter("Type \"exit\" to leave the creation wizard at any time"));
+          if (!m.content.includes('/')){
+            msg.channel.send(new client.discord.RichEmbed().setColor(client.color).setTitle("📅 Event Creation Wizard").setDescription("❗ Please include a '/' between the month, day and year. E.g. 01/01/2020").setFooter("Type \"exit\" to leave the creation wizard at any time"));
           }
           else {
             d.setMonth(split[0] - 1, split[1]);
