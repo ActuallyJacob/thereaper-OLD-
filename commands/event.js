@@ -157,24 +157,6 @@ module.exports.run = async (client, msg, args) =>{
                     alreadyGoing = true;
                     events.list.push(get[0]);
                   }
-
-                    events.list.splice(index, 1);
-                    var userArr = coll.users.array();
-                    var user = userArr[userArr.length - 1];
-                    let alreadyMaybe = true;
-                    if (get[0].maybe.includes(user.id)) {
-                      alreadyMaybe = false;
-                      events.list.push(get[0]);
-                    }
-
-                      events.list.splice(index, 1);
-                      var userArr = coll.users.array();
-                      var user = userArr[userArr.length - 1];
-                      let alreadyCant = true;
-                      if (get[0].cantGo.includes(user.id)) {
-                        alreadyCant = false;
-                        events.list.push(get[0]);
-                      }
                   if (user.id !== client.config.bot_id && !alreadyGoing) {
                     get[0].attending.push(user.id);
                     events.list.push(get[0]);
@@ -193,19 +175,7 @@ module.exports.run = async (client, msg, args) =>{
                         var usr = client.users.get(attending[i]);
                         attStr += `${msg.guild.member(usr).displayName}, `;
                       }
-                    });
-                  }
-                  if (user.id !== client.config.bot_id && alreadyMaybe) {
-                    get[0].attending.push(user.id);
-                    events.list.push(get[0]);
-                    var send = JSON.stringify(events);
-                    client.db.run(`UPDATE calendar SET events = ? WHERE guild = ?`, [send, msg.guild.id], (err) => {
-                      if (err) {
-                        console.error("create.js update error: ", err);
-                      }
-                      // get name of user who clicked the reaction
-                      var name;
-                      msg.guild.fetchMember(user.id).then(usr => {name = usr.displayName});
+  
                       // people who might go
                       var maybe = events.list[events.list.length - 1].maybe;
                       var mayStr = "";
@@ -216,19 +186,6 @@ module.exports.run = async (client, msg, args) =>{
                       if (mayStr === "") {
                         mayStr = "None";
                       }
-                    });
-                  }
-                  if (user.id !== client.config.bot_id && alreadyCant) {
-                    get[0].attending.push(user.id);
-                    events.list.push(get[0]);
-                    var send = JSON.stringify(events);
-                    client.db.run(`UPDATE calendar SET events = ? WHERE guild = ?`, [send, msg.guild.id], (err) => {
-                      if (err) {
-                        console.error("create.js update error: ", err);
-                      }
-                      // get name of user who clicked the reaction
-                      var name;
-                      msg.guild.fetchMember(user.id).then(usr => {name = usr.displayName});
                       // people who can't go
                       var cant = events.list[events.list.length - 1].cantGo;
                       var cantStr = "";
@@ -247,24 +204,15 @@ module.exports.run = async (client, msg, args) =>{
               break;
   
               case emojis.MAYBE: // if the question mark is clicked
-              client.db.get(`SELECT events FROM calendar WHERE guild = ${msg.guild.id}`, (err, row) => {
-                var events = JSON.parse(row.events);
-                var index;
-                var get = events.list.filter(e => { // get the event to update
-                  if (e.id === event.id) {
-                    index = events.list.indexOf(e);
-                    return e;
-                  }
-                });
-                var userArr = coll.users.array();
-                var user = userArr[userArr.length - 1];
-                events.list.splice(index, 1);
-                let alreadyGoing = true;
-                if (get[0].attending.includes(user.id)) {
-                  alreadyGoing = false;
-                  events.list.push(get[0]);
-                }
-
+                client.db.get(`SELECT events FROM calendar WHERE guild = ${msg.guild.id}`, (err, row) => {
+                  var events = JSON.parse(row.events);
+                  var index;
+                  var get = events.list.filter(e => { // get the event to update
+                    if (e.id === event.id) {
+                      index = events.list.indexOf(e);
+                      return e;
+                    }
+                  });
                   events.list.splice(index, 1);
                   var userArr = coll.users.array();
                   var user = userArr[userArr.length - 1];
@@ -273,194 +221,113 @@ module.exports.run = async (client, msg, args) =>{
                     alreadyMaybe = true;
                     events.list.push(get[0]);
                   }
-
-                    events.list.splice(index, 1);
-                    var userArr = coll.users.array();
-                    var user = userArr[userArr.length - 1];
-                    let alreadyCant = true;
-                    if (get[0].cantGo.includes(user.id)) {
-                      alreadyCant = false;
-                      events.list.push(get[0]);
-                    }
-                if (user.id !== client.config.bot_id && alreadyGoing) {
-                  get[0].attending.push(user.id);
-                  events.list.push(get[0]);
-                  var send = JSON.stringify(events);
-                  client.db.run(`UPDATE calendar SET events = ? WHERE guild = ?`, [send, msg.guild.id], (err) => {
-                    if (err) {
-                      console.error("create.js update error: ", err);
-                    }
-                    // get name of user who clicked the reaction
-                    var name;
-                    msg.guild.fetchMember(user.id).then(usr => {name = usr.displayName});
-                    // generate list of people who are going
-                    var attending = events.list[events.list.length - 1].attending;
-                    var attStr = "";
-                    for (var i = 0; i < attending.length; i++) {
-                      var usr = client.users.get(attending[i]);
-                      attStr -= `${msg.guild.member(usr).displayName}, `;
-                    }
-                    if (attStr === ""){
-                      attStr = "None";
-                    }
-                  });
-                }
-                if (user.id !== client.config.bot_id && !alreadyMaybe) {
-                  get[0].attending.push(user.id);
-                  events.list.push(get[0]);
-                  var send = JSON.stringify(events);
-                  client.db.run(`UPDATE calendar SET events = ? WHERE guild = ?`, [send, msg.guild.id], (err) => {
-                    if (err) {
-                      console.error("create.js update error: ", err);
-                    }
-                    // get name of user who clicked the reaction
-                    var name;
-                    msg.guild.fetchMember(user.id).then(usr => {name = usr.displayName});
-                    // people who might go
-                    var maybe = events.list[events.list.length - 1].maybe;
-                    var mayStr = "";
-                    for (var i = 0; i < maybe.length; i++) {
-                      var usr = client.users.get(maybe[i]);
-                      mayStr += `${msg.guild.member(usr).displayName}, `;
-                    }
-                  });
-                }
-                if (user.id !== client.config.bot_id && alreadyCant) {
-                  get[0].attending.push(user.id);
-                  events.list.push(get[0]);
-                  var send = JSON.stringify(events);
-                  client.db.run(`UPDATE calendar SET events = ? WHERE guild = ?`, [send, msg.guild.id], (err) => {
-                    if (err) {
-                      console.error("create.js update error: ", err);
-                    }
-                    // get name of user who clicked the reaction
-                    var name;
-                    msg.guild.fetchMember(user.id).then(usr => {name = usr.displayName});
-                    // people who can't go
-                    var cant = events.list[events.list.length - 1].cantGo;
-                    var cantStr = "";
-                    for (var i = 0; i < cant.length; i++) {
-                      var usr = client.users.get(cant[i]);
-                      cantStr -= `${msg.guild.member(usr).displayName}, `;
-                    }
-                    if (cantStr === "") {
-                      cantStr = "None";
-                    }
-                    m.edit(new client.discord.RichEmbed().setColor(client.color).setTitle("__**REAPER CLAN EVENT**__").addField("__Event:__", `${event.name}\n${event.desc}`).addField("__Date:__", `${d.toDateString()}`).addField("__Time:__", `${time}`).addField("Estimated Time:", `${event.este}`).addField(`${emojis.GOING} Attending`, `${attStr}`).addField(`${emojis.MAYBE} Might go`, `${mayStr}`).addField(`${emojis.NO} Can't go`, `${cantStr}`).setDescription(`${grim} | Welcome to the madhouse, Guardian! | react with 💀 to delete this event`)).then(msg => {
-                    }).catch(console.error);
-                  });
-                }
-              });
-            break;
-  
-              case emojis.NO: // if the x is clicked
-              client.db.get(`SELECT events FROM calendar WHERE guild = ${msg.guild.id}`, (err, row) => {
-                var events = JSON.parse(row.events);
-                var index;
-                var get = events.list.filter(e => { // get the event to update
-                  if (e.id === event.id) {
-                    index = events.list.indexOf(e);
-                    return e;
+                  if (user.id !== client.config.bot_id && !alreadyMaybe) {
+                    get[0].maybe.push(user.id);
+                    events.list.push(get[0]);
+                    var send = JSON.stringify(events);
+                    client.db.run(`UPDATE calendar SET events = ? WHERE guild = ?`, [send, msg.guild.id], (err) => {
+                      if (err) {
+                        console.error("create.js update error: ", err);
+                      }
+                      var name;
+                      msg.guild.fetchMember(user.id).then(usr => {name = usr.displayName});
+                      var attending = events.list[events.list.length - 1].attending;
+                      var attStr = "";
+                      //attending
+                      for (var i = 0; i < attending.length; i++) {
+                        var usr = client.users.get(attending[i]);
+                        attStr -= `${msg.guild.member(usr).displayName}, `;
+                      }
+                      if (attStr === "") {
+                        attStr = "None";
+                      }
+                      //maybe
+                      var maybe = events.list[events.list.length - 1].maybe;
+                      var mayStr = "";
+                      for (var i = 0; i < maybe.length; i++) {
+                        var usr = client.users.get(maybe[i]);
+                        mayStr += `${msg.guild.member(usr).displayName}, `;
+                      }
+                      //cant
+                      var cant = events.list[events.list.length - 1].cantGo;
+                      var cantStr = "";
+                      for (var i = 0; i < cant.length; i++) {
+                        var usr = client.users.get(cant[i]);
+                        cantStr -= `${msg.guild.member(usr).displayName}, `;
+                      }
+                      if (cantStr === "") {
+                        cantStr = "None";
+                      }
+                      m.edit(new client.discord.RichEmbed().setColor(client.color).setTitle("__**REAPER CLAN EVENT**__").addField("__Event:__", `${event.name}\n${event.desc}`).addField("__Date:__", `${d.toDateString()}`).addField("__Time:__", `${time}`).addField("Estimated Time:", `${event.este}`).addField(`${emojis.GOING} Attending`, `${attStr}`).addField(`${emojis.MAYBE} Might go`, `${mayStr}`).addField(`${emojis.NO} Can't go`, `${cantStr}`).setDescription(`${grim} | Welcome to the madhouse, Guardian! | react with 💀 to delete this event`)).then(msg => {
+                      }).catch(console.error);
+                    });
                   }
                 });
-                var userArr = coll.users.array();
-                var user = userArr[userArr.length - 1];
-                events.list.splice(index, 1);
-                let alreadyGoing = true;
-                if (get[0].attending.includes(user.id)) {
-                  alreadyGoing = false;
-                  events.list.push(get[0]);
-                }
-
+              break;
+  
+              case emojis.NO: // if the x is clicked
+                client.db.get(`SELECT events FROM calendar WHERE guild = ${msg.guild.id}`, (err, row) => {
+                  var events = JSON.parse(row.events);
+                  var index;
+                  var get = events.list.filter(e => { // get the event to update
+                    if (e.id === event.id) {
+                      index = events.list.indexOf(e);
+                      return e;
+                    }
+                  });
                   events.list.splice(index, 1);
                   var userArr = coll.users.array();
                   var user = userArr[userArr.length - 1];
-                  let alreadyMaybe = true;
-                  if (get[0].maybe.includes(user.id)) {
-                    alreadyMaybe = false;
+                  let alreadyCant = false;
+                  if (get[0].cantGo.includes(user.id)) {
+                    alreadyCant = true;
                     events.list.push(get[0]);
                   }
+                  if (user.id !== client.config.bot_id && !alreadyCant) {
+                    get[0].cantGo.push(user.id);
+                    events.list.push(get[0]);
+                    var send = JSON.stringify(events);
+                    client.db.run(`UPDATE calendar SET events = ? WHERE guild = ?`, [send, msg.guild.id], (err) => {
+                      if (err) {
+                        console.error("create.js update error: ", err);
+                      }
+                      var name;
+                      // attending
+                      msg.guild.fetchMember(user.id).then(usr => {name = usr.displayName});
+                      var attending = events.list[events.list.length - 1].attending;
+                      var attStr = "";
+                      for (var i = 0; i < attending.length; i++) {
+                        var usr = client.users.get(attending[i]);
+                        attStr -= `${msg.guild.member(usr).displayName}, `;
+                      }
+                      if (attStr === "") {
+                        attStr = "None";
+                      }
+                      //maybe
+                      var maybe = events.list[events.list.length - 1].maybe;
+                      var mayStr = "";
+                      for (var i = 0; i < maybe.length; i++) {
+                        var usr = client.users.get(maybe[i]);
+                        mayStr -= `${msg.guild.member(usr).displayName}, `;
+                      }
+                      if (mayStr === "") {
+                        mayStr = "None";
+                      }
+                      //cannot
+                      var cant = events.list[events.list.length - 1].cantGo;
+                      var cantStr = "";
+                      for (var i = 0; i < cant.length; i++) {
+                        var usr = client.users.get(cant[i]);
+                        cantStr += `${msg.guild.member(usr).displayName}, `;
+                      }
+                      m.edit(new client.discord.RichEmbed().setColor(client.color).setTitle("__**REAPER CLAN EVENT**__").addField("__Event:__", `${event.name}\n${event.desc}`).addField("__Date:__", `${d.toDateString()}`).addField("__Time:__", `${time}`).addField("Estimated Time:", `${event.este}`).addField(`${emojis.GOING} Attending`, `${attStr}`).addField(`${emojis.MAYBE} Might go`, `${mayStr}`).addField(`${emojis.NO} Can't go`, `${cantStr}`).setDescription(`${grim} | Welcome to the madhouse, Guardian! | react with 💀 to delete this event`)).then(msg => {
+                      }).catch(console.error);
+                    });
+                  }
+                });
+              break;
 
-                    events.list.splice(index, 1);
-                    var userArr = coll.users.array();
-                    var user = userArr[userArr.length - 1];
-                    let alreadyCant = false;
-                    if (get[0].cantGo.includes(user.id)) {
-                      alreadyCant = true;
-                      events.list.push(get[0]);
-                    }
-                if (user.id !== client.config.bot_id && alreadyGoing) {
-                  get[0].attending.push(user.id);
-                  events.list.push(get[0]);
-                  var send = JSON.stringify(events);
-                  client.db.run(`UPDATE calendar SET events = ? WHERE guild = ?`, [send, msg.guild.id], (err) => {
-                    if (err) {
-                      console.error("create.js update error: ", err);
-                    }
-                    // get name of user who clicked the reaction
-                    var name;
-                    msg.guild.fetchMember(user.id).then(usr => {name = usr.displayName});
-                    // generate list of people who are going
-                    var attending = events.list[events.list.length - 1].attending;
-                    var attStr = "";
-                    for (var i = 0; i < attending.length; i++) {
-                      var usr = client.users.get(attending[i]);
-                      attStr -= `${msg.guild.member(usr).displayName}, `;
-                    }
-                    if (attStr === "") {
-                      attStr = "None";
-                    }
-                  });
-                }
-                if (user.id !== client.config.bot_id && alreadyMaybe) {
-                  get[0].attending.push(user.id);
-                  events.list.push(get[0]);
-                  var send = JSON.stringify(events);
-                  client.db.run(`UPDATE calendar SET events = ? WHERE guild = ?`, [send, msg.guild.id], (err) => {
-                    if (err) {
-                      console.error("create.js update error: ", err);
-                    }
-                    // get name of user who clicked the reaction
-                    var name;
-                    msg.guild.fetchMember(user.id).then(usr => {name = usr.displayName});
-                    // people who might go
-                    var maybe = events.list[events.list.length - 1].maybe;
-                    var mayStr = "";
-                    for (var i = 0; i < maybe.length; i++) {
-                      var usr = client.users.get(maybe[i]);
-                      mayStr -= `${msg.guild.member(usr).displayName}, `;
-                    }
-                    if (mayStr === "") {
-                      mayStr = "None";
-                    }
-                  });
-                }
-                if (user.id !== client.config.bot_id && !alreadyCant) {
-                  get[0].attending.push(user.id);
-                  events.list.push(get[0]);
-                  var send = JSON.stringify(events);
-                  client.db.run(`UPDATE calendar SET events = ? WHERE guild = ?`, [send, msg.guild.id], (err) => {
-                    if (err) {
-                      console.error("create.js update error: ", err);
-                    }
-                    // get name of user who clicked the reaction
-                    var name;
-                    msg.guild.fetchMember(user.id).then(usr => {name = usr.displayName});
-                    // people who can't go
-                    var cant = events.list[events.list.length - 1].cantGo;
-                    var cantStr = "";
-                    for (var i = 0; i < cant.length; i++) {
-                      var usr = client.users.get(cant[i]);
-                      cantStr += `${msg.guild.member(usr).displayName}, `;
-                    }
-                    m.edit(new client.discord.RichEmbed().setColor(client.color).setTitle("__**REAPER CLAN EVENT**__").addField("__Event:__", `${event.name}\n${event.desc}`).addField("__Date:__", `${d.toDateString()}`).addField("__Time:__", `${time}`).addField("Estimated Time:", `${event.este}`).addField(`${emojis.GOING} Attending`, `${attStr}`).addField(`${emojis.MAYBE} Might go`, `${mayStr}`).addField(`${emojis.NO} Can't go`, `${cantStr}`).setDescription(`${grim} | Welcome to the madhouse, Guardian! | react with 💀 to delete this event`)).then(msg => {
-                    }).catch(console.error);
-                  });
-                }
-              });
-            break;
-            
-            case emojis.SKULL: //if reacted with skull
+              case emojis.SKULL: //if reacted with skull
               var toDel = m.id;
               client.db.get(`SELECT events FROM calendar WHERE guild = ${msg.guild.id}`, (err, row) => {
                 if (err) { // if an error occurs
