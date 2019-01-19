@@ -294,10 +294,12 @@ module.exports.run = (client, msg, args) =>{
                       console.error("Delete.js update error: ", err.message);
                     }
                     else {
-                      msg.channel.fetchMessage(toDel).then(m => {
-                        m.delete();
-                      });
-                    }
+                        msg.delete();
+                        msg.channel.send("Event deleted...")
+                        .then(msg =>{
+                          msg.delete(10000)
+                        })
+                      }
                   });
                 });
   
