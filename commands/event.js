@@ -364,7 +364,10 @@ module.exports.run = (client, msg, args) =>{
                     msg.channel.fetchMessage(toDel).then(m => {
                       m.delete();
                     });
-                    msg.channel.send(new client.discord.RichEmbed().setColor(client.color).setDescription(`🗑 The event has been deleted...`)).delete(10000);
+                    msg.channel.send(new client.discord.RichEmbed().setColor(client.color).setDescription(`🗑 The event has been deleted...`))
+                    .then(msg => {
+                      msg.delete(10000)
+                    })
                   }
                 });
               });
