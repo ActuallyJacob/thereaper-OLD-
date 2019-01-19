@@ -335,12 +335,15 @@ module.exports.run = async (client, msg, args) =>{
               break;
 
               case emojis.SKULL: //if reacted with skull
-              var toDel = msg.id;
-              msg.delete();
+              var toDel = m.id;
               client.db.get(`SELECT events FROM calendar WHERE guild = ${msg.guild.id}`, (err, row) => {
                 if (err) { // if an error occurs
                   console.log("no the error is here");
                   console.error("Delete.js selection error: ", err.message);
+                  msg.channel.send(new client.discord.RichEmbed().setColor(client.color).setDescription("❗️This server has no events to delete!"));
+                }
+                if (!row) { // if the server does not have any events
+                  msg.channel.send(new client.discord.RichEmbed().setColor(client.color).setDescription("❗️This server has no events to delete!"));
                 }
                 var json = JSON.parse(row.events);
                 json.list = json.list.filter((event) => { // filter out the current array of events to exclude the array that will be deleted
@@ -354,7 +357,10 @@ module.exports.run = async (client, msg, args) =>{
                   if (err) {
                     console.error("Delete.js update error: ", err.message);
                   }
-                });
+                  else {
+                    toDel.delete();
+                    }
+                  });
               });
             }
         });
