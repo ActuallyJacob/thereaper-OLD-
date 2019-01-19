@@ -164,14 +164,7 @@ client.on('guildMemberAdd', member => {
 //event channel delete
 client.on("message", message => {
   if(message.channel.name === "events-test"){
-    const filter = (reaction, user) => reaction.emoji.name === '💀'
-    message.awaitReactions(filter)
-      .then(message.delete())
-      .then(message.channel.send("Event deleted..."))
-      .then(message =>{message.delete(50000)
-      .catch(console.error)
-      return;
-      })
+    await message.react("💀").then(message.delete).then(message.channel.send("Event deleted")).then(message.delete(50000));  
     }
   });
 
