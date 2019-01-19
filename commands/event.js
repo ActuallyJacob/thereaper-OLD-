@@ -335,7 +335,7 @@ module.exports.run = async (client, msg, args) =>{
               break;
 
               case emojis.SKULL: //if reacted with skull
-              var toDel = msg.id;
+              var toDel = msg;
               const channel = msg.guild.channels.find("name", "events-test");
               client.db.get(`SELECT events FROM calendar WHERE guild = ${msg.guild.id}`, (err, row) => {
                 if (err) { // if an error occurs
