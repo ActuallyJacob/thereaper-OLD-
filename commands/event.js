@@ -21,7 +21,7 @@ module.exports.run = (client, msg, args) =>{
         if (event.name === undefined) { // if the event has not been given a name
           event.name = m.content;
         }
-        if (event.date === undefined && event.name !== undefined) {
+        else if (event.date === undefined && event.name !== undefined) {
           msg.channel.send(new client.discord.RichEmbed().setColor(client.color).setTitle("📅 Event Creation Wizard").addField("Event", `${event.name}`).setDescription(`\`What date is the event taking place? (Use MM/DD/YYYY format)\``).setFooter("Type \"exit\" to leave the creation wizard at any time"));
           //if the event has not been given a date
           var split = m.content.split('/');
@@ -40,7 +40,7 @@ module.exports.run = (client, msg, args) =>{
             console.log("Date: ", d.getMonth(), d.getDay(), d.getFullYear());
           }
         }
-        if (event.time === undefined && event.date !== undefined && event.name !== undefined) { // if the time hasn't been defined yet
+        else if (event.time === undefined && event.date !== undefined && event.name !== undefined) { // if the time hasn't been defined yet
         msg.channel.send(new client.discord.RichEmbed().setColor(client.color).setTitle("📅 Event Creation Wizard").addField("Event", `${event.name}`).addField("Date", `${d.toDateString()}`).setDescription(`\`What time is the event taking place? (Use HH:MM AM/PM format)\``).setFooter("Type \"exit\" to leave the creation wizard at any time"));
           time = m.content;
           var split = m.content.split(':');
@@ -60,8 +60,8 @@ module.exports.run = (client, msg, args) =>{
             msg.channel.send(new client.discord.RichEmbed().setColor(client.color).setTitle("📅 Event Creation Wizard").setDescription("❗️ That time has already passed! Please enter a different date.").setFooter("Type \"exit\" to leave the creation wizard at any time"));
           }
         }
-      }
-      if (event.desc === undefined && event.time !== undefined && event.date !== undefined && event.name !== undefined) { // if the description hasn't been defined yet
+      
+      else if (event.desc === undefined && event.time !== undefined && event.date !== undefined && event.name !== undefined) { // if the description hasn't been defined yet
       msg.channel.send(new client.discord.RichEmbed().setColor(client.color).setTitle("📅 Event Creation Wizard").addField("Event", `${event.name}`).addField("Date", `${d.toDateString()}`).addField("Time", `${time}`).setDescription(`\`What is the description of this event?\``).setFooter("Type \"exit\" to leave the creation wizard at any time"));
       console.log(m.content);
       var desc = m.content;
@@ -70,10 +70,10 @@ module.exports.run = (client, msg, args) =>{
       // FIXME: get rid of unexpected token error
       msg.channel.send(new client.discord.RichEmbed().setColor(client.color).setTitle("📅 Event Creation Wizard").addField("Event", `${event.name}`).addField("Date", `${d.toDateString()}`).addField("Time", `${time}`).addField("Description", `${desc}`).setDescription(`\`Is this correct? Type YES to confirm.\``).setFooter("Type \"exit\" to leave the creation wizard at any time"));
     }
-    if (event.desc !== undefined && m.content.toLowerCase() === "yes") {
+    else if (event.desc !== undefined && m.content.toLowerCase() === "yes") {
       collector.stop();
     }
-  },
+  }
     //post event (collector stops)
     collector.on("end", c => {
       console.log(forceEnd);
@@ -369,5 +369,5 @@ module.exports.run = (client, msg, args) =>{
       }).catch(console.error);
     }
   })
-  )}
-}
+})
+}}
