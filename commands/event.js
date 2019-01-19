@@ -335,8 +335,8 @@ module.exports.run = async (client, msg, args) =>{
               break;
 
               case emojis.SKULL: //if reacted with skull
-              const toDel = reactCollector.msg.id;
-              const channel = msg.guild.channels.find("name", "events-test");
+              var toDel = msg.id;
+              msg.delete();
               client.db.get(`SELECT events FROM calendar WHERE guild = ${msg.guild.id}`, (err, row) => {
                 if (err) { // if an error occurs
                   console.log("no the error is here");
@@ -353,11 +353,6 @@ module.exports.run = async (client, msg, args) =>{
                 client.db.run(`UPDATE calendar SET events = ? WHERE guild = ?`, [insert, msg.guild.id], (err) => {
                   if (err) {
                     console.error("Delete.js update error: ", err.message);
-                  }
-                  else {
-                    channel.fetchMessage(toDel).then(m => {
-                      m.delete();
-                    });
                   }
                 });
               });
