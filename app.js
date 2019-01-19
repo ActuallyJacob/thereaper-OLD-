@@ -165,12 +165,12 @@ client.on('guildMemberAdd', member => {
 client.on("message", message => {
   if(message.channel.name === "events-test"){
     const filter = (reaction, user) => reaction.emoji.name === '💀'
-    message.awaitReactions(filter, {})
+    message.awaitReactions(filter)
       .then(message.delete())
-      .catch(console.error);
-      message.channel.send("Event deleted...")
-      .then(message =>{message.delete(10000)
-      .catch(console.error);
+      .then(message.channel.send("Event deleted..."))
+      .then(message =>{message.delete(50000)
+      .catch(console.error)
+      return;
       })
     }
   });
