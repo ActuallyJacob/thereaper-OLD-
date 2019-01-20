@@ -136,17 +136,17 @@ module.exports.run = async (client, msg, args) =>{
         reaction.emoji.name === "💀"
         ).once("collect", (reaction, coll) =>{
           const chosen = reaction.emoji.name;
-          client.db.get(`SELECT events FROM calendar WHERE guild = ${msg.guild.id}`, (err, row) => {
-            var events = JSON.parse(row.events);
-            var index;
-            var get = events.list.filter(e => { // get the event to update
-              if (e.id === event.id) {
-                index = events.list.indexOf(e);
-                return e;
-              }
-            });
-          });
           if(chosen === "✅"){
+            client.db.get(`SELECT events FROM calendar WHERE guild = ${msg.guild.id}`, (err, row) => {
+              var events = JSON.parse(row.events);
+              var index;
+              var get = events.list.filter(e => { // get the event to update
+                if (e.id === event.id) {
+                  index = events.list.indexOf(e);
+                  return e;
+                }
+              });
+            });
             var userArr = coll.users.array();
             var user = userArr[userArr.length - 1];
             events.list.splice(index, 1);
@@ -215,6 +215,16 @@ module.exports.run = async (client, msg, args) =>{
             }
           }
           else if(chosen === "❓"){
+            client.db.get(`SELECT events FROM calendar WHERE guild = ${msg.guild.id}`, (err, row) => {
+              var events = JSON.parse(row.events);
+              var index;
+              var get = events.list.filter(e => { // get the event to update
+                if (e.id === event.id) {
+                  index = events.list.indexOf(e);
+                  return e;
+                }
+              });
+            });
             var userArr = coll.users.array();
             var user = userArr[userArr.length - 1];
             events.list.splice(index, 1);
@@ -284,6 +294,16 @@ module.exports.run = async (client, msg, args) =>{
             }
           }
           else if(chosen === "❌"){
+            client.db.get(`SELECT events FROM calendar WHERE guild = ${msg.guild.id}`, (err, row) => {
+              var events = JSON.parse(row.events);
+              var index;
+              var get = events.list.filter(e => { // get the event to update
+                if (e.id === event.id) {
+                  index = events.list.indexOf(e);
+                  return e;
+                }
+              });
+            });
             var userArr = coll.users.array();
             var user = userArr[userArr.length - 1];
             events.list.splice(index, 1);
