@@ -307,12 +307,12 @@ module.exports.run = async (client, msg, args) =>{
             var user = userArr[userArr.length - 1];
             events.list.splice(index, 1);
             let alreadyCant = false;
-            if (get[0].cant.includes(user.id)) {
+            if (get[0].cantGo.includes(user.id)) {
               alreadyCant = true;
               events.list.push(get[0]);
             }
             if (user.id !== client.config.bot_id && !alreadyCant) {
-              get[0].cant.push(user.id);
+              get[0].cantGo.push(user.id);
               events.list.push(get[0]);
               var send = JSON.stringify(events);
               client.db.run(`UPDATE calendar SET events = ? WHERE guild = ?`, [send, msg.guild.id], (err) => {
