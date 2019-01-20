@@ -187,6 +187,9 @@ module.exports.run = async (client, msg, args) =>{
                         }
                         else if(!mayStr === "None"){
                           mayStr -= `${msg.guild.member(usr).displayName}, `;
+                          if (mayStr === "") {
+                            mayStr = "None";
+                          }
                         }
                       }
                       // people who can't go
@@ -199,6 +202,9 @@ module.exports.run = async (client, msg, args) =>{
                         }
                         else if(!cantStr === "None"){
                           cantStr -= `${msg.guild.member(usr).displayName}, `;
+                          if (cantStr === "") {
+                            cantStr = "None";
+                          }
                         }
                       }
                       m.edit(new client.discord.RichEmbed().setColor(client.color).setTitle("__**REAPER CLAN EVENT**__").addField("__Event:__", `${event.name}\n${event.desc}`).addField("__Date:__", `${d.toDateString()}`).addField("__Time:__", `${time}`).addField("Estimated Time:", `${event.este}`).addField(`${emojis.GOING} Attending`, `${attStr}`).addField(`${emojis.MAYBE} Might go`, `${mayStr}`).addField(`${emojis.NO} Can't go`, `${cantStr}`).setDescription(`${grim} | Welcome to the madhouse, Guardian! | react with 💀 to delete this event`)).then(msg => {
@@ -250,6 +256,9 @@ module.exports.run = async (client, msg, args) =>{
                         }
                         else if (!attStr === "None"){
                           attStr -= `${msg.guild.member(usr).displayName}, `;
+                          if (attStr === "") {
+                            attStr = "None";
+                          }
                         }
                       }
                       //maybe
@@ -269,6 +278,9 @@ module.exports.run = async (client, msg, args) =>{
                         }
                         else if (!cantStr === "None"){
                           cantStr -= `${msg.guild.member(usr).displayName}, `;
+                          if (cantStr === "") {
+                            cantStr = "None";
+                          }
                         }
                       }
                       m.edit(new client.discord.RichEmbed().setColor(client.color).setTitle("__**REAPER CLAN EVENT**__").addField("__Event:__", `${event.name}\n${event.desc}`).addField("__Date:__", `${d.toDateString()}`).addField("__Time:__", `${time}`).addField("Estimated Time:", `${event.este}`).addField(`${emojis.GOING} Attending`, `${attStr}`).addField(`${emojis.MAYBE} Might go`, `${mayStr}`).addField(`${emojis.NO} Can't go`, `${cantStr}`).setDescription(`${grim} | Welcome to the madhouse, Guardian! | react with 💀 to delete this event`)).then(msg => {
@@ -315,6 +327,9 @@ module.exports.run = async (client, msg, args) =>{
                         }
                         else if (!attStr === "None"){
                           attStr -= `${msg.guild.member(usr).displayName}, `;
+                          if (attStr === "") {
+                            attStr = "None";
+                          }
                         }
                       }
                       //maybe
@@ -327,6 +342,9 @@ module.exports.run = async (client, msg, args) =>{
                         }
                         else if (!mayStr === "None"){
                           mayStr -= `${msg.guild.member(usr).displayName}, `;
+                          if (mayStr === "") {
+                            mayStr = "None";
+                          }
                         }
                       }
                       //cannot
