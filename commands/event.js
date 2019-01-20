@@ -169,18 +169,16 @@ module.exports.run = async (client, msg, args) =>{
                 msg.guild.fetchMember(user.id).then(usr => {name = usr.displayName});
                 // generate list of people who are going
                 var attending = events.list[events.list.length - 1].attending;
-                var attStr = attending;
+                var attStr = "";
                 for (var i = 0; i < attending.length; i++) {
                   var usr = client.users.get(attending[i]);
                   attending += `${msg.guild.member(usr).displayName}, `;
                   attStr = attending;
                 }
                 var maybe = events.list[events.list.length - 1].maybe;
-                var mayStr = maybe;
+                var mayStr = "";
                 for (var i = 0; i < maybe.length; i++) {
                   var usr = client.users.get(maybe[i]);
-                  maybe -= `${msg.guild.member(usr).displayName}, `;
-                  mayStr = maybe;
                 }
                 if (mayStr === "") {
                   mayStr = "None";
@@ -193,11 +191,9 @@ module.exports.run = async (client, msg, args) =>{
                   }
                 }
                 var cant = events.list[events.list.length - 1].cantGo;
-                var cantStr = cant;
+                var cantStr = "";
                 for (var i = 0; i < cant.length; i++) {
                   var usr = client.users.get(cant[i]);
-                  cant-= `${msg.guild.member(usr).displayName}, `;
-                  cantStr = cant;
                 }
                 if (cantStr === "") {
                   cantStr = "None";
@@ -248,11 +244,9 @@ module.exports.run = async (client, msg, args) =>{
                 msg.guild.fetchMember(user.id).then(usr => {name = usr.displayName});
                 // generate list of people who are going
                 var attending = events.list[events.list.length - 1].attending;
-                var attStr = attending;
+                var attStr = "";
                 for (var i = 0; i < attending.length; i++) {
                   var usr = client.users.get(attending[i]);
-                  attending -= `${msg.guild.member(usr).displayName}, `;
-                  attStr = attending;
                 }
                 if (attStr === "") {
                   attStr = "None";
@@ -265,7 +259,7 @@ module.exports.run = async (client, msg, args) =>{
                   }
                 }
                 var maybe = events.list[events.list.length - 1].maybe;
-                var mayStr = maybe;
+                var mayStr = "";
                 for (var i = 0; i < maybe.length; i++) {
                   var usr = client.users.get(maybe[i]);
                   maybe += `${msg.guild.member(usr).displayName}, `;
@@ -273,11 +267,9 @@ module.exports.run = async (client, msg, args) =>{
                 }
 
                 var cant = events.list[events.list.length - 1].cantGo;
-                var cantStr = cant;
+                var cantStr = "";
                 for (var i = 0; i < cant.length; i++) {
                   var usr = client.users.get(cant[i]);
-                  cant -= `${msg.guild.member(usr).displayName}, `;
-                  cantStr = cant;
                 }
                 if (cantStr === "") {
                   cantStr = "None";
@@ -328,11 +320,9 @@ module.exports.run = async (client, msg, args) =>{
                 msg.guild.fetchMember(user.id).then(usr => {name = usr.displayName});
                 // generate list of people who are going
                 var attending = events.list[events.list.length - 1].attending;
-                var attStr = attending;
+                var attStr = "";
                 for (var i = 0; i < attending.length; i++) {
                   var usr = client.users.get(attending[i]);
-                  attending -= `${msg.guild.member(usr).displayName}, `;
-                  attStr = attending;
                 }
                 if (attStr === "") {
                   attStr = "None";
@@ -345,11 +335,9 @@ module.exports.run = async (client, msg, args) =>{
                   }
                 }
                 var maybe = events.list[events.list.length - 1].maybe;
-                var mayStr = maybe;
+                var mayStr = "";
                 for (var i = 0; i < maybe.length; i++) {
                   var usr = client.users.get(maybe[i]);
-                  maybe -= `${msg.guild.member(usr).displayName}, `;
-                  mayStr = maybe;
                 }
                 if (mayStr === "") {
                   mayStr = "None";
@@ -362,7 +350,7 @@ module.exports.run = async (client, msg, args) =>{
                   }
                 }
                 var cant = events.list[events.list.length - 1].cantGo;
-                var cantStr = cant;
+                var cantStr = "";
                 for (var i = 0; i < cant.length; i++) {
                   var usr = client.users.get(cant[i]);
                   cant += `${msg.guild.member(usr).displayName}, `;
