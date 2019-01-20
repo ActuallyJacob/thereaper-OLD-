@@ -137,7 +137,8 @@ module.exports.run = async (client, msg, args) =>{
         const reactCollector = new client.discord.ReactionCollector(m, (reaction, user) => (user.id === msg.author.id, Object.values(emojis).includes(reaction.emoji.name)));
         reactCollector.on("collect", (reaction, coll) =>{
           const chosen = reaction.emoji.name;
-          if(chosen === emojis.GOING){
+          switch (reaction.emoji.name) {
+          case emojis.GOING:
             client.db.get(`SELECT events FROM calendar WHERE guild = ${msg.guild.id}`, (err, row) => {
               const events = JSON.parse(row.events);
               var index;
@@ -214,8 +215,8 @@ module.exports.run = async (client, msg, args) =>{
               });
             }
           });
-        }
-          else if(chosen === emojis.MAYBE){
+          break;
+          case emojis.MAYBE:
             client.db.get(`SELECT events FROM calendar WHERE guild = ${msg.guild.id}`, (err, row) => {
               const events = JSON.parse(row.events);
               var index;
@@ -293,8 +294,8 @@ module.exports.run = async (client, msg, args) =>{
               });
             }
           });
-        }
-          else if(chosen === emojis.NO){
+          break;
+          case emojis.NO:
             client.db.get(`SELECT events FROM calendar WHERE guild = ${msg.guild.id}`, (err, row) => {
               const events = JSON.parse(row.events);
               var index;
@@ -371,8 +372,8 @@ module.exports.run = async (client, msg, args) =>{
               });
             }
           });
-        }
-          else if(chosen === emojis.SKULL){
+          break;
+          case emojis.SKULL:
             var toDel = m.id;
             client.db.get(`SELECT events FROM calendar WHERE guild = ${msg.guild.id}`, (err, row) => {
               if (err) { // if an error occurs
@@ -400,10 +401,11 @@ module.exports.run = async (client, msg, args) =>{
                   }
                 });
               });
+              break;
             }
-          reactCollector.stop();
-        });
-      }).catch(console.error);
-    }
-  });
-}}
+          });
+        }).catch(console.error);
+      }
+    });
+  }
+}
