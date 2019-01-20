@@ -128,7 +128,7 @@ module.exports.run = async (client, msg, args) =>{
             }
         });
 
-        const collector = m.createReactionCollector((reaction, user) =>
+        const reactCollector = new client.discord.ReactionCollector(m, (reaction, user) =>
         user.id === msg.author.id &&
         reaction.emoji.name === "✅" ||
         reaction.emoji.name === "❓" ||
@@ -146,7 +146,6 @@ module.exports.run = async (client, msg, args) =>{
                   return e;
                 }
               });
-            });
             var userArr = coll.users.array();
             var user = userArr[userArr.length - 1];
             events.list.splice(index, 1);
@@ -213,7 +212,8 @@ module.exports.run = async (client, msg, args) =>{
                 });
               });
             }
-          }
+          });
+        }
           else if(chosen === "❓"){
             client.db.get(`SELECT events FROM calendar WHERE guild = ${msg.guild.id}`, (err, row) => {
               const events = JSON.parse(row.events);
@@ -224,7 +224,6 @@ module.exports.run = async (client, msg, args) =>{
                   return e;
                 }
               });
-            });
             var userArr = coll.users.array();
             var user = userArr[userArr.length - 1];
             events.list.splice(index, 1);
@@ -292,7 +291,8 @@ module.exports.run = async (client, msg, args) =>{
                 });
               });
             }
-          }
+          });
+        }
           else if(chosen === "❌"){
             client.db.get(`SELECT events FROM calendar WHERE guild = ${msg.guild.id}`, (err, row) => {
               const events = JSON.parse(row.events);
@@ -303,7 +303,6 @@ module.exports.run = async (client, msg, args) =>{
                   return e;
                 }
               });
-            });
             var userArr = coll.users.array();
             var user = userArr[userArr.length - 1];
             events.list.splice(index, 1);
@@ -370,7 +369,8 @@ module.exports.run = async (client, msg, args) =>{
                 });
               });
             }
-          }
+          });
+        }
           else if(chosen === "💀"){
             var toDel = m.id;
             client.db.get(`SELECT events FROM calendar WHERE guild = ${msg.guild.id}`, (err, row) => {
