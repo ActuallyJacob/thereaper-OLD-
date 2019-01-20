@@ -127,14 +127,7 @@ module.exports.run = async (client, msg, args) =>{
               });
             }
         });
-  
-        // collects reactions
-        const emojis = { // stores emojis
-          GOING: "✅",
-          MAYBE: "❓",
-          NO: "❌",
-          SKULL: "💀"
-        };
+
         const collector = m.createReactionCollector((reaction, user) =>
         user.id === message.author.id &&
         reaction.emoji.name === "✅" ||
