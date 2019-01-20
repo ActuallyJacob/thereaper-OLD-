@@ -216,7 +216,7 @@ module.exports.run = async (client, msg, args) =>{
                 }
                 m.edit(new client.discord.RichEmbed().setColor(client.color).setTitle("__**REAPER CLAN EVENT**__").addField("__Event:__", `${event.name}\n${event.desc}`).addField("__Date:__", `${d.toDateString()}`).addField("__Time:__", `${time}`).addField("Estimated Time:", `${event.este}`).addField(`${emojis.GOING} Attending`, `${attStr}`).addField(`${emojis.MAYBE} Might go`, `${mayStr}`).addField(`${emojis.NO} Can't go`, `${cantStr}`).setDescription(`${grim} | Welcome to the madhouse, Guardian! | react with 💀 to delete this event`)).then(msg => {
                   const notbot = msgReaction.users.filter(clientuser => clientuser !== client.user).first();
-                  await msgReaction.remove(notbot);
+                  msgReaction.remove(notbot);
                 });
               });
             }
@@ -285,7 +285,7 @@ module.exports.run = async (client, msg, args) =>{
                 }
                 m.edit(new client.discord.RichEmbed().setColor(client.color).setTitle("__**REAPER CLAN EVENT**__").addField("__Event:__", `${event.name}\n${event.desc}`).addField("__Date:__", `${d.toDateString()}`).addField("__Time:__", `${time}`).addField("Estimated Time:", `${event.este}`).addField(`${emojis.GOING} Attending`, `${attStr}`).addField(`${emojis.MAYBE} Might go`, `${mayStr}`).addField(`${emojis.NO} Can't go`, `${cantStr}`).setDescription(`${grim} | Welcome to the madhouse, Guardian! | react with 💀 to delete this event`)).then(msg => {
                   const notbot = msgReaction.users.filter(clientuser => clientuser !== client.user).first();
-                  await msgReaction.remove(notbot);
+                  msgReaction.remove(notbot);
                 });
               });
             }
@@ -353,7 +353,7 @@ module.exports.run = async (client, msg, args) =>{
                 }
                 m.edit(new client.discord.RichEmbed().setColor(client.color).setTitle("__**REAPER CLAN EVENT**__").addField("__Event:__", `${event.name}\n${event.desc}`).addField("__Date:__", `${d.toDateString()}`).addField("__Time:__", `${time}`).addField("Estimated Time:", `${event.este}`).addField(`${emojis.GOING} Attending`, `${attStr}`).addField(`${emojis.MAYBE} Might go`, `${mayStr}`).addField(`${emojis.NO} Can't go`, `${cantStr}`).setDescription(`${grim} | Welcome to the madhouse, Guardian! | react with 💀 to delete this event`)).then(msg => {
                   const notbot = msgReaction.users.filter(clientuser => clientuser !== client.user).first();
-                  await msgReaction.remove(notbot);
+                  msgReaction.remove(notbot);
                 });
               });
             }
