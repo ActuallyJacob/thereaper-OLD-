@@ -132,11 +132,12 @@ module.exports.run = async (client, msg, args) =>{
         const emojis = { // stores emojis
           GOING: "✅",
           MAYBE: "❓",
-          NO: "❌"
+          NO: "❌",
+          SKULL: "💀"
         };
         reactCollector.on("collect", (reaction, coll) =>{
-          const chosen = msgReaction.emoji;
-          if(chosen === "✅"){
+          const chosen = emojis;
+          if(chosen === GOING){
             client.db.get(`SELECT events FROM calendar WHERE guild = ${msg.guild.id}`, (err, row) => {
               const events = JSON.parse(row.events);
               var index;
