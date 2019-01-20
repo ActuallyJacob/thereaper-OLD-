@@ -127,15 +127,7 @@ module.exports.run = async (client, msg, args) =>{
               });
             }
         });
-  
-        // collects reactions
-        const emoji = { // stores emojis
-          GOING: "✅",
-          MAYBE: "❓",
-          NO: "❌",
-          SKULL: "💀"
-        };
-        if (msgReaction.emoji === "SKULL"){
+        if (msgReaction.emoji === "💀"){
                 var toDel = m.id;
                 client.db.get(`SELECT events FROM calendar WHERE guild = ${msg.guild.id}`, (err, row) => {
                   if (err) { // if an error occurs
@@ -160,7 +152,7 @@ module.exports.run = async (client, msg, args) =>{
                   });
                 });
         }
-        if (msgReaction.emoji.some(e=>["GOING", "MAYBE", "NO"].includes(e.name))){
+        if (msgReaction.emoji.some(e=>["✅", "❓", "❌"].includes(e.name))){
           if (e.name === "GOING") {
             var going = msgReaction.users;
           }
