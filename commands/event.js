@@ -138,7 +138,7 @@ module.exports.run = async (client, msg, args) =>{
           const chosen = reaction.emoji.name;
           if(chosen === "✅"){
             client.db.get(`SELECT events FROM calendar WHERE guild = ${msg.guild.id}`, (err, row) => {
-              var events = JSON.parse(row.events);
+              const events = JSON.parse(row.events);
               var index;
               var get = events.list.filter(e => { // get the event to update
                 if (e.id === event.id) {
@@ -216,7 +216,7 @@ module.exports.run = async (client, msg, args) =>{
           }
           else if(chosen === "❓"){
             client.db.get(`SELECT events FROM calendar WHERE guild = ${msg.guild.id}`, (err, row) => {
-              var events = JSON.parse(row.events);
+              const events = JSON.parse(row.events);
               var index;
               var get = events.list.filter(e => { // get the event to update
                 if (e.id === event.id) {
@@ -295,7 +295,7 @@ module.exports.run = async (client, msg, args) =>{
           }
           else if(chosen === "❌"){
             client.db.get(`SELECT events FROM calendar WHERE guild = ${msg.guild.id}`, (err, row) => {
-              var events = JSON.parse(row.events);
+              const events = JSON.parse(row.events);
               var index;
               var get = events.list.filter(e => { // get the event to update
                 if (e.id === event.id) {
