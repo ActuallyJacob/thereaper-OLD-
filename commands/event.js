@@ -129,7 +129,7 @@ module.exports.run = async (client, msg, args) =>{
         });
   
         // collects reactions
-        const emojis = { // stores emojis
+        const emoji = { // stores emojis
           GOING: "✅",
           MAYBE: "❓",
           NO: "❌",
