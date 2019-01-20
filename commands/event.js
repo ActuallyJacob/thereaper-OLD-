@@ -182,14 +182,14 @@ module.exports.run = async (client, msg, args) =>{
                       var mayStr = "";
                       for (var i = 0; i < maybe.length; i++) {
                         var usr = client.users.get(maybe[i]);
+                      }
+                      if (mayStr === "") {
+                        mayStr = "None";
+                      }
+                      else if(!mayStr === "None"){
+                        mayStr -= `${msg.guild.member(usr).displayName}, `;
                         if (mayStr === "") {
                           mayStr = "None";
-                        }
-                        else if(!mayStr === "None"){
-                          mayStr -= `${msg.guild.member(usr).displayName}, `;
-                          if (mayStr === "") {
-                            mayStr = "None";
-                          }
                         }
                       }
                       // people who can't go
@@ -197,14 +197,14 @@ module.exports.run = async (client, msg, args) =>{
                       var cantStr = "";
                       for (var i = 0; i < cant.length; i++) {
                         var usr = client.users.get(cant[i]);
+                      }
+                      if (cantStr === "") {
+                        cantStr = "None";
+                      }
+                      else if(!cantStr === "None"){
+                        cantStr -= `${msg.guild.member(usr).displayName}, `;
                         if (cantStr === "") {
                           cantStr = "None";
-                        }
-                        else if(!cantStr === "None"){
-                          cantStr -= `${msg.guild.member(usr).displayName}, `;
-                          if (cantStr === "") {
-                            cantStr = "None";
-                          }
                         }
                       }
                       m.edit(new client.discord.RichEmbed().setColor(client.color).setTitle("__**REAPER CLAN EVENT**__").addField("__Event:__", `${event.name}\n${event.desc}`).addField("__Date:__", `${d.toDateString()}`).addField("__Time:__", `${time}`).addField("Estimated Time:", `${event.este}`).addField(`${emojis.GOING} Attending`, `${attStr}`).addField(`${emojis.MAYBE} Might go`, `${mayStr}`).addField(`${emojis.NO} Can't go`, `${cantStr}`).setDescription(`${grim} | Welcome to the madhouse, Guardian! | react with 💀 to delete this event`)).then(msg => {
@@ -242,23 +242,19 @@ module.exports.run = async (client, msg, args) =>{
                         console.error("create.js update error: ", err);
                       }
                       var name;
-                      msg.guild.fetchMember(user.id).then(usr => {name = usr.displayName});
-                      var attending = events.list[events.list.length - 1].attending;
-                      var attStr = "";
-                      
                       //attending
                       var attending = events.list[events.list.length - 1].attending;
                       var attStr = "";
                       for (var i = 0; i < attending.length; i++) {
                         var usr = client.users.get(attending[i]);
+                      }
+                      if (attStr === "") {
+                        attStr = "None";
+                      }
+                      else if (!attStr === "None"){
+                        attStr -= `${msg.guild.member(usr).displayName}, `;
                         if (attStr === "") {
                           attStr = "None";
-                        }
-                        else if (!attStr === "None"){
-                          attStr -= `${msg.guild.member(usr).displayName}, `;
-                          if (attStr === "") {
-                            attStr = "None";
-                          }
                         }
                       }
                       //maybe
@@ -273,14 +269,14 @@ module.exports.run = async (client, msg, args) =>{
                       var cantStr = "";
                       for (var i = 0; i < cant.length; i++) {
                         var usr = client.users.get(cant[i]);
+                      }
+                      if (cantStr === "") {
+                        cantStr = "None";
+                      }
+                      else if (!cantStr === "None"){
+                        cantStr -= `${msg.guild.member(usr).displayName}, `;
                         if (cantStr === "") {
                           cantStr = "None";
-                        }
-                        else if (!cantStr === "None"){
-                          cantStr -= `${msg.guild.member(usr).displayName}, `;
-                          if (cantStr === "") {
-                            cantStr = "None";
-                          }
                         }
                       }
                       m.edit(new client.discord.RichEmbed().setColor(client.color).setTitle("__**REAPER CLAN EVENT**__").addField("__Event:__", `${event.name}\n${event.desc}`).addField("__Date:__", `${d.toDateString()}`).addField("__Time:__", `${time}`).addField("Estimated Time:", `${event.este}`).addField(`${emojis.GOING} Attending`, `${attStr}`).addField(`${emojis.MAYBE} Might go`, `${mayStr}`).addField(`${emojis.NO} Can't go`, `${cantStr}`).setDescription(`${grim} | Welcome to the madhouse, Guardian! | react with 💀 to delete this event`)).then(msg => {
@@ -322,14 +318,14 @@ module.exports.run = async (client, msg, args) =>{
                       var attStr = "";
                       for (var i = 0; i < attending.length; i++) {
                         var usr = client.users.get(attending[i]);
-                        if (attStr === "") {
+                      }
+                      if (attStr === "") {
+                        attStr = "None";
+                      }
+                      else if (!attStr === "None"){
+                        attStr -= `${msg.guild.member(usr).displayName}, `;
+                        if (attStr === ""){
                           attStr = "None";
-                        }
-                        else if (!attStr === "None"){
-                          attStr -= `${msg.guild.member(usr).displayName}, `;
-                          if (attStr === "") {
-                            attStr = "None";
-                          }
                         }
                       }
                       //maybe
@@ -337,14 +333,14 @@ module.exports.run = async (client, msg, args) =>{
                       var mayStr = "";
                       for (var i = 0; i < maybe.length; i++) {
                         var usr = client.users.get(maybe[i]);
-                        if (mayStr === "") {
+                      }
+                      if (mayStr === "") {
+                        mayStr = "None";
+                      }
+                      else if (!mayStr === "None"){
+                        mayStr -= `${msg.guild.member(usr).displayName}, `;
+                        if (mayStr === ""){
                           mayStr = "None";
-                        }
-                        else if (!mayStr === "None"){
-                          mayStr -= `${msg.guild.member(usr).displayName}, `;
-                          if (mayStr === "") {
-                            mayStr = "None";
-                          }
                         }
                       }
                       //cannot
