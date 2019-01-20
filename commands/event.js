@@ -172,7 +172,7 @@ module.exports.run = async (client, msg, args) =>{
                 var attStr = "";
                 for (var i = 0; i < attending.length; i++) {
                   var usr = client.users.get(attending[i]);
-                  attending += `${msg.guild.member(usr).displayName}, `;
+                  attending += `${msg.member.displayName}, `;
                   attStr = attending;
                 }
                 var maybe = events.list[events.list.length - 1].maybe;
@@ -184,7 +184,7 @@ module.exports.run = async (client, msg, args) =>{
                   mayStr = "None";
                 }
                 else if(!mayStr === "None"){
-                  maybe -= `${msg.guild.member(usr).displayName}, `;
+                  maybe -= `${msg.member.displayName}, `;
                   mayStr = maybe;
                   if (mayStr === "") {
                     mayStr = "None";
@@ -199,7 +199,7 @@ module.exports.run = async (client, msg, args) =>{
                   cantStr = "None";
                 }
                 else if(!cantStr === "None"){
-                  cant -= `${msg.guild.member(usr).displayName}, `;
+                  cant -= `${msg.member.displayName}, `;
                   cantStr = cant;
                   if (cantStr === "") {
                     cantStr = "None";
@@ -252,7 +252,7 @@ module.exports.run = async (client, msg, args) =>{
                   attStr = "None";
                 }
                 else if(!attStr === "None"){
-                  attending -= `${msg.guild.member(usr).displayName}, `;
+                  attending -= `${msg.member.displayName}, `;
                   attStr = attending;
                   if (attStr === "") {
                     attStr = "None";
@@ -262,7 +262,7 @@ module.exports.run = async (client, msg, args) =>{
                 var mayStr = "";
                 for (var i = 0; i < maybe.length; i++) {
                   var usr = client.users.get(maybe[i]);
-                  maybe += `${msg.guild.member(usr).displayName}, `;
+                  maybe += `${msg.member.displayName}, `;
                   mayStr = maybe;
                 }
 
@@ -275,7 +275,7 @@ module.exports.run = async (client, msg, args) =>{
                   cantStr = "None";
                 }
                 else if(!cantStr === "None"){
-                  cant -= `${msg.guild.member(usr).displayName}, `;
+                  cant -= `${msg.member.displayName}, `;
                   cantStr = cant;
                   if (cantStr === "") {
                     cantStr = "None";
@@ -328,7 +328,7 @@ module.exports.run = async (client, msg, args) =>{
                   attStr = "None";
                 }
                 else if(!attStr === "None"){
-                  attending -= `${msg.guild.member(usr).displayName}, `;
+                  attending -= `${msg.member.displayName}, `;
                   attStr = attending;
                   if (attStr === "") {
                     attStr = "None";
@@ -343,7 +343,7 @@ module.exports.run = async (client, msg, args) =>{
                   mayStr = "None";
                 }
                 else if(!mayStr === "None"){
-                  maybe -= `${msg.guild.member(usr).displayName}, `;
+                  maybe -= `${msg.member.displayName}, `;
                   mayStr = maybe;
                   if (mayStr === "") {
                     mayStr = "None";
@@ -353,7 +353,7 @@ module.exports.run = async (client, msg, args) =>{
                 var cantStr = "";
                 for (var i = 0; i < cant.length; i++) {
                   var usr = client.users.get(cant[i]);
-                  cant += `${msg.guild.member(usr).displayName}, `;
+                  cant += `${msg.member.displayName}, `;
                   cantStr = cant;
                 }
                 m.edit(new client.discord.RichEmbed().setColor(client.color).setTitle("__**REAPER CLAN EVENT**__").addField("__Event:__", `${event.name}\n${event.desc}`).addField("__Date:__", `${d.toDateString()}`).addField("__Time:__", `${time}`).addField("Estimated Time:", `${event.este}`).addField(`${emojis.GOING} Attending`, `${attStr}`).addField(`${emojis.MAYBE} Might go`, `${mayStr}`).addField(`${emojis.NO} Can't go`, `${cantStr}`).setDescription(`${grim} | Welcome to the madhouse, Guardian! | react with 💀 to delete this event`)).then(msg => {
