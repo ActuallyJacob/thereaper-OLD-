@@ -166,6 +166,7 @@ module.exports.run = async (client, msg, args) =>{
                 }
                 // get name of user who clicked the reaction
                 var name;
+                msg.guild.fetchMember(user.id).then(usr => {name = usr.displayName});
                 // generate list of people who are going
                 var attending = events.list[events.list.length - 1].attending;
                 var attStr = attending;
@@ -244,6 +245,7 @@ module.exports.run = async (client, msg, args) =>{
                 }
                 // get name of user who clicked the reaction
                 var name;
+                msg.guild.fetchMember(user.id).then(usr => {name = usr.displayName});
                 // generate list of people who are going
                 var attending = events.list[events.list.length - 1].attending;
                 var attStr = attending;
@@ -323,6 +325,7 @@ module.exports.run = async (client, msg, args) =>{
                 }
                 // get name of user who clicked the reaction
                 var name;
+                msg.guild.fetchMember(user.id).then(usr => {name = usr.displayName});
                 // generate list of people who are going
                 var attending = events.list[events.list.length - 1].attending;
                 var attStr = attending;
