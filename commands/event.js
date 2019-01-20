@@ -129,7 +129,7 @@ module.exports.run = async (client, msg, args) =>{
         });
 
         const collector = m.createReactionCollector((reaction, user) =>
-        user.id === message.author.id &&
+        user.id === msg.author.id &&
         reaction.emoji.name === "✅" ||
         reaction.emoji.name === "❓" ||
         reaction.emoji.name === "❌" ||
