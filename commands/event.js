@@ -134,7 +134,8 @@ module.exports.run = async (client, msg, args) =>{
         reaction.emoji.name === "❓" ||
         reaction.emoji.name === "❌" ||
         reaction.emoji.name === "💀"
-        ).once("collect", (reaction, coll) =>{
+        )
+        reactCollector.on("collect", (reaction, coll) =>{
           const chosen = reaction.emoji.name;
           if(chosen === "✅"){
             client.db.get(`SELECT events FROM calendar WHERE guild = ${msg.guild.id}`, (err, row) => {
@@ -400,7 +401,7 @@ module.exports.run = async (client, msg, args) =>{
                 });
               });
             }
-          collector.stop();
+          reactCollector.stop();
         });
       }).catch(console.error);
     }
