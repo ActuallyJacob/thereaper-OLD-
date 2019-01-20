@@ -128,15 +128,14 @@ module.exports.run = async (client, msg, args) =>{
             }
         });
 
-        const reactCollector = new client.discord.ReactionCollector(m, (reaction, user) =>
-        user.id === msg.author.id &&
-        reaction.emoji.name === "✅" ||
-        reaction.emoji.name === "❓" ||
-        reaction.emoji.name === "❌" ||
-        reaction.emoji.name === "💀"
-        )
+        const reactCollector = new client.discord.ReactionCollector(m, (reaction, user) => user.id === msg.author.id);
+        const emojis = { // stores emojis
+          GOING: "✅",
+          MAYBE: "❓",
+          NO: "❌"
+        };
         reactCollector.on("collect", (reaction, coll) =>{
-          const chosen = reaction.emoji.name;
+          const chosen = msgReaction.emoji;
           if(chosen === "✅"){
             client.db.get(`SELECT events FROM calendar WHERE guild = ${msg.guild.id}`, (err, row) => {
               const events = JSON.parse(row.events);
