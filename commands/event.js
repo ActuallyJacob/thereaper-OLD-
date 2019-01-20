@@ -134,7 +134,7 @@ module.exports.run = async (client, msg, args) =>{
         reaction.emoji.name === "❓" ||
         reaction.emoji.name === "❌" ||
         reaction.emoji.name === "💀"
-        ).once("collect", reaction =>{
+        ).once("collect", (reaction, coll) =>{
           const chosen = reaction.emoji.name;
           client.db.get(`SELECT events FROM calendar WHERE guild = ${msg.guild.id}`, (err, row) => {
             var events = JSON.parse(row.events);
