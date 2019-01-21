@@ -1,4 +1,5 @@
-const Discord = require('discord.js')
+const Discord = require('discord.js');
+const config = require('../config/config');
 
 //metadata
 module.exports = {

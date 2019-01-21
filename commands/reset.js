@@ -1,3 +1,5 @@
+const config = require('../config/config');
+  
   //metadata
   module.exports = {
     name: 'reset',

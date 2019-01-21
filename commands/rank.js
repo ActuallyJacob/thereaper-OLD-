@@ -1,4 +1,5 @@
 const pEmbed = require('./../embeds/eProfile.js');
+const config = require('../config/config');
 
 //metadata
 module.exports = {

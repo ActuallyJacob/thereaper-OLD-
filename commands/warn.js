@@ -1,7 +1,8 @@
 const Discord = require("discord.js");
-const fs = require("fs");
+const fs = require("fs-extra");
 const ms = require("ms");
 let warns = JSON.parse(fs.readFileSync("./modules/warnings.json", "utf8"));
+const config = require('../config/config');
 
 module.exports.run = async (bot, message, args) => {
   if(!message.member.roles.some(r=>["Admin", "Lead Admin", "Co-Founder", "Founder"].includes(r.name)) ){

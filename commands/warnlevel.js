@@ -1,5 +1,6 @@
 const Discord = require("discord.js");
-const fs = require("fs");
+const fs = require("fs-extra");
+const config = require('../config/config');
 
 let warns = JSON.parse(fs.readFileSync("./modules/warnings.json", "utf8"));
 

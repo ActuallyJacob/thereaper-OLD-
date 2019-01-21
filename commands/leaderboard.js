@@ -1,4 +1,5 @@
 const lEmbed = require('./../embeds/eLeaderboard.js');
+const config = require('../config/config');
 
 //metadata
 module.exports = {
