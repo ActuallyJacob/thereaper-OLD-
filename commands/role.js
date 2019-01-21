@@ -1,5 +1,16 @@
 const Discord = require('discord.js')
 
+//metadata
+module.exports = {
+  name: 'role',
+  syntax: `${config.prefix}role [@user] {@role}`,
+  description: 'Adds or removes a role. Admin only.',
+  help: 'Adds specified role to specified user if they do not have it, removes it if they do. Admin only.',
+  usage: [
+    `\`${config.prefix}\` + `,
+  ],
+};
+
 module.exports.run = async (client, message, args) => {
   if(!message.member.roles.some(r=>["Admin", "Lead Admin", "Co-Founder", "Founder"].includes(r.name)) ){
     return message.reply("The Reaper denies your request for an upgrade. Try again?")
@@ -27,11 +38,10 @@ module.exports.run = async (client, message, args) => {
         await(rMember.addRole(gRole.id));
         var channel = message.guild.channels.find("name", "the-reaper")
         return channel.send(`<@${rMember.id}> The Reaper has been sent to tell you that you now have the role of ${gRole.name}. Do not abuse your newfound power.`)
-      }
-    }
-  }
-
-  
-module.exports.help = {
-  name: "role"
-}
+        .catch((err) => {
+          message.react('❌');
+          message.channel.send(err.message);
+      });
+    };
+  };
+};

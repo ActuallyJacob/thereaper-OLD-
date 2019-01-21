@@ -1,4 +1,15 @@
 const pEmbed = require('./../embeds/eProfile.js');
+
+//metadata
+module.exports = {
+    name: 'rank',
+    syntax: `${config.prefix}rank`,
+    description: 'Displays rank.',
+    help: 'Displays your current rank with The Reaper bot.',
+    usage: [
+      `\`${config.prefix}rank\` + displays your rank.`,
+    ],
+  };
 exports.run = (client, message, args, sql, Discord) =>{
     if(message.channel.name === 'the-reaper'){
         const member = message.guild.member(message.mentions.users.first());
@@ -24,5 +35,9 @@ exports.run = (client, message, args, sql, Discord) =>{
     else{
         var channel = message.guild.channels.find("name", "the-reaper")
         message.reply(`The Reaper forbids this command from being used outside ${channel}`)
-    }
-}
+        .catch((err) => {
+            message.react('❌');
+            message.channel.send(err.message);
+        });
+    };
+};

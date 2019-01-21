@@ -1,3 +1,13 @@
+//metadata
+module.exports = {
+  name: 'rlevel',
+  syntax: `${config.prefix}rlevel [add/remove] {level} (role)`,
+  description: 'Adds or removes a role to a level. Admin only',
+  help: 'Adds or removes the specified role to the specified level, example: -rlevel add 10 Reaper. Admin only.',
+  usage: [
+    `\`${config.prefix}rlevel [add/remove] {level} (role)\` + Creates or removes a role for a level.`,
+  ],
+};
 exports.run = (client, message, args, sql) =>{
   if(!message.member.roles.some(r=>["Admin", "Lead Admin", "Co-Founder", "Founder"].includes(r.name)) ){
     return message.reply("The Reaper requests somebody of proper position, Guardian.")
@@ -33,7 +43,11 @@ exports.run = (client, message, args, sql) =>{
           message.reply(`${pRole.join(" ")} has been removed from rlevel.`);
         }
       }else{
-        message.reply("Please use the rlevel add or remove to remove or add a role.");
-      }
-    }
-  }
+        message.reply("Please use the rlevel add or remove to remove or add a role.")
+        .catch((err) => {
+          message.react('❌');
+          message.channel.send(err.message);
+      });
+    };
+  };
+};

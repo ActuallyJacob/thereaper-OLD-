@@ -1,5 +1,5 @@
 module.exports.leaderboardEmbed = function(bot, message, sql, Discord) {
-        sql.all(`SELECT username, globalPoints, nextPL from userScores WHERE guildID='${message.guild.id}' ORDER BY globalPoints DESC LIMIT 5`).then(gLeader =>{
+        sql.all(`SELECT username, globalPoints, nextPL from userScores WHERE guildID='${message.guild.id}' ORDER BY globalPoints DESC LIMIT 100`).then(gLeader =>{
             if(!gLeader[0]){
                 var leadOut = "Sorry there is no leaderboards yet. Start chatting!";
             }else{

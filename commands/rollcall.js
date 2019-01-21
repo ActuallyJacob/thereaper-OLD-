@@ -1,5 +1,16 @@
 const Discord = require('discord.js')
 
+//metadata
+module.exports = {
+    name: 'rollcall',
+    syntax: `${config.prefix}rollcall`,
+    description: 'Activates rollcall. Admin only.',
+    help: 'Gives every member the "Roll Call" role and creates the rollcall channel. Role is removed from each member when they type. Admin only.',
+    usage: [
+      `\`${config.prefix}rollcall\` + activates rollcall.`,
+    ],
+  };
+
 module.exports.run = async (client, message, args) => {
     if(!message.member.roles.some(r=>["Admin", "Lead Admin", "Co-Founder", "Founder"].includes(r.name)) ){
       return message.reply("The Reaper denies. He simply denies.");
@@ -28,10 +39,10 @@ module.exports.run = async (client, message, args) => {
             }
             else{
                 uChannel.send(`${role}, **Roll-Call is now live! Please sign here to verify that you're still active within the clan!\n\nLove --The Reaper**`)
-            }
-        }
-    }
-
-module.exports.help = {
-    name: "rollcall"
-}
+                .catch((err) => {
+                    message.react('❌');
+                    message.channel.send(err.message);
+                });
+            };
+        };
+    };

@@ -1,5 +1,16 @@
 const Discord = require('discord.js')
 
+//metadata
+module.exports = {
+  name: 'roleall',
+  syntax: `${config.prefix}roleall [@role]`,
+  description: 'Gives role to everyone. Admin only.',
+  help: 'Gives the specified role to everyone in the server. Admin only.',
+  usage: [
+    `\`${config.prefix}roleall [@role]'\` + gives every member a role.`,
+  ],
+};
+
 module.exports.run = async (client, message, args) => {
   if(!message.member.roles.some(r=>["Admin", "Lead Admin", "Co-Founder", "Founder"].includes(r.name)) ){
     return message.reply("The Reaper denies your request.")
@@ -11,10 +22,10 @@ module.exports.run = async (client, message, args) => {
     if (!gRole) return message.channel.send(`**${message.author.username}**, role not found`);
     
     message.guild.members.filter(m => !m.user.bot).map(async member => await member.addRole(gRole));
-    message.channel.send(`**${message.author.username}**, role **${gRole.name}** was added to all members`);
-  }
-}
-
-module.exports.help = {
-    name: "roleall"
-}
+    message.channel.send(`**${message.author.username}**, role **${gRole.name}** was added to all members`)
+    .catch((err) => {
+      message.react('❌');
+      message.channel.send(err.message);
+    });
+  };
+};

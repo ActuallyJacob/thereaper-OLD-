@@ -1,67 +1,116 @@
-const eCEmbed = require('./../embeds/eCHelp.js');
-module.exports.run = (client, message, args, sql, Discord) =>{
-  if(message.channel.name === 'the-reaper'){
-    var cAccept = {command:"accept", description:"Welcome channel only: Accepts the displayed rules."};
-    var cHelp = {command:"help", description:"In this command you can see specific information about a command by doing ``-help rank``"};
-    var cRank = {command:"rank", description:"With rank you can see what your rank in the leaderboards are. You can also see other peoples rank with ``-rank @UserName``"};
-    var cLevels = {command: "levels", description: "Displays levels."}
-    var cLeaderboard = {command: "leaderboard", description:"View the leaderboards for your current server and see who is top!"}
-    var cKick = {command:"kick", description:"Admin only: Kicks a member."};
-    var cBan = {command:"ban", description:"Admin only: Bans a user."}
-    var cPurge = {command:"purge", description:"Admin only: Removes messages in a channel."}
-    var cRole = {command:"role", description:"Admin only: Assigns a role."}
-    var cRoleall = {command: "roleall", description: "Admin only, adds a role to all users."}
-    var cRlevel = {command: "rlevel", decription:"Admin only: assign roles to levels"}
-    var cReset = {command: "reset", description:"Admin only: Resets a user's rank."}
-    var cRollcall = {command: "rollcall", description:"Admin only: Activates Roll-Call."}
-    var cWarn = {command: "warn", description:"Admin only: warns a user."}
-    var cWarnlevel = {command: "warnlevel", description:"Admin only: displays warning level of a user."}
-    var cList = {command: "list", description:"Admin only: lists all users in a role."}
-    var cEvent = {command: "event", description:"Guides a member through creating an event."}
-    let mHelp = args[0];
-    if (mHelp == "leaderboard"){
-      eCEmbed.spHEmbed(client, message, Discord, cLeaderboard)
-    }else if(mHelp == "help"){
-      eCEmbed.spHEmbed(client, message, Discord, cHelp)
-    }else if(mHelp == "rank"){
-      eCEmbed.spHEmbed(client, message, Discord, cRank)
-    }else if(mHelp == "accept"){
-      eCEmbed.spHEmbed(client, message, Discord, cAccept)
-    }else if(mHelp == "kick"){
-      eCEmbed.spHEmbed(client, message, Discord, cKick)
-    }else if(mHelp == "ban"){
-      eCEmbed.spHEmbed(client, message, Discord, cBan)
-    }else if(mHelp == "purge"){
-      eCEmbed.spHEmbed(client, message, Discord, cPurge)
-    }else if(mHelp == "role"){
-      eCEmbed.spHEmbed(client, message, Discord, cRole)
-    }else if(mHelp == "reset"){
-      eCEmbed.spHEmbed(client, message, Discord, cReset)
-    }else if(mHelp == "levels"){
-      eCEmbed.spHEmbed(client, message, Discord, cLevels)
-    }else if(mHelp == "rollcall"){
-      eCEmbed.spHEmbed(client, message, Discord, cRollcall)
-    }else if(mHelp == "rlevel"){
-      eCEmbed.spHEmbed(client, message, Discord, cRlevel)
-    }else if(mHelp == "warn"){
-      eCEmbed.spHEmbed(client, message, Discord, cWarn)
-    }else if(mHelp == "warnlevel"){
-      eCEmbed.spHEmbed(client, message, Discord, cWarnlevel)
-    }else if(mHelp == "list"){
-      eCEmbed.spHEmbed(client, message, Discord, cList)
-    }else if(mHelp == "roleall"){
-      eCEmbed.spHEmbed(client, message, Discord, cRoleall)  
-    }else if(mHelp == "event"){
-      eCEmbed.spHEmbed(client, message, Discord, cEvent)
-    }
-    else{
-        message.reply("The Reaper requests a command that you need help with.")
-    }
-  }
-  else{
-    var channel = message.guild.channels.find("name", "the-reaper")
-    message.reply(`The Reaper forbids this command from being used outside ${channel}`)
+const _ = require('lodash');
+const db = require('../modules/dbcontroller.js');
+const config = require('../config/config');
+const reactions = require('../modules/reactions');
+
+// Metadata
+module.exports = {
+  name: 'help',
+  syntax: `${config.prefix}help [-a] [command]`,
+  description: 'Display help.',
+  help: 'Displays help for commands and can be used to display more information about a specific command.',
+  usage: [
+    `\`${config.prefix}help\` + Displays help for enabled commands only.`,
+    `\`${config.prefix}help -a\` + Displays help for all commands.`,
+    `\`${config.prefix}help command\` + Displays information about a specfic command.`,
+  ],
+};
+
+module.exports.run = (client, message, args) => {
+  const buttons = [
+    reactions.zero, reactions.one,
+    reactions.two, reactions.three,
+    reactions.four, reactions.five,
+    reactions.six, reactions.seven,
+    reactions.eight, reactions.nine,
+  ];
+
+  const commandsPerPage = 8;
+  let pages;
+
+  // Switch for different arguments
+  if (args === '-a') { // Show all commands
+    pages = _.chunk(client.commands, commandsPerPage);
+  } else if (client.commands.some(cmd => cmd.name === args.toLowerCase())) { // Show help for a specific command
+    const command = _.find(client.commands, { name: args.toLowerCase() });
+    message.channel.send({
+      embed: {
+        color: 12388653,
+        title: `__${command.name}__`,
+        description: command.help,
+        fields: [{
+          name: 'Usage',
+          value: command.usage.join('\n'),
+        }],
+      },
+    });
+    return;
+  } else { // Show only enabled commands
+    const enabledCommands = client.commands.filter(cmd => !db.commandIsDisabled(message.guild, cmd.name));
+    pages = _.chunk(enabledCommands, commandsPerPage);
   }
 
+  // Parse the commands into embed message data
+  pages = pages.map((page) => {
+    const fields = page.map(command => ({
+      name: `__${command.name}__`,
+      value: `Description: ${command.description}\nSyntax: \`${command.syntax}\``,
+    }));
 
-}
+    return {
+      embed: {
+        color: 12388653,
+        author: {
+          name: 'Click Here For Full List',
+          url: 'http://bit.ly/reapercommands',
+        },
+        fields,
+      },
+    };
+  });
+
+  // Send the first help page with buttons that display other pages when clicked
+  message.channel.send(pages[0]).then(async (msg) => {
+    /*
+    TODO: fix this so that ESLint doesnt freak out.
+    For some reason await really only works with for..of
+    */
+    // react number buttons
+    for (const [index, _] of pages.entries()) {
+      await msg.react(buttons[index]);
+    }
+
+    // react delete button
+    await msg.react(reactions.x);
+    msg.delete(60000).catch();
+
+    // Collect reactions for the help message
+    const collector = msg.createReactionCollector((reaction, user) => user !== client.user);
+
+    collector.on('collect', async (messageReaction) => {
+      // If the x button is pressed, remove the message.
+      if (messageReaction.emoji.name === reactions.x) {
+        msg.delete(); // Delete the message
+        collector.stop(); // Get rid of the collector.
+        return;
+      }
+
+      // Get the index of the page by button pressed
+      const pageIndex = buttons.indexOf(messageReaction.emoji.name);
+
+      // Return if emoji is irrelevant or the page doesnt exist (number too high)
+      if (pageIndex === -1 || !pages[pageIndex]) return;
+
+      // Edit the message to show the new page.
+      msg.edit(pages[pageIndex]);
+
+      /*
+      Get the user that clicked the reaction and remove the reaction.
+      This matters because if you just do remove(), it will remove the bots
+      reaction which will have unintended side effects.
+      */
+      const notbot = messageReaction.users.filter(clientuser => clientuser !== client.user).first();
+      await messageReaction.remove(notbot);
+    });
+  }).catch(err => console.log(err));
+};

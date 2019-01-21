@@ -1,3 +1,13 @@
+  //metadata
+  module.exports = {
+    name: 'reset',
+    syntax: `${config.prefix}reset [@user]`,
+    description: 'Reset a rank. Admin only.',
+    help: 'Resets the rank of the tagged member. Admin only.',
+    usage: [
+      `\`${config.prefix}reset [@user]\` + reset this user's rank. Admin only.`,
+    ],
+  };
 exports.run = (client, message, args, sql) =>{
   if(!message.member.roles.some(r=>["Admin", "Lead Admin", "Co-Founder", "Founder"].includes(r.name)) ){
       return message.reply("The Reaper denies. He simply denies.");
@@ -15,8 +25,12 @@ exports.run = (client, message, args, sql) =>{
                   i++
                 }//while loop end
               })
-            message.reply(`${rMember.user.username} has been reset.`);
-        }
-      }
-    }
+            message.reply(`${rMember.user.username} has been reset.`)
+            .catch((err) => {
+              message.react('❌');
+              message.channel.send(err.message);
+          });
+        };
+      };
+    };
   

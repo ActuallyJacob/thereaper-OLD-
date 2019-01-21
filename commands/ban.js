@@ -1,5 +1,16 @@
 const Discord = require('discord.js')
 
+// Metadata
+module.exports = {
+  name: 'ban',
+  description: 'Ban a member. Admin only.',
+  syntax: `${config.prefix}ban [@user] {reason}`,
+  help: 'Bans the tagged user from the server permanently, to unban they need to be manually updated.',
+  usage: [
+    `\`${config.prefix}ban @user [reason]\` + bans the given user with reason.`,
+  ],
+};
+
 module.exports.run = async (client, message, args) => {
   if(!message.member.hasPermission("BAN_MEMBERS")) return message.reply("`The Reaper denies your futile attempt to alter history.`");
   let member = message.mentions.members.first() || message.guild.members.get(args[0]);
@@ -13,9 +24,9 @@ module.exports.run = async (client, message, args) => {
   
   await member.ban(reason)
     .catch(error => message.reply(`The Reaper couldn't ban that user ${message.author} because of : ${error}`));
-  message.reply(`The Reaper has banned ${member.user.tag} upon request of ${message.author.tag} because: ${reason}`);
-}
-
-module.exports.help = {
-    name: "ban"
-}
+  message.reply(`The Reaper has banned ${member.user.tag} upon request of ${message.author.tag} because: ${reason}`)
+  .catch((err) => {
+    message.react('❌');
+    message.channel.send(err.message);
+  });
+};

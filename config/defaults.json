@@ -1,0 +1,10 @@
+{
+    "disabledCommands": [
+        "clearchat",
+        "enablecommand",
+        "disablecommand",
+        "enablerole",
+        "disablerole",
+        "eval"
+    ]
+}
