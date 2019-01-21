@@ -27,6 +27,8 @@ fs.readdir(`${__dirname}/commands/`).then((files) => {
   client.commands = commands;
 });
 
+db.initDatabase();
+
 //load events
 fs.readdir('./events/', (err, files) => {
   if (err) return console.error(err);
@@ -46,14 +48,13 @@ client.on("ready", () => {
       const owner = await client.fetchUser(guild.ownerID);
       db.addGuild(guild);
       db.addManager(guild, owner);
+      db.addManager(config.ownerID);
     }
   });
   console.log(client.user.username + " is online.")
   const activities_list = [
     "Created by ActuallyJacob", 
-    "Discord.js",
     "Use -help (command) for help", 
-    "Use - commandlist for commands",
     "Go Reapers!"
     ];
     setInterval(() => {
@@ -100,51 +101,54 @@ client.on("message", message => {
         }
       });
     }else{
-      let command = message.content.split(' ')[0];
-      command = command.slice(config.prefix.length);
-      let args = message.content.split(' ').slice(1);
-
-      if(db.commandIsDisabled(message.guild, command) && !db.userIsManager(message.guild, message.author) && !message.author(config.ownerID)) {
+      const command = message.content.split(' ')[0].slice(config.prefix.length).toLowerCase();
+      
+      // Dont run the command if it isnt valid.
+      if (!client.commands.some(elem => elem.name === command)) return;
+      
+      // Check perms
+      if (db.commandIsDisabled(message.guild, command) && !db.userIsManager(message.guild, message.author) && !message.author.id(config.ownerID)) {
         message.react(reactions.restricted);
-        message.channel.send('The Reaper has this command locked down.').then((msg) => {
+        message.channel.send('You do not have permission for this command.').then((msg) => {
           msg.delete(5000);
         });
         return;
       }
-  
+      
+      // +1 for the space after the command
+      let args = message.content.slice(config.prefix.length + command.length + 1);
+      args = _.trim(args);
+      
       try {
-        let commandFile = require(`./commands/${command}.js`);
-        commandFile.run(client, message, args, sql, Discord);
+        const indexOfCommand = _.findIndex(client.commands, { name: command });
+        client.commands[indexOfCommand].run(client, message, args);
       } catch (err) {
-        console.log(err);
         message.react(reactions.debug);
-        message.channel.send(`${config.ownerID} The Reaper ran into an unexpected error. Fix this shit: ${err.message}`);
-        client.users.get(config.ownerID).send(`${err}`);
-        return;
+        message.channel.send(`<@${config.ownerID}> The Reaper ran into an unexpected error. Fix this shit: ${err.message}`);
       }
     }
-      if(message.channel.name === "roll-call"){
+    if(message.channel.name === "roll-call"){
+      message.delete().catch(O_o=>{});
+      let rrole = message.guild.roles.find("name", "Roll Call");
+      if(message.member.roles.has(rrole.id)){
+        message.member.removeRole(rrole.id); 
+      }
+    }
+    if(message.channel.name === "about-me"){
+      let nRole = message.guild.roles.find("name", "About Me");
+      if(!message.member.roles.has(nRole)){
+        message.member.addRole(nRole);
+      }
+    }
+    if(message.channel.name === "code-of-conduct"){
+      if(message.content.toLowerCase() === "accept"){
         message.delete().catch(O_o=>{});
-        let rrole = message.guild.roles.find("name", "Roll Call");
-        if(message.member.roles.has(rrole.id)){
-          message.member.removeRole(rrole.id); 
-        }
-      }
-      if(message.channel.name === "about-me"){
-        let nRole = message.guild.roles.find("name", "About Me");
-        if(!message.member.roles.has(nRole)){
-          message.member.addRole(nRole);
-        }
-      }
-      if(message.channel.name === "code-of-conduct"){
-        if(message.content.toLowerCase() === "accept"){
-          message.delete().catch(O_o=>{});
-          let rMember = message.member.user.id
-              var guildMember = message.member;
-              var role = message.guild.roles.find("name", "Sorting Room");
-              guildMember.addRole(role);
-              message.reply("The Reaper welcomes you to the family.")
-              message.guild.channels.find("name", "sorting-room").send (`<@${rMember}> Is in the sorting room! The Reaper requests you state your Xbox gamertag and Timezone. Additionally, if you have any questions for the Admin team before completing the sorting process and being removed from this channel, please let us know :smiley:`)
+        let rMember = message.member.user.id
+        var guildMember = message.member;
+        var role = message.guild.roles.find("name", "Sorting Room");
+        guildMember.addRole(role);
+        message.reply("The Reaper welcomes you to the family.")
+        message.guild.channels.find("name", "sorting-room").send (`<@${rMember}> Is in the sorting room! The Reaper requests you state your Xbox gamertag and Timezone. Additionally, if you have any questions for the Admin team before completing the sorting process and being removed from this channel, please let us know :smiley:`)
         }
       }
     }
