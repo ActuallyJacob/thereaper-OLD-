@@ -7,7 +7,7 @@ module.exports = {
   name: 'disablecommand',
   description: 'Disable a command.',
   syntax: `${config.prefix}disablecommand [command]`,
-  help: 'When a command is disabled, it is added to the database and disallows anyone who is not a bot manager access to it. Admin only.',
+  help: 'When a command is disabled, it is added to the database and disallows anyone who is not a bot manager access to it. Jacob only.',
   usage: [
     `\`${config.prefix}disablecommand [command]\` + Disables the command.`,
   ],

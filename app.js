@@ -117,7 +117,7 @@ client.on("message", message => {
       if (!client.commands.some(elem => elem.name === command)) return;
       
       // Check perms
-      if (db.commandIsDisabled(message.guild, command) && !message.author.id === config.ownerID) {
+      if (db.commandIsDisabled(message.guild, command) && !message.author.id === config.ownerID || config.Wozzy || config.East) {
         message.react(reactions.restricted);
         message.channel.send('You do not have permission for this command.').then((msg) => {
           msg.delete(5000);
