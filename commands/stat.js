@@ -1,6 +1,7 @@
 const { version } = require("discord.js");
 require("moment-duration-format");
 const moment = require("moment");
+const config = require('../config/config');
 
 //metadata
 module.exports = {
