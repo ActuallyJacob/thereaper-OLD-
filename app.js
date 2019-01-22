@@ -12,8 +12,19 @@ const reactions = require('./modules/reactions');
 const levelerCore = require('./functions/levelSystem');
 
 //databases
-sql.open(`./modules/levelDB.sqlite`);
+sql.open(`./modules/mainDB.sqlite`);
 const db = require('./modules/dbcontroller');
+
+//for the levelcore
+fs.readdir('./events/', (err, files) => {
+  if (err) return console.error(err);
+  files.forEach(file => {
+    let eventFunction = require(`./events/${file}`);
+    let eventName = file.split('.')[0];
+
+    client.on(eventName, (...args) => eventFunction.run(client, ...args, sql));
+  });
+});
 
 // Read all the commands and put them into the client
 fs.readdir(`${__dirname}/commands/`).then((files) => {
@@ -120,8 +131,10 @@ client.on("message", message => {
       
       try {
         const indexOfCommand = _.findIndex(client.commands, { name: command });
-        client.commands[indexOfCommand].run(client, message, args);
+        client.commands[indexOfCommand].run(client, message, args, sql, Discord);
       } catch (err) {
+        console.log(err);
+        client.users.get(config.ownerID).send(`${err}`);
         message.react(reactions.debug);
         message.channel.send(`<@${config.ownerID}> The Reaper ran into an unexpected error. Fix this shit: ${err.message}`);
       }
@@ -181,7 +194,7 @@ client.on('guildMemberAdd', member => {
       .setColor('RANDOM')
       .setThumbnail(memberavatar)
       .addField(':bust_in_silhouette: | name: ', `${member}`)
-      .addField(':microphone2: | Welcome!', 'Welcome to the Reaper Clan server!\nPlease feel free to tell us about yourself in the #about-me tab and contact an Admin if you do!\nTake a look around and dont forget to check out our #code-of-conduct and #clan-info tabs.\nIf your Discord name is different to yur GamerTag please change your nickname to resemble to your Xbox profile, followed by your timezone. IE: GamerTag (timezone). Enjoy The reaper clan.')
+      .addField(':microphone2: | Welcome!', 'Welcome to the Reaper Clan server!\nPlease feel free to tell us about yourself in the <#524619664462970886> tab to introduce yourself to your fellow Reapers!\nTake a look around and dont forget to check out our <#526258822663241741> tab for more information.\nIf your Discord name is different to yur GamerTag please change your nickname to resemble to your Xbox profile, followed by your timezone. IE: GamerTag (timezone). or ask an Admin Enjoy The reaper clan!')
       .addField(':family_mwgb: | You are member number:', `${member.guild.memberCount}`)
       .setFooter(`Server: ${member.guild.name}`)
       .setTimestamp()
