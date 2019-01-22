@@ -17,6 +17,11 @@ module.exports = {
 };
 
 module.exports.run = (client, message, args) => {
+  message.delete().catch(O_o=>{});
+  if(!message.guild.channel === "name", "the-reaper"){
+    return message.reply("This cannot be used here, Guardian.")
+  }
+  else{
   const buttons = [
     reactions.zero, reactions.one,
     reactions.two, reactions.three,
@@ -113,4 +118,4 @@ module.exports.run = (client, message, args) => {
       await messageReaction.remove(notbot);
     });
   }).catch(err => console.log(err));
-};
+}};

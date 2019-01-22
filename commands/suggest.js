@@ -12,6 +12,11 @@ module.exports = {
 };
 
 module.exports.run = async (client, message, args) => {
+  if(!message.guild.channel === "name", "the-reaper"){
+    var channel = message.guild.channels.find("name", "the-reaper")
+    message.reply(`The Reaper asks that you please usse this command in: ${channel}`)
+  }
+  else{
   if (args) {
     const dev = await client.fetchUser(config.ownerID);
     dev.send(`__**Suggestion:**__\n**Author:** ${message.author.username} <${message.author.id}>\n**Description:** ${args}`).then(() => {
@@ -22,4 +27,4 @@ module.exports.run = async (client, message, args) => {
       msg.delete(10000);
     });
   }
-};
+}};
