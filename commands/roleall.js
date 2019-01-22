@@ -18,7 +18,7 @@ module.exports.run = async (client, message, args) => {
   }
   else{
     let gRole = message.mentions.roles.first();
-    if(!gRole) return message.reply("The Reaper could not locate the requested role. `Attempt again.`");
+    if(!gRole) return message.reply("The Reaper could not locate the requested role/none was established. `Attempt again.`");
 
     if (!gRole) return message.channel.send(`**${message.author.username}**, role not found`);
     

@@ -20,10 +20,8 @@ module.exports.run = async (client, message, args) => {
       let rMember = message.guild.member(message.mentions.users.first()) 
       message.guild.members.get(args[0]);
       if(!rMember) return message.reply("The Reaper could not find that user. `Attempt again.`");
-      let role = args.join(" ").slice(22);
-      if(!role) return message.reply("The Reaper wishes for a role to be established. `Attempt again.`");
       let gRole = message.mentions.roles.first();
-      if(!gRole) return message.reply("The Reaper could not locate the requested role. `Attempt again.`");
+      if(!gRole) return message.reply("The Reaper could not locate the requested role/one was not established. `Attempt again.`");
       let fRole = message.guild.roles.find("name", "Sorting Room");
       
       if(rMember.roles.has(fRole.id)){
