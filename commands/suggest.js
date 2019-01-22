@@ -12,7 +12,7 @@ module.exports = {
 };
 
 module.exports.run = async (client, message, args) => {
-  if(!message.guild.channel === "name", "the-reaper"){
+  if(!message.guild.name === "the-reaper"){
     var channel = message.guild.channels.find("name", "the-reaper")
     message.reply(`The Reaper asks that you please usse this command in: ${channel}`)
   }

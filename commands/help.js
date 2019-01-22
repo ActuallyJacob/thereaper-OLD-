@@ -18,7 +18,7 @@ module.exports = {
 
 module.exports.run = (client, message, args) => {
   message.delete().catch(O_o=>{});
-  if(!message.guild.channel === "name", "the-reaper"){
+  if(!message.channel.name === "the-reaper"){
     return message.reply("This cannot be used here, Guardian.")
   }
   else{
