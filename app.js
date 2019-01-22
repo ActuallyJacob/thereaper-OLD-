@@ -12,7 +12,7 @@ const reactions = require('./modules/reactions');
 const levelerCore = require('./functions/levelSystem');
 
 //databases
-sql.open(`./modules/mainDB.sqlite`);
+sql.open(`./modules/mainDB.sqlite.example`);
 const db = require('./modules/dbcontroller');
 
 //for the levelcore
