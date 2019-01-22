@@ -117,13 +117,14 @@ client.on("message", message => {
       if (!client.commands.some(elem => elem.name === command)) return;
       
       // Check perms
-      if (db.commandIsDisabled(message.guild, command) && !message.author.id === config.ownerID || config.Wozzy || config.East) {
+      if (db.commandIsDisabled(message.guild, command) && !message.author.id === config.ownerID) {
         message.react(reactions.restricted);
         message.channel.send('You do not have permission for this command.').then((msg) => {
           msg.delete(5000);
         });
         return;
       }
+      else{
       
       // +1 for the space after the command
       let args = message.content.slice(config.prefix.length + command.length + 1);
@@ -139,6 +140,7 @@ client.on("message", message => {
         message.channel.send(`<@${config.ownerID}> The Reaper ran into an unexpected error. Fix this shit: ${err.message}`);
       }
     }
+  }
     if(message.channel.name === "roll-call"){
       message.delete().catch(O_o=>{});
       let rrole = message.guild.roles.find("name", "Roll Call");
