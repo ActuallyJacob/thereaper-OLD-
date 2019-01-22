@@ -22,7 +22,7 @@ module.exports.run = (client, message, args) => {
 
   commands.forEach((commandName) => {
     // Return if the command doesnt exist.
-    if (!clientcommands.some(elem => elem.name === commandName)) {
+    if (!client.commands.some(elem => elem.name === commandName)) {
       message.react('❓');
       message.channel.send(`"${commandName}" is not a valid command, Reaper!.`).then((msg) => {
         msg.delete(5000); // Delete the message ten seconds

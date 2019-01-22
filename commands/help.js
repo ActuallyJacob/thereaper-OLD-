@@ -30,9 +30,9 @@ module.exports.run = (client, message, args) => {
 
   // Switch for different arguments
   if (args === '-a') { // Show all commands
-    pages = _.chunk(clientcommands, commandsPerPage);
-  } else if (clientcommands.some(cmd => cmd.name === args.toLowerCase())) { // Show help for a specific command
-    const command = _.find(clientcommands, { name: args.toLowerCase() });
+    pages = _.chunk(client.commands, commandsPerPage);
+  } else if (client.commands.some(cmd => cmd.name === args.toLowerCase())) { // Show help for a specific command
+    const command = _.find(client.commands, { name: args.toLowerCase() });
     message.channel.send({
       embed: {
         color: 12388653,
@@ -46,7 +46,7 @@ module.exports.run = (client, message, args) => {
     });
     return;
   } else { // Show only enabled commands
-    const enabledCommands = clientcommands.filter(cmd => !db.commandIsDisabled(message.guild, cmd.name));
+    const enabledCommands = client.commands.filter(cmd => !db.commandIsDisabled(message.guild, cmd.name));
     pages = _.chunk(enabledCommands, commandsPerPage);
   }
 

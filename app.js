@@ -106,7 +106,7 @@ client.on("message", message => {
       if (!client.commands.some(elem => elem.name === command)) return;
       
       // Check perms
-      if (db.commandIsDisabled(message.guild, command) && !db.userIsManager(message.guild, message.author) && !message.author.id(config.ownerID)) {
+      if (db.commandIsDisabled(message.guild, command) && !db.userIsManager(message.guild, message.author)) {
         message.react(reactions.restricted);
         message.channel.send('You do not have permission for this command.').then((msg) => {
           msg.delete(5000);
