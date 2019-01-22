@@ -36,7 +36,6 @@ client.on("ready", () => {
       const owner = await client.fetchUser(guild.ownerID);
       db.addGuild(guild);
       db.addManager(guild, owner);
-      db.addManager(config.ownerID);
     }
   });
   console.log(client.user.username + " is online.")
@@ -97,12 +96,12 @@ client.on("message", message => {
             commands.push(command);
           }
         });
-        client.commands = commands;
+        const clientcommands = commands;
 
       const command = message.content.split(' ')[0].slice(config.prefix.length).toLowerCase();
       
       // Dont run the command if it isnt valid.
-      if (!client.commands.some(elem => elem.name === command)) return;
+      if (!clientcommands.some(elem => elem.name === command)) return;
       
       // Check perms
       if (db.commandIsDisabled(message.guild, command) && !db.userIsManager(message.guild, message.author) && !message.author.id(config.ownerID)) {
@@ -118,8 +117,8 @@ client.on("message", message => {
       args = _.trim(args);
       
       try {
-        const indexOfCommand = _.findIndex(client.commands, { name: command });
-        client.commands(indexOfCommand).run(client, message, args);
+        const indexOfCommand = _.findIndex(clientcommands, { name: command });
+        clientcommands(indexOfCommand).run(client, message, args);
       } catch (err) {
         message.react(reactions.debug);
         message.channel.send(`<@${config.ownerID}> The Reaper ran into an unexpected error. Fix this shit: ${err.message}`);
