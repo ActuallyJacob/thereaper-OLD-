@@ -12,7 +12,7 @@ const reactions = require('./modules/reactions');
 const levelerCore = require('./functions/levelSystem');
 
 //databases
-sql.open(`./modules/levelDB.sqlite.example`);
+sql.open(`./modules/levelDB.sqlite`);
 const db = require('./modules/dbcontroller');
 
 // Read all the commands and put them into the client
@@ -120,7 +120,7 @@ client.on("message", message => {
       
       try {
         const indexOfCommand = _.findIndex(client.commands, { name: command });
-        client.commands(indexOfCommand).run(client, message, args);
+        client.commands[indexOfCommand].run(client, message, args);
       } catch (err) {
         message.react(reactions.debug);
         message.channel.send(`<@${config.ownerID}> The Reaper ran into an unexpected error. Fix this shit: ${err.message}`);
