@@ -4,6 +4,17 @@ const config = require('../config/config');
 
 let warns = JSON.parse(fs.readFileSync("./modules/warnings.json", "utf8"));
 
+//metadata
+module.exports = {
+  name: 'warnlevel',
+  syntax: `${config.prefix}warnlevel [@user]`,
+  description: 'Displays warning level. Admin onyl.',
+  help: 'Displays the level of warning the tagged user has. Admin only.',
+  usage: [
+    `\`${config.prefix}warnlevel [@user]\` + Displays warning level.`,
+  ],
+};
+
 module.exports.run = async (bot, message, args) => {
 
   if(!message.member.hasPermission("MANAGE_MESSAGES")) return message.reply("The Reaper ignores you.");

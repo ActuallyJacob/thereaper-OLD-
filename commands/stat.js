@@ -1,6 +1,19 @@
 const { version } = require("discord.js");
 require("moment-duration-format");
 const moment = require("moment");
+
+//metadata
+module.exports = {
+    name: 'stat',
+    syntax: `${config.prefix}stat`,
+    description: 'Shows stats on The Reaper.',
+    help: 'Purely for development statistics, but made visible to everyone. ',
+    usage: [
+      `\`${config.prefix}stats\` + Just general statistics.`,
+    ],
+  };
+
+  
 exports.run = (client, message, args, sql) =>{
     if(message.channel.name === 'the-reaper'){
             const duration = moment.duration(client.uptime).format(" D [days], H [hrs], m [mins], s [secs]");
@@ -15,5 +28,8 @@ exports.run = (client, message, args, sql) =>{
 else{
     var channel = message.guild.channels.find("name", "the-reaper")
     message.reply(`The Reaper forbids this command from being used outside ${channel}`)
-}
-}
+    .catch((err) => {
+        message.react('?');
+        message.channel.send(err.message);
+    });
+}};

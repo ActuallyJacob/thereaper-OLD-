@@ -4,6 +4,17 @@ const ms = require("ms");
 let warns = JSON.parse(fs.readFileSync("./modules/warnings.json", "utf8"));
 const config = require('../config/config');
 
+//metadata
+module.exports = {
+  name: 'warn',
+  syntax: `${config.prefix}warn [@user {reason}]`,
+  description: 'Sets a warning on a user. Admin only.',
+  help: 'Sets a warning to the tagged user for a reason. 2 warnings gives a temp mute and 3 gives a ban. Admin only.',
+  usage: [
+    `\`${config.prefix}warn [@user] {reason}\` + Gives a warning.`,
+  ],
+};
+
 module.exports.run = async (bot, message, args) => {
   if(!message.member.roles.some(r=>["Admin", "Lead Admin", "Co-Founder", "Founder"].includes(r.name)) ){
     return message.reply("The Reaper ignores you.")
@@ -55,10 +66,9 @@ module.exports.run = async (bot, message, args) => {
   if(warns[wUser.id].warns == 3){
     message.guild.member(wUser).ban(reason);
     message.reply(`<@${wUser.id}> has been banned.`)
-  }
-
-}
-
-module.exports.help = {
-  name: "warn"
-}
+    .catch((err) => {
+      message.react('?');
+      message.channel.send(err.message);
+  });
+  };
+};
