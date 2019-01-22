@@ -120,7 +120,7 @@ class DBController {
 
   // Adds a bot manager to the guild (like an admin)
   static addManager(guild, user) {
-    db.get('guilds').find({
+    return db.get('guilds').find({
       guildID: guild.id,
     }).get('managers').push(user.id)
       .write();

@@ -15,18 +15,6 @@ const levelerCore = require('./functions/levelSystem');
 sql.open(`./modules/levelDB.sqlite.example`);
 const db = require('./modules/dbcontroller');
 
-// Read all the commands and put them into the client
-fs.readdir(`${__dirname}/commands/`).then((files) => {
-  const commands = [];
-  files.forEach((file) => {
-    if (file.endsWith('.js')) {
-      const command = require(`${__dirname}/commands/${file}`);
-      commands.push(command);
-    }
-  });
-  client.commands = commands;
-});
-
 db.initDatabase();
 
 //load events
@@ -101,6 +89,16 @@ client.on("message", message => {
         }
       });
     }else{
+      fs.readdir(`${__dirname}/commands/`).then((files) => {
+        const commands = [];
+        files.forEach((file) => {
+          if (file.endsWith('.js')) {
+            const command = require(`${__dirname}/commands/${file}`);
+            commands.push(command);
+          }
+        });
+        client.commands = commands;
+
       const command = message.content.split(' ')[0].slice(config.prefix.length).toLowerCase();
       
       // Dont run the command if it isnt valid.
@@ -126,7 +124,8 @@ client.on("message", message => {
         message.react(reactions.debug);
         message.channel.send(`<@${config.ownerID}> The Reaper ran into an unexpected error. Fix this shit: ${err.message}`);
       }
-    }
+    });
+  }
     if(message.channel.name === "roll-call"){
       message.delete().catch(O_o=>{});
       let rrole = message.guild.roles.find("name", "Roll Call");
