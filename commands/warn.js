@@ -34,11 +34,11 @@ exports.run = (client, message, args) => {
     var warnSuccessfulEmbed = new Discord.RichEmbed() // Creates the embed thats returned to the person warning if its sent.
         .setColor(embedColor)
         .setTitle('User Successfully Warned!');
-        if(!channel.exists){
+        if(channel.exists){
             message.channel.send(warnSuccessfulEmbed);
         }
         else{
             channel.send(warnSuccessfulEmbed);
         }
-    message.delete(); // Deletes the command
+    message.delete(5000); // Deletes the command
 }
