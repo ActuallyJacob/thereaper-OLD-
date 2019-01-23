@@ -6,70 +6,68 @@ const _ = require('lodash');
 
 //other constants
 const client = new Discord.Client();
-const talkedRecently = new Set();
 const config = require('./config/config.json');
 const reactions = require('./modules/reactions');
 
-// Read all the commands and put them into the client
-fs.readdir(`${__dirname}/commands/`).then((files) => {
-  const commands = [];
-  files.forEach((file) => {
-    if (file.endsWith('.js')) {
-      const command = require(`${__dirname}/commands/${file}`);
-      commands.push(command);
-    }
-  });
-  client.commands = commands;
-});
-
-//activity and console
-client.on("ready", () => {
-  console.log(client.user.username + " is online.")
-  console.log("Commands loaded: " + client.commands)
-  const activities_list = [
-    "Created by ActuallyJacob", 
-    "Use -help (command) for help", 
-    "Go Reapers!"
+  // Read all the commands and put them into the client
+  fs.readdir(`${__dirname}/commands/`).then((files) => {
+    const commands = [];
+    files.forEach((file) => {
+      if (file.endsWith('.js')) {
+        const command = require(`${__dirname}/commands/${file}`);
+        commands.push(command);
+      }
+    });
+  const clientcommands = commands;
+  
+  //activity and console
+  client.on("ready", () => {
+    console.log(client.user.username + " is online.")
+    console.log("Commands loaded: " + clientcommands)
+    const activities_list = [
+      "Created by ActuallyJacob", 
+      "Use -help (command) for help", 
+      "The reaper"
     ];
     setInterval(() => {
       const index = Math.floor(Math.random() * (activities_list.length - 1) + 1); // generates a random number between 1 and the length of the activities array list (in this case 5).
       client.user.setActivity(activities_list[index]); // sets bot's activities to one of the phrases in the arraylist.
     }, 10000); // Runs this every 10 seconds.
-});
-
-//command control and message events
-client.on("message", message => {
-  if (message.author.bot) return;
-  if (message.channel.type === 'dm'){
-    if (!message.content.startsWith(config.prefix)){
-      client.users.get(config.ownerID).send(`Message Dm'd by: ${message.author.id}, ${message.author.username}, content: ${message.content}`);
+  });
+  
+  //command control and message events
+  client.on("message", message => {
+    if (message.author.bot) return;
+    if (message.channel.type === 'dm'){
+      if (!message.content.startsWith(config.prefix)){
+        client.users.get(config.ownerID).send(`Message Dm'd by: ${message.author.id}, ${message.author.username}, content: ${message.content}`);
+      }else{
+        return message.author.send("You cannot use commands in DM, if you want this to be a thing please suggest it to Jacob using **-suggest** in #the-reaper.");
+      }
     }else{
-      return message.author.send("You cannot use commands in DM, if you want this to be a thing please suggest it to Jacob using **-suggest** in #the-reaper.");
-    }
-  }else{
-    if (!message.content.startsWith(config.prefix)){
-      return;
-    }else{
-      const command = message.content.split(' ')[0].slice(config.prefix.length).toLowerCase();
+      if (!message.content.startsWith(config.prefix)){
+        return;
+      }else{
+        const command = message.content.split(' ')[0].slice(config.prefix.length).toLowerCase();
+        
+        // Dont run the command if it isnt valid.
+        if (!clientcommands.some(elem => elem.name === command)) return;
+        
+        // +1 for the space after the command
+        let args = message.content.slice(config.prefix.length + command.length + 1);
+        args = _.trim(args);
       
-      // Dont run the command if it isnt valid.
-      if (!client.commands.some(elem => elem.name === command)) return;
-      
-      // +1 for the space after the command
-      let args = message.content.slice(config.prefix.length + command.length + 1);
-      args = _.trim(args);
-      
-      try {
-        const indexOfCommand = _.findIndex(client.commands, { name: command });
-        client.commands[indexOfCommand].run(client, message, args, sql, Discord);
-      } catch (err) {
-        console.log(err);
-        client.users.get(config.ownerID).send(`${err}`);
-        message.react(reactions.debug);
-        message.channel.send(`<@${config.ownerID}> The Reaper ran into an unexpected error. Fix this shit: ${err.message}`);
+        try {
+          const indexOfCommand = _.findIndex(clientcommands, { name: command });
+          clientcommands[indexOfCommand].run(client, message, args, sql, Discord);
+        } catch (err) {
+          console.log(err);
+          client.users.get(config.ownerID).send(`${err}`);
+          message.react(reactions.debug);
+          message.channel.send(`<@${config.ownerID}> The Reaper ran into an unexpected error. Fix this shit: ${err.message}`);
+        }
       }
     }
-  }
     if(message.channel.name === "roll-call"){
       message.delete().catch(O_o=>{});
       let rrole = message.guild.roles.find("name", "Roll Call");
@@ -95,6 +93,7 @@ client.on("message", message => {
         }
       }
     });
+  });
 
 //welcome message
 client.on('guildMemberAdd', member => {
