@@ -73,14 +73,6 @@ client.on("message", message => {
       // Dont run the command if it isnt valid.
       if (!client.commands.some(elem => elem.name === command)) return;
       
-      // check db disabled
-      if (db.commandIsDisabled) {
-        message.react(reactions.restricted);
-        message.channel.send("This isn't a reaper command.").then((msg) => {
-          msg.delete(5000);
-        });
-        return;
-      }
       else{
       
       // +1 for the space after the command
