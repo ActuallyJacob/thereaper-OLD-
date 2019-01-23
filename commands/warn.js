@@ -24,6 +24,7 @@ module.exports.run = async (bot, message, args) => {
   if(wUser.roles.some(r=>["Admin", "Lead Admin", "Co-Founder", "Founder"].includes(r.name)) ){
     return message.reply("The Reaper cannot warn this person.")
   }
+  var args = wUser;
   let reason = args.join(" ").slice(22);
 
   if(!warns[wUser.id]) warns[wUser.id] = {
