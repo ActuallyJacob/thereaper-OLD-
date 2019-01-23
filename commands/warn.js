@@ -1,7 +1,18 @@
 const Discord = require('discord.js');
 const fs = require('fs-extra');
 
-exports.run = (client, message, args) => {
+// Metadata
+module.exports = {
+    name: 'warn',
+    description: 'Warn a member. Admin only.',
+    syntax: `${config.prefix}warn {'user} [reason]`,
+    help: 'Documents a warning to a member of the server with reason.',
+    usage: [
+      `\`${config.prefix}warn {user} [reason]\` + Warn a member.`,
+    ],
+  };
+
+module.exports.run = (client, message, args) => {
     var embedColor = '#ffffff' // Change this to change the color of the embeds!
     
     var missingPermissionsEmbed = new Discord.RichEmbed() // Creates the embed thats sent if the user is missing permissions
@@ -23,14 +34,6 @@ exports.run = (client, message, args) => {
     if(!reason) return message.channe.send(missingArgsEmbed); // Triggers if the user dosn't provide a reason for the warning
     let channel = message.guild.channels.find("name", "bot-admins");
 
-    var warningEmbed = new Discord.RichEmbed() // Creates the embed that's DM'ed to the user when their warned!
-        .setColor(embedColor)
-        .setAuthor(message.author.username, message.author.avatarURL)
-        .setTitle(`You've been warned in ${message.guild.name}`)
-        .addField('Warned by', message.author.tag)
-        .addField('Reason', reason)
-        .setTimestamp();
-    mentioned.send(warningEmbed); // DMs the user the above embed!  
     var warnSuccessfulEmbed = new Discord.RichEmbed() // Creates the embed thats returned to the person warning if its sent.
         .setColor(embedColor)
         .setTitle('User Successfully Warned!');
