@@ -1,5 +1,5 @@
 const _ = require('lodash');
-const fs = require('fs-extra');
+const db = require('../modules/dbcontroller.js');
 const config = require('../config/config');
 const reactions = require('../modules/reactions');
 
@@ -17,102 +17,105 @@ module.exports = {
 };
 
 module.exports.run = (client, message, args) => {
-    // Read all the commands and put them into the client
-    fs.readdir(`${__dirname}/commands/`).then((files) => {
-      const commands = [];
-      files.forEach((file) => {
-        if (file.endsWith('.js')) {
-          const command = require(`${__dirname}/commands/${file}`);
-          commands.push(command);
-        }
-      });
-    const clientcommands = commands;
-    //Then the command itself
-    message.delete().catch(O_o=>{});
-    if(!message.channel.name === "the-reaper"){
-      return message.reply("This cannot be used here, Guardian.")
-    }
-    else{
-      const buttons = [
-        reactions.zero, reactions.one,
-        reactions.two, reactions.three,
-        reactions.four, reactions.five,
-        reactions.six, reactions.seven,
-        reactions.eight, reactions.nine,
-      ];
-      
-      const commandsPerPage = 8;
-      let pages;
-      
-      // Switch for different arguments
-      if (args === '-a') { // Show all commands
-        pages = _.chunk(clientcommands, commandsPerPage);
-      } else if (clientcommands.some(cmd => cmd.name === args.toLowerCase())) { // Show help for a specific command
-        const command = _.find(clientcommands, { name: args.toLowerCase() });
-        message.channel.send({
-          embed: {
-            color: 12388653,
-            title: `__${command.name}__`,
-            description: command.help,
-            fields: [{
-              name: 'Usage',
-              value: command.usage.join('\n'),
-            }],
-          },
-        });
-        return;
-      }
-      
-      // Parse the commands into embed message data
-      pages = pages.map((page) => {
-        const fields = page.map(command => ({
-          name: `__${command.name}__`,
-          value: `Description: ${command.description}\nSyntax: \`${command.syntax}\``,
-        }));
-        
-        return {
-          embed: {
-            color: 12388653,
-            author: {
-              name: 'Click Here For Full List',
-              url: 'http://bit.ly/reapercommands',
-            },
-            fields,
-          },
-        };
-      });
-      
-      // Send the first help page with buttons that display other pages when clicked
-      message.channel.send(pages[0]).then(async (msg) => {
-        // react number buttons
-        for (const [index, _] of pages.entries()) {
-          await msg.react(buttons[index]);
-        }
-        // react delete button
-        await msg.react(reactions.x);
-        msg.delete(60000).catch();
-        // Collect reactions for the help message
-        const collector = msg.createReactionCollector((reaction, user) => user !== client.user);
-        
-        collector.on('collect', async (messageReaction) => {
-          // If the x button is pressed, remove the message.
-          if (messageReaction.emoji.name === reactions.x) {
-            msg.delete(); // Delete the message
-            collector.stop(); // Get rid of the collector.
-            return;
-          }
-          // Get the index of the page by button pressed
-          const pageIndex = buttons.indexOf(messageReaction.emoji.name);
-          
-          // Return if emoji is irrelevant or the page doesnt exist (number too high)
-          if (pageIndex === -1 || !pages[pageIndex]) return;
-          
-          // Edit the message to show the new page.
-          msg.edit(pages[pageIndex]);
-          const notbot = messageReaction.users.filter(clientuser => clientuser !== client.user).first();
-          await messageReaction.remove(notbot);
-        });
-      }).catch(err => console.log(err));
+  message.delete().catch(O_o=>{});
+  if(!message.channel.name === "the-reaper"){
+    return message.reply("This cannot be used here, Guardian.")
+  }
+  else{
+  const buttons = [
+    reactions.zero, reactions.one,
+    reactions.two, reactions.three,
+    reactions.four, reactions.five,
+    reactions.six, reactions.seven,
+    reactions.eight, reactions.nine,
+  ];
+
+  const commandsPerPage = 8;
+  let pages;
+
+  // Switch for different arguments
+  if (args === '-a') { // Show all commands
+    pages = _.chunk(clientcommands, commandsPerPage);
+  } else if (clientcommands.some(cmd => cmd.name === args.toLowerCase())) { // Show help for a specific command
+    const command = _.find(clientcommands, { name: args.toLowerCase() });
+    message.channel.send({
+      embed: {
+        color: 12388653,
+        title: `__${command.name}__`,
+        description: command.help,
+        fields: [{
+          name: 'Usage',
+          value: command.usage.join('\n'),
+        }],
+      },
+    });
+    return;
+  } else { // Show only enabled commands
+    const enabledCommands = clientcommands.filter(cmd => !db.commandIsDisabled(message.guild, cmd.name));
+    pages = _.chunk(enabledCommands, commandsPerPage);
+  }
+
+  // Parse the commands into embed message data
+  pages = pages.map((page) => {
+    const fields = page.map(command => ({
+      name: `__${command.name}__`,
+      value: `Description: ${command.description}\nSyntax: \`${command.syntax}\``,
+    }));
+
+    return {
+      embed: {
+        color: 12388653,
+        author: {
+          name: 'Click Here For Full List',
+          url: 'http://bit.ly/reapercommands',
+        },
+        fields,
+      },
     };
   });
-};
+
+  // Send the first help page with buttons that display other pages when clicked
+  message.channel.send(pages[0]).then(async (msg) => {
+    /*
+    TODO: fix this so that ESLint doesnt freak out.
+    For some reason await really only works with for..of
+    */
+    // react number buttons
+    for (const [index, _] of pages.entries()) {
+      await msg.react(buttons[index]);
+    }
+
+    // react delete button
+    await msg.react(reactions.x);
+    msg.delete(60000).catch();
+
+    // Collect reactions for the help message
+    const collector = msg.createReactionCollector((reaction, user) => user !== client.user);
+
+    collector.on('collect', async (messageReaction) => {
+      // If the x button is pressed, remove the message.
+      if (messageReaction.emoji.name === reactions.x) {
+        msg.delete(); // Delete the message
+        collector.stop(); // Get rid of the collector.
+        return;
+      }
+
+      // Get the index of the page by button pressed
+      const pageIndex = buttons.indexOf(messageReaction.emoji.name);
+
+      // Return if emoji is irrelevant or the page doesnt exist (number too high)
+      if (pageIndex === -1 || !pages[pageIndex]) return;
+
+      // Edit the message to show the new page.
+      msg.edit(pages[pageIndex]);
+
+      /*
+      Get the user that clicked the reaction and remove the reaction.
+      This matters because if you just do remove(), it will remove the bots
+      reaction which will have unintended side effects.
+      */
+      const notbot = messageReaction.users.filter(clientuser => clientuser !== client.user).first();
+      await messageReaction.remove(notbot);
+    });
+  }).catch(err => console.log(err));
+}};
