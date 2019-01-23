@@ -9,7 +9,6 @@ const client = new Discord.Client();
 const talkedRecently = new Set();
 const config = require('./config/config.json');
 const reactions = require('./modules/reactions');
-const levelerCore = require('./functions/levelSystem');
 
 //databases
 sql.open(`./modules/mainDB.sqlite.example`);
