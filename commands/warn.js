@@ -1,4 +1,5 @@
 const Discord = require('discord.js');
+const config = require('../config/config');
 const fs = require('fs-extra');
 
 // Metadata

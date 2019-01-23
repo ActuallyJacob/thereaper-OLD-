@@ -86,11 +86,6 @@ client.on("message", message => {
     if (message.content.startsWith(config.prefix)){
       const command = message.content.split(' ')[0].slice(config.prefix.length).toLowerCase();
       
-      // Dont run the command if it isnt valid.
-      if (!client.commands.some(elem => elem.name === command)) return;
-      
-      else{
-      
       // +1 for the space after the command
       let args = message.content.slice(config.prefix.length + command.length + 1);
       args = _.trim(args);
@@ -130,8 +125,7 @@ client.on("message", message => {
         message.guild.channels.find("name", "sorting-room").send (`<@${rMember}> Is in the sorting room! The Reaper requests you state your Xbox gamertag and Timezone. Additionally, if you have any questions for the Admin team before completing the sorting process and being removed from this channel, please let us know :smiley:`)
         }
       }
-    }
-});
+    });
 
 //welcome message
 client.on('guildMemberAdd', member => {
