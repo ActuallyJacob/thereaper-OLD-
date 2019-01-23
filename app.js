@@ -6,6 +6,7 @@ const _ = require('lodash');
 
 //other constants
 const client = new Discord.Client();
+const talkedRecently = new Set();
 const config = require('./config/config.json');
 const reactions = require('./modules/reactions');
 
@@ -24,6 +25,7 @@ fs.readdir(`${__dirname}/commands/`).then((files) => {
 //activity and console
 client.on("ready", () => {
   console.log(client.user.username + " is online.")
+  console.log("Commands loaded: " + client.commands)
   const activities_list = [
     "Created by ActuallyJacob", 
     "Use -help (command) for help", 
@@ -42,10 +44,12 @@ client.on("message", message => {
     if (!message.content.startsWith(config.prefix)){
       client.users.get(config.ownerID).send(`Message Dm'd by: ${message.author.id}, ${message.author.username}, content: ${message.content}`);
     }else{
-      return;
+      return message.author.send("You cannot use commands in DM, if you want this to be a thing please suggest it to Jacob using **-suggest** in #the-reaper.");
     }
   }else{
     if (!message.content.startsWith(config.prefix)){
+      return;
+    }else{
       const command = message.content.split(' ')[0].slice(config.prefix.length).toLowerCase();
       
       // Dont run the command if it isnt valid.
