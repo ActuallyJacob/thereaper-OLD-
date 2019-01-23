@@ -6,7 +6,6 @@ const _ = require('lodash');
 
 //other constants
 const client = new Discord.Client();
-const talkedRecently = new Set();
 const config = require('./config/config.json');
 const reactions = require('./modules/reactions');
 
@@ -33,9 +32,7 @@ client.on("ready", () => {
   const guilds = client.guilds.array();
   guilds.forEach(async (guild) => {
     if (!db.guildExists(guild)) {
-      const owner = await client.fetchUser(guild.ownerID);
       db.addGuild(guild);
-      db.addManager(guild, owner);
     }
   });
   console.log(client.user.username + " is online.")
