@@ -6,25 +6,8 @@ const _ = require('lodash');
 
 //other constants
 const client = new Discord.Client();
-const talkedRecently = new Set();
 const config = require('./config/config.json');
 const reactions = require('./modules/reactions');
-const levelerCore = require('./functions/levelSystem');
-
-//databases
-sql.open(`./modules/mainDB.sqlite.example`);
-const db = require('./modules/dbcontroller');
-
-//for the levelcore
-fs.readdir('./events/', (err, files) => {
-  if (err) return console.error(err);
-  files.forEach(file => {
-    let eventFunction = require(`./events/${file}`);
-    let eventName = file.split('.')[0];
-
-    client.on(eventName, (...args) => eventFunction.run(client, ...args, sql));
-  });
-});
 
 // Read all the commands and put them into the client
 fs.readdir(`${__dirname}/commands/`).then((files) => {
@@ -38,29 +21,8 @@ fs.readdir(`${__dirname}/commands/`).then((files) => {
   client.commands = commands;
 });
 
-db.initDatabase();
-
-//load events
-fs.readdir('./events/', (err, files) => {
-  if (err) return console.error(err);
-  files.forEach(file => {
-    let eventFunction = require(`./events/${file}`);
-    let eventName = file.split('.')[0];
-
-    client.on(eventName, (...args) => eventFunction.run(client, ...args, sql));
-  });
-});
-
 //activity and console
 client.on("ready", () => {
-  const guilds = client.guilds.array();
-  guilds.forEach(async (guild) => {
-    if (!db.guildExists(guild)) {
-      const owner = await client.fetchUser(guild.ownerID);
-      db.addGuild(guild);
-      db.addManager(guild, owner);
-    }
-  });
   console.log(client.user.username + " is online.")
   const activities_list = [
     "Created by ActuallyJacob", 
@@ -71,16 +33,6 @@ client.on("ready", () => {
       const index = Math.floor(Math.random() * (activities_list.length - 1) + 1); // generates a random number between 1 and the length of the activities array list (in this case 5).
       client.user.setActivity(activities_list[index]); // sets bot's activities to one of the phrases in the arraylist.
     }, 10000); // Runs this every 10 seconds.
-});
-
-// When a guild adds the bot, add it to the db
-client.on('guildCreate', async (guild) => {
-  console.log('Added to new server!');
-  if (!db.guildExists(guild)) {
-    const owner = await client.fetchUser(guild.ownerID);
-    db.addGuild(guild);
-    db.addManager(guild, owner);
-  }
 });
 
 //command control and message events
@@ -94,37 +46,10 @@ client.on("message", message => {
     }
   }else{
     if (!message.content.startsWith(config.prefix)){
-      sql.all(`SELECT roleName FROM bListRoles WHERE guildID=${message.guild.id}`).then(rCheck=>{
-        var blRoles = rCheck.map(g=>g.roleName);
-        if(message.member.roles.some(r=>blRoles.includes(r.name))) {
-          return;
-        }else{
-          if (talkedRecently.has(message.author.id)) {
-            return;
-          }else{
-            levelerCore.scoreSystem(client, message, sql, Discord);
-            talkedRecently.add(message.author.id);
-            setTimeout(() => {
-            talkedRecently.delete(message.author.id);
-            }, 4000);
-          }
-        }
-      });
-    }else{
       const command = message.content.split(' ')[0].slice(config.prefix.length).toLowerCase();
       
       // Dont run the command if it isnt valid.
       if (!client.commands.some(elem => elem.name === command)) return;
-      
-      // Check perms
-      if (db.commandIsDisabled(message.guild, command) && !message.author.id === config.ownerID) {
-        message.react(reactions.restricted);
-        message.channel.send('You do not have permission for this command.').then((msg) => {
-          msg.delete(5000);
-        });
-        return;
-      }
-      else{
       
       // +1 for the space after the command
       let args = message.content.slice(config.prefix.length + command.length + 1);
@@ -165,8 +90,7 @@ client.on("message", message => {
         message.guild.channels.find("name", "sorting-room").send (`<@${rMember}> Is in the sorting room! The Reaper requests you state your Xbox gamertag and Timezone. Additionally, if you have any questions for the Admin team before completing the sorting process and being removed from this channel, please let us know :smiley:`)
         }
       }
-    }
-});
+    });
 
 //welcome message
 client.on('guildMemberAdd', member => {
