@@ -1,6 +1,7 @@
+const Discord = require('discord.js');
+const config = require('../config/config');
 const _ = require('lodash');
 const db = require('../modules/dbcontroller.js');
-const config = require('../config/config');
 const reactions = require('../modules/reactions');
 
 // Metadata

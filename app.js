@@ -3,6 +3,7 @@ const Discord = require('discord.js');
 const fs = require('fs-extra');
 const sql = require('sqlite');
 const _ = require('lodash');
+const { Client } = require('pg');
 
 //other constants
 const client = new Discord.Client();
@@ -12,6 +13,7 @@ const reactions = require('./modules/reactions');
 //databases
 sql.open(`./modules/mainDB.sqlite.example`);
 const db = require('./modules/dbcontroller');
+db.initDatabase();
 
 // Read all the commands and put them into the client
 fs.readdir(`${__dirname}/commands/`).then((files) => {
@@ -24,8 +26,6 @@ fs.readdir(`${__dirname}/commands/`).then((files) => {
   });
   client.commands = commands;
 });
-
-db.initDatabase();
 
 //activity and console
 client.on("ready", () => {
@@ -127,7 +127,7 @@ client.on("message", message => {
       }
     });
 
-//welcome message
+//welcome messages
 client.on('guildMemberAdd', member => {
   var channel = member.guild.channels.find('name', 'code-of-conduct');
   var rChannel = member.guild.channels.find('name', 'new-members-welcome');
@@ -161,6 +161,23 @@ client.on('guildMemberAdd', member => {
       .setTimestamp()
 
       rChannel.send(embed);
+});
+
+
+//connect to heroku db
+const client = new Client({
+  connectionString: process.env.DATABASE_URL,
+  ssl: true,
+});
+
+client.connect();
+
+client.query('SELECT table_schema,table_name FROM information_schema.tables;', (err, res) => {
+  if (err) throw err;
+  for (let row of res.rows) {
+    console.log(JSON.stringify(row));
+  }
+  client.end();
 });
 
 client.login(process.env.TOKEN);
