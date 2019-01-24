@@ -50,7 +50,7 @@ module.exports.run = async (client, message, args) => {
                 await message.channel.send(`${role}, **Roll-Call is now live! Please sign in roll-call to verify that you're still active within the clan!\n\nLove --The Reaper**`)
             }
             else{
-                uChannel.send(`${role}, **Roll-Call is now live! Please sign here to verify that you're still active within the clan!\n\nLove --The Reaper**`)
+                uChannel.send(`${role}, **Roll-Call is now live! Please sign here to verify that you're still active within the clan!**\n\nLove --The Reaper**`)
                 .catch((err) => {
                     message.react('❌');
                     message.channel.send(err.message);
