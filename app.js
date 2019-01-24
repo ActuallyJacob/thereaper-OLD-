@@ -3,7 +3,7 @@ const Discord = require('discord.js');
 const fs = require('fs-extra');
 const sql = require('sqlite');
 const _ = require('lodash');
-const { PGP } = require('pg');
+const { Client } = require('pg');
 
 //other constants
 const client = new Discord.Client();
@@ -165,7 +165,7 @@ client.on('guildMemberAdd', member => {
 
 
 //connect to heroku db
-const pgp = new PGP({
+const pgp = new Client({
   connectionString: process.env.DATABASE_URL,
   ssl: true,
 });
