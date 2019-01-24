@@ -101,10 +101,12 @@ client.on("message", message => {
     }
   }
     if(message.channel.name === "roll-call"){
-      message.delete().catch(O_o=>{});
-      let rrole = message.guild.roles.find("name", "Roll Call");
-      if(message.member.roles.has(rrole.id)){
-        message.member.removeRole(rrole.id); 
+      if (!message.member.roles.some(r=>["Admin", "Lead Admin", "Co-Founder", "Founder"].includes(r.name)) ){
+        message.delete().catch(O_o=>{});
+        let rrole = message.guild.roles.find("name", "Roll Call");
+        if(message.member.roles.has(rrole.id)){
+          message.member.removeRole(rrole.id); 
+        }
       }
     }
     if(message.channel.name === "about-me"){
