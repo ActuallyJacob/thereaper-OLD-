@@ -3,7 +3,7 @@ const config = require('../config/config');
 
 //metadata
 module.exports = {
-    name: '(A)list',
+    name: 'list',
     syntax: `${config.prefix}list [@role]`,
     description: 'List every member in a role. Admin Only.',
     help: 'List every user in a given role. Admin only.',

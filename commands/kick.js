@@ -3,7 +3,7 @@ const config = require('../config/config');
 
 // Metadata
 module.exports = {
-  name: '(A)kick',
+  name: 'kick',
   syntax: `${config.prefix}kick [@user] {reason}`,
   description: 'Kick a member. Admin only.',
   help: 'When a user is kicked, they can be invited back to the server at any time by any member.',

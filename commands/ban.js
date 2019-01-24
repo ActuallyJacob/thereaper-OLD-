@@ -3,7 +3,7 @@ const config = require('../config/config');
 
 // Metadata
 module.exports = {
-  name: '(A)ban',
+  name: 'ban',
   description: 'Ban a member. Admin only.',
   syntax: `${config.prefix}ban [@user] {reason}`,
   help: 'Bans the tagged user from the server permanently, to unban they need to be manually updated.',
