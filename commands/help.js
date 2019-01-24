@@ -35,10 +35,7 @@ module.exports.run = (client, message, args) => {
   let pages;
 
   // Switch for different arguments
-  if (args === 'admin') {
-    pages = _.chunk(client.admin.commands, commandsPerPage);
-  }
-  if (args === 'all') { // Show all commands
+  if (args === '-a') { // Show all commands
     pages = _.chunk(client.commands, commandsPerPage);
   } else if (client.commands.some(cmd => cmd.name === args.toLowerCase())) { // Show help for a specific command
     const command = _.find(client.commands, { name: args.toLowerCase() });
@@ -55,7 +52,7 @@ module.exports.run = (client, message, args) => {
     });
     return;
   } else { // Show only enabled commands
-    const enabledCommands = client.commands.filter(cmd => client.admin.commands(message.guild, cmd.name) + !db.commandIsDisabled(message.guild, cmd.name));
+    const enabledCommands = client.commands.filter(cmd => !db.commandIsDisabled(message.guild, cmd.name));
     pages = _.chunk(enabledCommands, commandsPerPage);
   }
 
@@ -80,6 +77,11 @@ module.exports.run = (client, message, args) => {
 
   // Send the first help page with buttons that display other pages when clicked
   message.channel.send(pages[0]).then(async (msg) => {
+    /*
+    TODO: fix this so that ESLint doesnt freak out.
+    For some reason await really only works with for..of
+    */
+    // react number buttons
     for (const [index, _] of pages.entries()) {
       await msg.react(buttons[index]);
     }
@@ -87,8 +89,10 @@ module.exports.run = (client, message, args) => {
     // react delete button
     await msg.react(reactions.x);
     msg.delete(60000).catch();
+
     // Collect reactions for the help message
     const collector = msg.createReactionCollector((reaction, user) => user !== client.user);
+
     collector.on('collect', async (messageReaction) => {
       // If the x button is pressed, remove the message.
       if (messageReaction.emoji.name === reactions.x) {
@@ -101,10 +105,16 @@ module.exports.run = (client, message, args) => {
       const pageIndex = buttons.indexOf(messageReaction.emoji.name);
 
       // Return if emoji is irrelevant or the page doesnt exist (number too high)
-      if (pageIndex === !buttons || !pages[pageIndex]) return;
+      if (pageIndex === -1 || !pages[pageIndex]) return;
 
-      // Edit the message to show the new page and remove reaction.
+      // Edit the message to show the new page.
       msg.edit(pages[pageIndex]);
+
+      /*
+      Get the user that clicked the reaction and remove the reaction.
+      This matters because if you just do remove(), it will remove the bots
+      reaction which will have unintended side effects.
+      */
       const notbot = messageReaction.users.filter(clientuser => clientuser !== client.user).first();
       await messageReaction.remove(notbot);
     });
