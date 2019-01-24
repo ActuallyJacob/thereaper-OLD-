@@ -3,7 +3,7 @@ const config = require('../config/config');
 
 //metadata
 module.exports = {
-  name: 'role',
+  name: '(A)role',
   syntax: `${config.prefix}role [@user] {@role}`,
   description: 'Adds or removes a role. Admin only.',
   help: 'Adds specified role to specified user if they do not have it, removes it if they do. Admin only.',

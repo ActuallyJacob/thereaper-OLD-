@@ -3,7 +3,7 @@ const config = require('../config/config');
 
 //metadata
 module.exports = {
-    name: 'purge',
+    name: '(A)purge',
     syntax: `${config.prefix}purge [amount]`,
     description: 'Bulk deletes messages. Admin only.',
     help: 'Primarily used to clean out chats, and is only usable by Admins and above.',

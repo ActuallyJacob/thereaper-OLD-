@@ -3,7 +3,7 @@ const config = require('../config/config');
 
 //metadata
 module.exports = {
-    name: 'rollcall',
+    name: '(A)rollcall',
     syntax: `${config.prefix}rollcall`,
     description: 'Activates rollcall. Admin only.',
     help: 'Gives every member the "Roll Call" role and creates the rollcall channel. Role is removed from each member when they type. Admin only.',
