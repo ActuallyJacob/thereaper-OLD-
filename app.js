@@ -15,17 +15,29 @@ sql.open(`./modules/mainDB.sqlite.example`);
 const db = require('./modules/dbcontroller');
 db.initDatabase();
 
-// Read all the commands and put them into the client
-fs.readdir(`${__dirname}/commands/`).then((files) => {
-  const commands = [];
+//splt commands into everyone and admins and put them into the bot
+fs.readdir(`${__dirname}/commands/admins`).then((files) => {
+  const admincomms = [];
   files.forEach((file) => {
     if (file.endsWith('.js')) {
-      const command = require(`${__dirname}/commands/${file}`);
-      commands.push(command);
+      const admincomm = require(`${__dirname}/commands/admins/${file}`);
+      admincomms.push(admincomm);
     }
   });
-  client.commands = commands;
-});
+  client.admin.commands = admincomms;
+
+  fs.readdir(`${__dirname}/commands/everyone`).then((files) => {
+    const everycomms = [];
+    files.forEach((file) => {
+      if (file.endsWith('.js')) {
+        const everycomm = require(`${__dirname}/commands/everyone/${file}`);
+        everycomms.push(everycomm);
+      }
+    });
+    client.everyone.commands = everycomms;
+      client.commands = client.everyone.commands + client.admin.commands;
+    });
+  });
 
 //activity and console
 client.on("ready", () => {
