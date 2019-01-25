@@ -37,7 +37,7 @@ client.on("ready", () => {
   console.log(client.user.username + " is online.")
   const activities_list = [
     "Created by ActuallyJacob", 
-    "Use -help (command) for help", 
+    "Use ?help (command) for help", 
     "The-Reaper.js"
     ];
     setInterval(() => {
