@@ -9,11 +9,6 @@ const client = new Discord.Client();
 const config = require('./config/config.json');
 const reactions = require('./modules/reactions');
 
-//databases
-sql.open(`./modules/mainDB.sqlite.example`);
-const db = require('./modules/dbcontroller');
-db.initDatabase();
-
 // Read all the commands and put them into the client
 fs.readdir(`${__dirname}/commands/`).then((files) => {
   const commands = [];
@@ -46,40 +41,12 @@ client.on("ready", () => {
     }, 10000); // Runs this every 10 seconds.
 });
 
-// When a guild adds the bot, add it to the db
-client.on('guildCreate', async (guild) => {
-  console.log('Added to new server!');
-  if (!db.guildExists(guild)) {
-    const owner = await client.fetchUser(guild.ownerID);
-    db.addGuild(guild);
-    db.addManager(guild, owner);
-  }
-});
-
 //command control and message events
 client.on("message", message => {
   if (message.author.bot) return;
   if (message.channel.type === 'dm'){
     if (!message.content.startsWith(config.prefix)){
       client.users.get(config.ownerID).send(`Message Dm'd by: ${message.author.id}, ${message.author.username}, content: ${message.content}`);
-    }else{
-      const args = message.content.split(" ").slice(1);
- 
-      if (message.content.startsWith(config.prefix + "eval")) {
-        if(message.author.id !== config.ownerID) return;
-        try {
-          const code = args.join(" ");
-          let evaled = eval(code);
-     
-          if (typeof evaled !== "string")
-            evaled = require("util").inspect(evaled);
-     
-          message.channel.send(clean(evaled), {code:"xl"});
-        } catch (err) {
-          message.channel.send(`\`ERROR\` \`\`\`xl\n${clean(err)}\n\`\`\``);
-        }
-      }
-      return;
     }
   }else{
     if (message.content.startsWith(config.prefix)){
@@ -93,10 +60,12 @@ client.on("message", message => {
         const indexOfCommand = _.findIndex(client.commands, { name: command });
         client.commands[indexOfCommand].run(client, message, args, sql, Discord);
       } catch (err) {
-        console.log(err);
-        client.users.get(config.ownerID).send(`${err}`);
-        message.react(reactions.debug);
-        message.channel.send(`<@${config.ownerID}> The Reaper ran into an unexpected error. Fix this shit: ${err.message}`);
+        if(message.channel.name === 'the-reaper'){
+          console.log(err);
+          client.users.get(config.ownerID).send(`${err}`);
+          message.react(reactions.debug);
+          message.channel.send(`<@${config.ownerID}> The Reaper ran into an unexpected error. Fix this shit: ${err.message}`);
+        }
       }
     }
   }
@@ -144,7 +113,7 @@ client.on('guildMemberAdd', member => {
       .addField(':white_check_mark: | **Rule. 3:**', 'The Admin team has an open door policy. The leaders of Reaper Clan are always available to discuss or answer questions and/or concerns.')
       .addField(':white_check_mark: | **Rule. 4:**', 'Activity in game and in discord is required. If personal issues keep you from being active for 2+ weeks, please allow us to know. Random activity checks happen in form of a Discord roll call, please sign this if you wish to stay in the clan.')
       .addField(':white_check_mark: | **Rule. 5:**', 'There are lots of rooms to talk in this Discord, please try to indulge in them all and use them for their specified purpose. Most of all, have fun with your fellow Reapers!')
-      .addField(':smiley: | **Please Note**', 'These are our rules, and need to be adhered to by all. If you have any questions about them, please ask an Admin by simply typing in this channel. If not please type **-accept** to gain full access to the Discord Server, and be put into the sorting room. Thank you!')
+      .addField(':smiley: | **Please Note**', 'These are our rules, and need to be adhered to by all. If you have any questions about them, please ask an Admin by simply typing in this channel. If not please type **?accept** to gain full access to the Discord Server, and be put into the sorting room. Thank you!')
       .addField(':family_mwgb: | You are member number:', `${member.guild.memberCount}`)
       .setFooter(`Server: ${member.guild.name}`)
       .setTimestamp()
