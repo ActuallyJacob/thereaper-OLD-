@@ -5,7 +5,6 @@
 **Command List:**
 
 *Admin*
-
 1. ?ban - this bans a user from the server
 2. ?kick - this kicks a user from the server
 3. ?list - this lists all users in a given role
@@ -15,7 +14,6 @@
 7. ?purge - this deletes a given amount of messages from a channel
 
 *Standard*
-
 1. ?accept - this accepts the given rules when a player joins the server
 2. ?suggest - this lets the user suggest something new
 3. ?help - lists the help command 
@@ -28,6 +26,8 @@
 5. Update full code and tidy it
 
 **Updates:**
+
+*All updates listed are in the recode branch*
 1. Created permanent database using RethinkDB
 
 # Powered by
