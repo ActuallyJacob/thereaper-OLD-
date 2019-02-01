@@ -29,6 +29,7 @@
 
 *All updates listed are in the recode branch*
 1. Created permanent database using RethinkDB
+2. Can now add Mixer and Twitch streamers to DB
 
 # Powered by
 
