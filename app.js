@@ -9,6 +9,10 @@ const client = new Discord.Client();
 const config = require('./config/config.json');
 const reactions = require('./modules/reactions');
 
+//databases
+const db = require('./modules/dbcontroller');
+db.initDatabase();
+
 // Read all the commands and put them into the client
 fs.readdir(`${__dirname}/commands/`).then((files) => {
   const commands = [];
@@ -39,6 +43,16 @@ client.on("ready", () => {
       const index = Math.floor(Math.random() * (activities_list.length - 1) + 1); // generates a random number between 1 and the length of the activities array list (in this case 5).
       client.user.setActivity(activities_list[index]); // sets bot's activities to one of the phrases in the arraylist.
     }, 10000); // Runs this every 10 seconds.
+});
+
+// When a guild adds the bot, add it to the db
+client.on('guildCreate', async (guild) => {
+  console.log('Added to new server!');
+  if (!db.guildExists(guild)) {
+    const owner = await client.fetchUser(guild.ownerID);
+    db.addGuild(guild);
+    db.addManager(guild, owner);
+  }
 });
 
 //command control and message events
@@ -129,7 +143,7 @@ client.on('guildMemberAdd', member => {
       .addField(':white_check_mark: | **Rule. 3:**', 'The Admin team has an open door policy. The leaders of Reaper Clan are always available to discuss or answer questions and/or concerns.')
       .addField(':white_check_mark: | **Rule. 4:**', 'Activity in game and in discord is required. If personal issues keep you from being active for 2+ weeks, please allow us to know. Random activity checks happen in form of a Discord roll call, please sign this if you wish to stay in the clan.')
       .addField(':white_check_mark: | **Rule. 5:**', 'There are lots of rooms to talk in this Discord, please try to indulge in them all and use them for their specified purpose. Most of all, have fun with your fellow Reapers!')
-      .addField(':smiley: | **Please Note**', 'These are our rules, and need to be adhered to by all. If you have any questions about them, please ask an Admin by simply typing in this channel. If not please type **?accept** to gain full access to the Discord Server, and be put into the sorting room. Thank you!')
+      .addField(':smiley: | **Please Note**', 'These are our rules, and need to be adhered to by all. If you have any questions about them, please ask an Admin by simply typing in this channel. If not please type **-accept** to gain full access to the Discord Server, and be put into the sorting room. Thank you!')
       .addField(':family_mwgb: | You are member number:', `${member.guild.memberCount}`)
       .setFooter(`Server: ${member.guild.name}`)
       .setTimestamp()
