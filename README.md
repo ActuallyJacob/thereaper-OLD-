@@ -23,7 +23,8 @@
 2. Create currency
 3. Create "fun" commands
 4. Create "event" command
-5. Update full code and tidy it
+5. Mixer and Twitch live alerts
+6. Update full code and tidy it
 
 **Updates:**
 
