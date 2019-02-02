@@ -1,4 +1,4 @@
-# TheReaper Bot
+# TheReaper Commands, To-Do & Updates.
 **Made for the Reaper Clan on Destiny 2.**
 *Commands are exlusive to a single server, and not intended for use on other servers.*
 
