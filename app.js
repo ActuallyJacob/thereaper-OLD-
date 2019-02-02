@@ -32,7 +32,7 @@ client.on("ready", () => {
   console.log(client.user.username + " is online.")
   const activities_list = [
     "Created by ActuallyJacob", 
-    "Use ?help (command) for help", 
+    "Use -help (command) for help", 
     "The-Reaper.js"
     ];
     setInterval(() => {
@@ -78,12 +78,10 @@ client.on("message", message => {
         const indexOfCommand = _.findIndex(client.commands, { name: command });
         client.commands[indexOfCommand].run(client, message, args, sql, Discord);
       } catch (err) {
-        if(message.channel.name === 'the-reaper'){
-          console.log(err);
-          client.users.get(config.ownerID).send(`${err}`);
-          message.react(reactions.debug);
-          message.channel.send(`<@${config.ownerID}> The Reaper ran into an unexpected error. Fix this shit: ${err.message}`);
-        }
+        console.log(err);
+        client.users.get(config.ownerID).send(`${err}`);
+        message.react(reactions.debug);
+        message.channel.send(`<@${config.ownerID}> The Reaper ran into an unexpected error. Fix this shit: ${err.message}`);
       }
     }
   }
