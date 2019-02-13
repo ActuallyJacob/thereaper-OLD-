@@ -94,8 +94,6 @@ client.on("message", message => {
       } catch (err) {
         console.log(err);
         client.users.get(config.ownerID).send(`${err}`);
-        message.react(reactions.debug);
-        message.channel.send(`<@${config.ownerID}> The Reaper ran into an unexpected error. Fix this shit: ${err.message}`);
       }
     }
   }
