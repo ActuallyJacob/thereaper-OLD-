@@ -27,7 +27,7 @@
 
 **Updates:**
 
-*All updates listed are in the recode branch*
+*All updates listed are in development and have not been pushed*
 1. Created permanent database using RethinkDB
 2. Can now add Mixer and Twitch streamers to DB
 3. Recognises when a Twitch streamer goes live
