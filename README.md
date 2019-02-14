@@ -1,6 +1,6 @@
-# TheReaper Commands, To-Do & Updates.
+# TheReaper Bot
 **Made for the Reaper Clan on Destiny 2.**
-*Commands are exlusive to a single server, and not intended for use on other servers.*
+*Commands may be buggy on servers other than the Official Reaper Clan server*
 
 **Command List:**
 
@@ -23,21 +23,24 @@
 2. Create currency
 3. Create "fun" commands
 4. Create "event" command
-5. Mixer and Twitch live alerts
-6. Update full code and tidy it
+5. Update full code and tidy it
 
 **Updates:**
 
 *All updates listed are in the recode branch*
 1. Created permanent database using RethinkDB
 2. Can now add Mixer and Twitch streamers to DB
+3. Recognises when a Twitch streamer goes live
+4. Recognises when a Mixer streamer goes live
+5. Announces when a Twitch streamer goes live
+6. Announces when a Mixer streamer goes live
 
 # Powered by
 
 [![](https://camo.githubusercontent.com/40129aa4640399b5e65cc3c101361a6a0b5d6467/68747470733a2f2f646973636f72642e6a732e6f72672f7374617469632f6c6f676f2e737667)](https://discord.js.org)
 
-[![
-](http://developer.ibm.com/clouddataservices/wp-content/uploads/sites/47/2017/07/rethinkdb.png)
-](https://github.com/rethinkdb/rethinkdb)
+[![](https://webassets.mongodb.com/_com_assets/cms/MongoDB-Logo-5c3a7405a85675366beb3a5ec4c032348c390b3f142f5e6dddf1d78e2df5cb5c.png)](https://www.mongodb.com/)
+
+[![]https://nodejs.org/static/images/logos/nodejs-new-pantone-black.png](https://nodejs.org/en/)
 
 [![](https://klasa.js.org/static/klasa.svg)](https://klasa.js.org/)
