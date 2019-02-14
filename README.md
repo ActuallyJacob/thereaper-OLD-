@@ -41,6 +41,6 @@
 
 [![](https://webassets.mongodb.com/_com_assets/cms/MongoDB-Logo-5c3a7405a85675366beb3a5ec4c032348c390b3f142f5e6dddf1d78e2df5cb5c.png)](https://www.mongodb.com/)
 
-[![]https://nodejs.org/static/images/logos/nodejs-new-pantone-black.png](https://nodejs.org/en/)
+[![](https://nodejs.org/static/images/logos/nodejs-new-pantone-black.png)](https://nodejs.org/en/)
 
 [![](https://klasa.js.org/static/klasa.svg)](https://klasa.js.org/)
