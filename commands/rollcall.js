@@ -17,10 +17,18 @@ module.exports.run = async (client, message, args) => {
         return message.reply("The Reaper denies. He simply denies.");
     }else{    
         const role = message.guild.roles.find('name', 'Roll Call');
+        if (!role){
+            return message.channel.send(`**${message.author.username}**, role not found`);
+        }
         const aRole = message.guild.roles.find('name', 'Leadership Team')
+        if (!aRole){
+            console.log("!! NO 'LEADERSHIP TEAM' ROLE FOUND !!")
+        }
         const uChannel = message.guild.channels.find("name", "roll-call");
-        if (!role) return message.channel.send(`**${message.author.username}**, role not found`);
+
+        if(!message.member.roles.some(r=>["Admin", "Lead Admin", "Co-Founder", "Founder"].includes(r.name)) ){
         message.guild.members.filter(m => !m.user.bot).map(async member => await member.addRole(role));
+        }
         message.channel.send(`**${message.author.username}**, role **${role.name}** was added to all members`);
         if (!uChannel){
             var server = message.guild;
