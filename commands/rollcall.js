@@ -14,36 +14,37 @@ module.exports = {
 
 module.exports.run = async (client, message, args) => {
     if(!message.member.roles.some(r=>["Admin", "Lead Admin", "Co-Founder", "Founder"].includes(r.name)) ){
-      return message.reply("The Reaper denies. He simply denies.");
-    }else{
-        var server = message.guild;
-        const role = server.roles.find(role => role.name === 'Roll Call');
-        const aRole = server.roles.find(role => role.name === 'Leadership team');
-        const existingCat = server.channels.find(channel => channel.name === 'reaper rooms' && channel.type == 'category');
-        const existingChannel = server.channels.find(channel => channel.name === 'roll-call');
+        return message.reply("The Reaper denies. He simply denies.");
+    }else{    
+        const role = message.guild.roles.find('name', 'Roll Call');
+        const aRole = message.guild.roles.find('name', 'Leadership Team')
+        const uChannel = message.guild.channels.find("name", "roll-call");
         if (!role) return message.channel.send(`**${message.author.username}**, role not found`);
-        server.members.filter(m => !m.user.bot).map(async member => await member.addRole(role));
+        message.guild.members.filter(m => !m.user.bot).map(async member => await member.addRole(role));
         message.channel.send(`**${message.author.username}**, role **${role.name}** was added to all members`);
-        if (!existingChannel){
-                var name = ("roll-call");
-                let newChannel = server.createChannel(name, "text").then(m => {
-
-                    m.overwritePermissions(server.id, {
-                        VIEW_CHANNEL: false
-                    })
-
-                    m.overwritePermissions(aRole, {
-                        VIEW_CHANNEL: true
-                    })
-
-                    m.overwritePermissions(role, {
-                        VIEW_CHANNEL: true
-                    })
-                    m.setParent(existingCat, { 
-                        lockPermissions: false 
-                    })
+        if (!uChannel){
+            var server = message.guild;
+            var name = ("roll-call");
+            await server.createChannel(name, "text").then(m => {
+                m.overwritePermissions(message.guild.id, {
+                    VIEW_CHANNEL: false
                 })
-                await newChannel.send(`**Roll-Call is now live! Please sign in roll-call to verify that you're still active within the clan! You will be removed from this channel after you have signed.${role}\n\nLove --The Reaper**`)
-            }
-        };
-    };
+
+                m.overwritePermissions(aRole, {
+                    VIEW_CHANNEL: true
+                })
+    
+                m.overwritePermissions(role, {
+                    VIEW_CHANNEL: true
+                })
+                m.setParent('528575698567430154', { 
+                    lockPermissions: false 
+                })
+            })
+            await message.channel.send(`${role}, **Roll-Call is now live! Please sign in roll-call to verify that you're still active within the clan and you'll be immediately removed!\n\nLove --The Reaper**`)
+        }
+        else{
+            uChannel.send(`${role}, **Roll-Call is now live! Please sign here to verify that you're still active within the clanand you'll be immediately removed!\n\nLove --The Reaper**`)
+        }
+    }
+}
