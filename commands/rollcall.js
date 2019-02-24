@@ -25,7 +25,7 @@ module.exports.run = async (client, message, args) => {
         if (!uChannel){
             var server = message.guild;
             var name = ("roll-call");
-            await server.createChannel(name, "text").then(channel => {
+            const channel = await server.createChannel(name, "text").then(channel => {
                 channel.overwritePermissions(message.guild.id, {
                     VIEW_CHANNEL: false
                 })
@@ -37,11 +37,11 @@ module.exports.run = async (client, message, args) => {
                 channel.overwritePermissions(role, {
                     VIEW_CHANNEL: true
                 })
-                channel.setParent('528575698567430154', { 
+                channel.setParent('529781951029182464', { 
                     lockPermissions: false
                 })
             })
-            await message.channel.send(`${role}, **Roll-Call is now live! Please sign in roll-call to verify that you're still active within the clan and you'll be immediately removed!\n\nLove --The Reaper**`)
+            await channel.send(`${role}, **Roll-Call is now live! Please sign in roll-call to verify that you're still active within the clan and you'll be immediately removed!\n\nLove --The Reaper**`)
         }
         else{
             uChannel.send(`${role}, **Roll-Call is now live! Please sign here to verify that you're still active within the clanand you'll be immediately removed!\n\nLove --The Reaper**`)
