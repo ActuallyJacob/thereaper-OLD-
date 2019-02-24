@@ -29,10 +29,6 @@ module.exports.run = async (client, message, args) => {
                         VIEW_CHANNEL: false
                     })
 
-                    m.overwritePermissions(aRole, {
-                        VIEW_CHANNEL: true
-                    })
-                
                     m.overwritePermissions(role, {
                         VIEW_CHANNEL: true
                     })
@@ -40,7 +36,7 @@ module.exports.run = async (client, message, args) => {
                         lockPermissions: false 
                     })
                 })
-                await message.channel.send(`**Roll-Call is now live! Please sign in roll-call to verify that you're still active within the clan! You will be removed from this channel after you have signed.${role}\n\nLove --The Reaper**`)
+                await channel.send(`**Roll-Call is now live! Please sign in roll-call to verify that you're still active within the clan! You will be removed from this channel after you have signed.${role}\n\nLove --The Reaper**`)
             }
             else{
                 uChannel.send(`**Roll-Call is now live! Please sign here to verify that you're still active within the clan! You will be removed to this channel after you have signed. ${role}\n\nLove --The Reaper**`)
