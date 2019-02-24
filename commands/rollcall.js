@@ -49,8 +49,8 @@ module.exports.run = async (client, message, args) => {
                     lockPermissions: false
                 })
             })
-            let channel = message.channel.find('name', 'roll-call');
-            await channel.send(`${role}, **Roll-Call is now live! Please sign in roll-call to verify that you're still active within the clan and you'll be immediately removed!\n\nLove --The Reaper**`)
+            let newChannel = message.channel.find('name', 'roll-call');
+            await newChannel.send(`${role}, **Roll-Call is now live! Please sign in roll-call to verify that you're still active within the clan and you'll be immediately removed!\n\nLove --The Reaper**`)
         }
         else{
             uChannel.send(`${role}, **Roll-Call is now live! Please sign here to verify that you're still active within the clanand you'll be immediately removed!\n\nLove --The Reaper**`)
