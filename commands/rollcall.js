@@ -42,15 +42,9 @@ module.exports.run = async (client, message, args) => {
                     m.setParent('529781951029182464', { 
                         lockPermissions: false 
                     })
-                })}
-                await channel.send(`**Roll-Call is now live! Please sign in roll-call to verify that you're still active within the clan! You will be removed from this channel after you have signed.${role}\n\nLove --The Reaper**`)
+                })
+                await channel.send(`**Roll-Call is now live! Please sign in roll-call to verify that you're still active within the clan! You will be removed from this channel after you have signed.${role}\n\nLove --The Reaper**`)}
             }
-            else{
-                message.channel.send(`**Roll-Call is now live! Please sign in the roll-call to verify that you're still active within the clan! You will be removed after you have signed. ${role}\n\nLove --The Reaper**`)
-                .catch((err) => {
-                    message.react('❌');
-                    message.channel.send(err.message);
-                });
-            };
+            makeChannel
         };
     };
