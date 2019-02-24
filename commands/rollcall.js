@@ -16,14 +16,7 @@ module.exports.run = async (client, message, args) => {
     if(!message.member.roles.some(r=>["Admin", "Lead Admin", "Co-Founder", "Founder"].includes(r.name)) ){
       return message.reply("The Reaper denies. He simply denies.");
     }else{
-        const adminroles = {
-            Admin: "Admin",
-            LeadAdmin: "Lead Admin",
-            CoFounder: "Co-Founder",
-            Founder: "Founder"
-        }
         const role = message.guild.roles.find('name', 'Roll Call');
-        const aRole = message.guild.roles.find(adminroles);
         const uChannel = message.guild.channels.find("name", "roll-call");
         if (!role) return message.channel.send(`**${message.author.username}**, role not found`);
         message.guild.members.filter(m => !m.adminroles + !m.user.bot).map(async member => await member.addRole(role));
