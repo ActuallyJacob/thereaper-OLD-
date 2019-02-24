@@ -17,16 +17,21 @@ module.exports.run = async (client, message, args) => {
       return message.reply("The Reaper denies. He simply denies.");
     }else{
         const role = message.guild.roles.find('name', 'Roll Call');
-        const uChannel = message.guild.channels.find("name", "roll-call");
+        const aRole = message.guild.roles.find('name', 'Admin');
         if (!role) return message.channel.send(`**${message.author.username}**, role not found`);
-        message.guild.members.filter(m => !m.adminroles + !m.user.bot).map(async member => await member.addRole(role));
+        message.guild.members.filter(m => !m.user.bot).map(async member => await member.addRole(role));
         message.channel.send(`**${message.author.username}**, role **${role.name}** was added to all members`);
         if (!uChannel){
                 var server = message.guild;
                 var name = ("roll-call");
-                let channel = await server.createChannel(name, "text").then(m => {
+                let channel = server.createChannel(name, "text").then(m => {
+
                     m.overwritePermissions(message.guild.id, {
                         VIEW_CHANNEL: false
+                    })
+
+                    m.overwritePermissions(aRole, {
+                        VIEW_CHANNEL: true
                     })
 
                     m.overwritePermissions(role, {
@@ -39,7 +44,7 @@ module.exports.run = async (client, message, args) => {
                 await channel.send(`**Roll-Call is now live! Please sign in roll-call to verify that you're still active within the clan! You will be removed from this channel after you have signed.${role}\n\nLove --The Reaper**`)
             }
             else{
-                uChannel.send(`**Roll-Call is now live! Please sign here to verify that you're still active within the clan! You will be removed to this channel after you have signed. ${role}\n\nLove --The Reaper**`)
+                message.channel.send(`**Roll-Call is now live! Please sign in the roll-call to verify that you're still active within the clan! You will be removed after you have signed. ${role}\n\nLove --The Reaper**`)
                 .catch((err) => {
                     message.react('❌');
                     message.channel.send(err.message);
