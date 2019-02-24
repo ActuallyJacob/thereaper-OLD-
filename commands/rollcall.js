@@ -23,7 +23,6 @@ module.exports.run = async (client, message, args) => {
         message.guild.members.filter(m => !m.user.bot).map(async member => await member.addRole(role));
         message.channel.send(`**${message.author.username}**, role **${role.name}** was added to all members`);
         if (!uChannel){
-            function makeChannel(message){
                 var server = message.guild;
                 var name = ("roll-call");
                 let channel = server.createChannel(name, "text").then(m => {
@@ -43,8 +42,7 @@ module.exports.run = async (client, message, args) => {
                         lockPermissions: false 
                     })
                 })
-                await channel.send(`**Roll-Call is now live! Please sign in roll-call to verify that you're still active within the clan! You will be removed from this channel after you have signed.${role}\n\nLove --The Reaper**`)}
+                await channel.send(`**Roll-Call is now live! Please sign in roll-call to verify that you're still active within the clan! You will be removed from this channel after you have signed.${role}\n\nLove --The Reaper**`)
             }
-            makeChannel
         };
     };
