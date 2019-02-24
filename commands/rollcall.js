@@ -16,18 +16,19 @@ module.exports.run = async (client, message, args) => {
     if(!message.member.roles.some(r=>["Admin", "Lead Admin", "Co-Founder", "Founder"].includes(r.name)) ){
       return message.reply("The Reaper denies. He simply denies.");
     }else{
-        const role = message.guild.roles.find('name', 'Roll Call');
-        const aRole = message.guild.roles.find('name', 'Admin');
-        const uChannel = message.guild.channels.find('name', 'roll-call')
+        var server = message.guild;
+        const role = server.roles.find(role => role.name === 'Roll Call');
+        const aRole = server.roles.find(role => role.name === 'Leadership team');
+        const existingCat = server.channels.find(channel => channel.name === 'reaper rooms' && channel.type == 'category');
+        const existingChannel = server.channels.find(channel => channel.name === 'roll-call');
         if (!role) return message.channel.send(`**${message.author.username}**, role not found`);
-        message.guild.members.filter(m => !m.user.bot).map(async member => await member.addRole(role));
+        server.members.filter(m => !m.user.bot).map(async member => await member.addRole(role));
         message.channel.send(`**${message.author.username}**, role **${role.name}** was added to all members`);
-        if (!uChannel){
-                var server = message.guild;
+        if (!existingChannel){
                 var name = ("roll-call");
-                let channel = server.createChannel(name, "text").then(m => {
+                let newChannel = server.createChannel(name, "text").then(m => {
 
-                    m.overwritePermissions(message.guild.id, {
+                    m.overwritePermissions(server.id, {
                         VIEW_CHANNEL: false
                     })
 
@@ -38,11 +39,11 @@ module.exports.run = async (client, message, args) => {
                     m.overwritePermissions(role, {
                         VIEW_CHANNEL: true
                     })
-                    m.setParent('529781951029182464', { 
+                    m.setParent(existingCat, { 
                         lockPermissions: false 
                     })
                 })
-                await channel.send(`**Roll-Call is now live! Please sign in roll-call to verify that you're still active within the clan! You will be removed from this channel after you have signed.${role}\n\nLove --The Reaper**`)
+                await newChannel.send(`**Roll-Call is now live! Please sign in roll-call to verify that you're still active within the clan! You will be removed from this channel after you have signed.${role}\n\nLove --The Reaper**`)
             }
         };
     };
